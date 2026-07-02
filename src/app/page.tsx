@@ -1,0 +1,85 @@
+export const dynamic = 'force-dynamic'
+
+import { createClient } from '@/lib/supabase'
+import EditProvider from '@/components/EditProvider'
+import Navbar from '@/components/Navbar'
+import Hero from '@/components/sections/Hero'
+import Benefits from '@/components/sections/Benefits'
+import Gallery from '@/components/sections/Gallery'
+import Process from '@/components/sections/Process'
+import About from '@/components/sections/About'
+import Testimonials from '@/components/sections/Testimonials'
+import CTA from '@/components/sections/CTA'
+import FooterEditable from '@/components/sections/FooterEditable'
+import type { Project, Testimonial, SiteSettings } from '@/types'
+
+const DEFAULT_SETTINGS: SiteSettings = {
+  business_name: 'Reef Woodworks',
+  hero_title: 'עבודות עץ בהתאמה אישית',
+  hero_subtitle: 'רהיטים, שולחנות ופתרונות עץ בעבודת יד. מחומרים מהטבע, עם תשומת לב לכל פרט.',
+  hero_badge: 'נגרות בהתאמה אישית · עבודת יד',
+  stat_years: '15+',
+  stat_projects: '200+',
+  stat_handmade: '100%',
+  about_text: 'עם למעלה מ-15 שנות ניסיון בנגרות אמנותית, אני מאמין שכל חתיכת עץ מספרת סיפור. כל פרויקט מתחיל בשיחה, מתפתח לרעיון, ומסתיים ביצירה שתשרת אתכם שנים קדימה.',
+  about_name: 'יוסי בן-דוד',
+  about_title: 'נגר ובעל הסדנה',
+  cta_title: 'נהפוך אותו לעץ אמיתי',
+  cta_badge: 'יש לכם רעיון?',
+  cta_subtitle: 'שיחה ראשונה היא תמיד חינם וללא התחייבות. ספרו לנו על החלום – ונגיד לכם איך להגשים אותו.',
+  cta_btn_whatsapp: 'שלחו הודעה בוואטסאפ',
+  phone: '053-313-9394',
+  whatsapp: '972533139394',
+  email: 'reefww3939@gmail.com',
+  address: 'מרכז הארץ',
+  instagram: '#',
+  facebook: '#',
+  footer_desc: 'עבודות עץ בהתאמה אישית – רהיטים, שולחנות ופתרונות עץ בעבודת יד מקצועית, עם תשומת לב לכל פרט.',
+}
+
+async function getData() {
+  try {
+    const supabase = createClient()
+
+    const [settingsRes, projectsRes, testimonialsRes] = await Promise.all([
+      supabase.from('site_settings').select('key, value'),
+      supabase.from('projects').select('*').order('order_index'),
+      supabase.from('testimonials').select('*').order('created_at'),
+    ])
+
+    const settings: SiteSettings = { ...DEFAULT_SETTINGS }
+    if (settingsRes.data) {
+      settingsRes.data.forEach((row) => {
+        settings[row.key] = row.value
+      })
+    }
+
+    return {
+      settings,
+      projects: (projectsRes.data as Project[]) || [],
+      testimonials: (testimonialsRes.data as Testimonial[]) || [],
+    }
+  } catch {
+    return { settings: DEFAULT_SETTINGS, projects: [], testimonials: [] }
+  }
+}
+
+export default async function Home() {
+  const { settings, projects, testimonials } = await getData()
+
+  return (
+    <main className="overflow-x-hidden">
+      <EditProvider initialSettings={settings}>
+        <Navbar businessName={settings.business_name ?? 'Reef Woodworks'} />
+        <Hero />
+        <Benefits />
+        <Gallery projects={projects} />
+        <Process />
+        <About />
+        <Testimonials testimonials={testimonials} />
+        <CTA />
+        <FooterEditable />
+      </EditProvider>
+    </main>
+  )
+}
