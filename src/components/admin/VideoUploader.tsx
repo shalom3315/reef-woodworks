@@ -52,7 +52,7 @@ export default function VideoUploader({ value, onChange }: VideoUploaderProps) {
     ])
 
     const data = await ffmpeg.readFile('output.mp4')
-    return new File([data as ArrayBuffer], 'compressed.mp4', { type: 'video/mp4' })
+    return new File([data as unknown as ArrayBuffer], 'compressed.mp4', { type: 'video/mp4' })
   }
 
   const upload = async (file: File) => {
