@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Frank_Ruhl_Libre, Heebo } from 'next/font/google'
 import './globals.css'
+import ChatWidget from '@/components/ChatWidget'
 
 const frank = Frank_Ruhl_Libre({
   subsets: ['hebrew', 'latin'],
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="he" dir="rtl" className={`${frank.variable} ${heebo.variable}`}>
       <body className="font-body bg-cream text-charcoal antialiased">
         {children}
+        <ChatWidget />
         <div className="fixed bottom-6 left-6 z-50 flex flex-col gap-2 items-start">
           <a
             href="https://www.tiktok.com/@reef.woodworks"
