@@ -8,6 +8,30 @@ interface Message {
   content: string
 }
 
+function FormattedText({ text }: { text: string }) {
+  const lines = text.split('\n')
+  return (
+    <div className="space-y-1">
+      {lines.map((line, i) => {
+        if (!line.trim()) return <div key={i} className="h-1" />
+        const parts = line.split(/(\*\*[^*]+\*\*)/)
+        return (
+          <p key={i} className={line.startsWith('•') ? 'flex gap-1.5' : ''}>
+            {line.startsWith('•') && <span className="text-gold mt-0.5 flex-shrink-0">•</span>}
+            <span>
+              {parts.map((part, j) =>
+                part.startsWith('**') && part.endsWith('**')
+                  ? <strong key={j} className="font-semibold">{part.slice(2, -2)}</strong>
+                  : <span key={j}>{line.startsWith('•') && j === 0 ? part.slice(1).trim() : part}</span>
+              )}
+            </span>
+          </p>
+        )
+      })}
+    </div>
+  )
+}
+
 export default function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
@@ -69,12 +93,15 @@ export default function ChatWidget() {
           <div className="flex-1 overflow-y-auto p-4 space-y-3" dir="rtl">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-start' : 'justify-end'}`}>
-                <div className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-line ${
+                <div className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
                   m.role === 'user'
                     ? 'bg-gold text-cream rounded-tr-sm'
                     : 'bg-cream text-charcoal rounded-tl-sm border border-charcoal/8'
                 }`}>
-                  {m.content}
+                  {m.role === 'assistant'
+                    ? <FormattedText text={m.content} />
+                    : m.content
+                  }
                 </div>
               </div>
             ))}
