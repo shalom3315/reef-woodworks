@@ -13,7 +13,7 @@ import CTA from '@/components/sections/CTA'
 import FooterEditable from '@/components/sections/FooterEditable'
 import Videos from '@/components/sections/Videos'
 import FAQ from '@/components/sections/FAQ'
-import type { Project, Testimonial, SiteSettings } from '@/types'
+import type { Project, Testimonial, SiteSettings, FAQ as FAQType } from '@/types'
 
 const DEFAULT_SETTINGS: SiteSettings = {
   business_name: 'Reef Woodworks',
@@ -43,11 +43,12 @@ async function getData() {
   try {
     const supabase = createClient()
 
-    const [settingsRes, projectsRes, testimonialsRes, videosRes] = await Promise.all([
+    const [settingsRes, projectsRes, testimonialsRes, videosRes, faqsRes] = await Promise.all([
       supabase.from('site_settings').select('key, value'),
       supabase.from('projects').select('*').order('order_index'),
       supabase.from('testimonials').select('*').order('created_at'),
       supabase.from('videos').select('*').order('order_index'),
+      supabase.from('faqs').select('*').order('order_index'),
     ])
 
     const settings: SiteSettings = { ...DEFAULT_SETTINGS }
@@ -62,14 +63,15 @@ async function getData() {
       projects: (projectsRes.data as Project[]) || [],
       testimonials: (testimonialsRes.data as Testimonial[]) || [],
       videos: (videosRes.data as { id: string; title: string; description: string; video_url: string; order_index: number }[]) || [],
+      faqs: (faqsRes.data as FAQType[]) || [],
     }
   } catch {
-    return { settings: DEFAULT_SETTINGS, projects: [], testimonials: [], videos: [] }
+    return { settings: DEFAULT_SETTINGS, projects: [], testimonials: [], videos: [], faqs: [] }
   }
 }
 
 export default async function Home() {
-  const { settings, projects, testimonials, videos } = await getData()
+  const { settings, projects, testimonials, videos, faqs } = await getData()
 
   return (
     <main className="overflow-x-hidden">
@@ -82,7 +84,7 @@ export default async function Home() {
         <Videos videos={videos} />
         <About />
         <Testimonials testimonials={testimonials} />
-        <FAQ />
+        <FAQ faqs={faqs} />
         <CTA />
         <FooterEditable />
       </EditProvider>

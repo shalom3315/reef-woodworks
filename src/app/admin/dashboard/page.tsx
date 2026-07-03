@@ -9,6 +9,7 @@ import ProjectsManager from '@/components/admin/ProjectsManager'
 import TestimonialsManager from '@/components/admin/TestimonialsManager'
 import SettingsManager from '@/components/admin/SettingsManager'
 import VideosManager from '@/components/admin/VideosManager'
+import FAQManager from '@/components/admin/FAQManager'
 import {
   LayoutGrid,
   MessageSquare,
@@ -18,14 +19,16 @@ import {
   Menu,
   X,
   Video,
+  HelpCircle,
 } from 'lucide-react'
 
-type Tab = 'projects' | 'testimonials' | 'settings' | 'videos'
+type Tab = 'projects' | 'testimonials' | 'settings' | 'videos' | 'faq'
 
 const TABS = [
   { id: 'projects' as Tab, label: 'פרויקטים', icon: LayoutGrid },
   { id: 'videos' as Tab, label: 'סרטונים', icon: Video },
   { id: 'testimonials' as Tab, label: 'המלצות', icon: MessageSquare },
+  { id: 'faq' as Tab, label: 'שאלות נפוצות', icon: HelpCircle },
   { id: 'settings' as Tab, label: 'הגדרות', icon: Settings },
 ]
 
@@ -61,7 +64,7 @@ export default function AdminDashboard() {
     )
   }
 
-  const ActiveTab = tab === 'projects' ? ProjectsManager : tab === 'testimonials' ? TestimonialsManager : tab === 'videos' ? VideosManager : SettingsManager
+  const ActiveTab = tab === 'projects' ? ProjectsManager : tab === 'testimonials' ? TestimonialsManager : tab === 'videos' ? VideosManager : tab === 'faq' ? FAQManager : SettingsManager
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">

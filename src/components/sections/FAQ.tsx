@@ -3,36 +3,20 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus } from 'lucide-react'
+import type { FAQ } from '@/types'
 
-const FAQS = [
-  {
-    q: 'כמה זמן לוקח לייצר רהיט בהתאמה אישית?',
-    a: 'תלוי בסוג הרהיט ובעומס העבודה. שולחן אוכל לוקח בדרך כלל 3-5 שבועות, ארון גדול 5-8 שבועות. בכל מקרה תקבלו עדכון מדויק לפני תחילת העבודה.',
-  },
-  {
-    q: 'מה ההבדל בין סוגי העץ השונים?',
-    a: 'כל עץ שונה באופיו — אלון קשה ועמיד מאוד ומתאים לשימוש יומיומי, וולנט כהה ויוקרתי ומתאים לסלון, עץ אש בהיר וגמיש לעיצוב. בשיחה הראשונה נמליץ לכם על הסוג המתאים לצורך שלכם.',
-  },
-  {
-    q: 'האם אפשר לראות דוגמאות של עבודות קודמות?',
-    a: 'בהחלט — הגלריה באתר מציגה חלק מהפרויקטים שלנו. בפגישה ניתן לראות דוגמאות נוספות ולמשש את החומרים.',
-  },
-  {
-    q: 'האם יש אפשרות לתשלום בפריסה?',
-    a: 'כן. בדרך כלל 50% מקדמה בהזמנה ו-50% במסירה. לפרויקטים גדולים ניתן לסכם על תנאי תשלום גמישים יותר.',
-  },
-  {
-    q: 'מה קורה אם הרהיט לא מתאים בדיוק?',
-    a: 'כל פרויקט עובר מדידה קפדנית לפני ייצור. אם בכל זאת יש אי-התאמה קלה — מטפלים בה ללא עלות נוספת.',
-  },
-  {
-    q: 'האם אתם מגיעים לבית הלקוח?',
-    a: 'כן — כולל מדידות, ייעוץ עיצובי במקום, ומשלוח והרכבה עד הבית. הכל כלול.',
-  },
+const DEFAULT_FAQS: FAQ[] = [
+  { id: '1', order_index: 0, question: 'כמה זמן לוקח לייצר רהיט בהתאמה אישית?', answer: 'תלוי בסוג הרהיט ובעומס העבודה. שולחן אוכל לוקח בדרך כלל 3-5 שבועות, ארון גדול 5-8 שבועות. בכל מקרה תקבלו עדכון מדויק לפני תחילת העבודה.' },
+  { id: '2', order_index: 1, question: 'מה ההבדל בין סוגי העץ השונים?', answer: 'כל עץ שונה באופיו — אלון קשה ועמיד מאוד ומתאים לשימוש יומיומי, וולנט כהה ויוקרתי ומתאים לסלון, עץ אש בהיר וגמיש לעיצוב. בשיחה הראשונה נמליץ לכם על הסוג המתאים לצורך שלכם.' },
+  { id: '3', order_index: 2, question: 'האם אפשר לראות דוגמאות של עבודות קודמות?', answer: 'בהחלט — הגלריה באתר מציגה חלק מהפרויקטים שלנו. בפגישה ניתן לראות דוגמאות נוספות ולמשש את החומרים.' },
+  { id: '4', order_index: 3, question: 'האם יש אפשרות לתשלום בפריסה?', answer: 'כן. בדרך כלל 50% מקדמה בהזמנה ו-50% במסירה. לפרויקטים גדולים ניתן לסכם על תנאי תשלום גמישים יותר.' },
+  { id: '5', order_index: 4, question: 'מה קורה אם הרהיט לא מתאים בדיוק?', answer: 'כל פרויקט עובר מדידה קפדנית לפני ייצור. אם בכל זאת יש אי-התאמה קלה — מטפלים בה ללא עלות נוספת.' },
+  { id: '6', order_index: 5, question: 'האם אתם מגיעים לבית הלקוח?', answer: 'כן — כולל מדידות, ייעוץ עיצובי במקום, ומשלוח והרכבה עד הבית. הכל כלול.' },
 ]
 
-export default function FAQ() {
-  const [open, setOpen] = useState<number | null>(null)
+export default function FAQ({ faqs }: { faqs?: FAQ[] }) {
+  const [open, setOpen] = useState<string | null>(null)
+  const data = (faqs && faqs.length > 0) ? faqs : DEFAULT_FAQS
 
   return (
     <section id="faq" className="py-24 bg-white" dir="rtl">
@@ -49,27 +33,27 @@ export default function FAQ() {
         </motion.div>
 
         <div className="space-y-3">
-          {FAQS.map((faq, i) => (
+          {data.map((faq, i) => (
             <motion.div
-              key={i}
+              key={faq.id}
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.07 }}
-              className={`border rounded-2xl overflow-hidden transition-colors duration-200 ${open === i ? 'border-gold/40 bg-cream/40' : 'border-charcoal/10 bg-white hover:border-gold/20'}`}
+              className={`border rounded-2xl overflow-hidden transition-colors duration-200 ${open === faq.id ? 'border-gold/40 bg-cream/40' : 'border-charcoal/10 bg-white hover:border-gold/20'}`}
             >
               <button
-                onClick={() => setOpen(open === i ? null : i)}
+                onClick={() => setOpen(open === faq.id ? null : faq.id)}
                 className="w-full flex items-center justify-between gap-4 px-6 py-5 text-right"
               >
-                <span className="font-semibold text-charcoal text-[0.95rem] leading-snug">{faq.q}</span>
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${open === i ? 'bg-gold text-cream' : 'bg-cream text-charcoal/40'}`}>
-                  {open === i ? <Minus size={14} /> : <Plus size={14} />}
+                <span className="font-semibold text-charcoal text-[0.95rem] leading-snug">{faq.question}</span>
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${open === faq.id ? 'bg-gold text-cream' : 'bg-cream text-charcoal/40'}`}>
+                  {open === faq.id ? <Minus size={14} /> : <Plus size={14} />}
                 </div>
               </button>
 
               <AnimatePresence initial={false}>
-                {open === i && (
+                {open === faq.id && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
@@ -77,7 +61,7 @@ export default function FAQ() {
                     transition={{ duration: 0.25 }}
                   >
                     <p className="px-6 pb-5 text-charcoal/65 leading-relaxed text-sm border-t border-charcoal/8 pt-4">
-                      {faq.a}
+                      {faq.answer}
                     </p>
                   </motion.div>
                 )}

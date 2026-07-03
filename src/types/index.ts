@@ -28,3 +28,10 @@ export interface SiteSetting {
 }
 
 export type SiteSettings = Record<string, string | undefined>
+
+export interface FAQ {
+  id: string
+  question: string
+  answer: string
+  order_index: number
+}
