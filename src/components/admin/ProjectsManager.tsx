@@ -17,7 +17,7 @@ const EMPTY: Omit<Project, 'id' | 'created_at'> = {
   order_index: 0,
 }
 
-const CATEGORIES = ['ריהוט', 'שולחנות', 'חדר שינה', 'מטבח', 'חיצוני', 'אחר']
+const CATEGORIES = ['ריהוט', 'שולחנות', 'חדר שינה', 'מטבח', 'ריהוט גן', 'חיצוני', 'אחר']
 
 export default function ProjectsManager() {
   const [projects, setProjects] = useState<Project[]>([])
