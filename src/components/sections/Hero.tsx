@@ -45,6 +45,22 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-20">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="max-w-2xl">
           <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1, duration: 0.7 }}
+            className="mb-8"
+          >
+            <Image
+              src="/logo.png"
+              alt="Reef Woodworks"
+              width={220}
+              height={220}
+              className="object-contain drop-shadow-2xl"
+              priority
+            />
+          </motion.div>
+
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
