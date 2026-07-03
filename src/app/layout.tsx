@@ -69,7 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://wa.me/9720556752495"
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed left-0 top-1/2 -translate-y-1/2 z-40 -rotate-90 origin-left translate-x-[calc(1.5rem)] text-[10px] tracking-widest text-charcoal/20 hover:text-charcoal/50 transition-colors duration-300 font-body uppercase select-none"
+          className="fixed left-0 top-1/2 -translate-y-1/2 z-40 -rotate-90 origin-left translate-x-[calc(1.5rem)] text-[10px] tracking-widest text-charcoal/50 hover:text-gold transition-colors duration-300 font-body uppercase select-none"
           style={{ writingMode: 'horizontal-tb' }}
         >
           Built by Shalom
