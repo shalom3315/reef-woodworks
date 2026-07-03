@@ -19,7 +19,7 @@ export default function Hero() {
   const heroVideo = (draft.hero_video && draft.hero_video.startsWith('http')) ? draft.hero_video : null
 
   return (
-    <section className="relative z-[60] h-screen min-h-[720px] overflow-hidden">
+    <section className="relative h-screen min-h-[720px] flex items-center overflow-hidden">
       {heroVideo ? (
         <video
           src={heroVideo}
@@ -42,24 +42,8 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-charcoal/75 via-charcoal/45 to-charcoal/85" />
       <div className="absolute inset-0 bg-gradient-to-l from-transparent to-charcoal/30" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-24">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1, duration: 0.7 }}
-          className="flex justify-center mb-10"
-        >
-          <Image
-            src="/logo.png"
-            alt="Reef Woodworks"
-            width={260}
-            height={260}
-            className="object-contain drop-shadow-2xl"
-            priority
-          />
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="max-w-2xl mx-auto text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-20">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="max-w-2xl">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -98,7 +82,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.75, duration: 0.7 }}
-            className="text-cream/65 text-lg leading-relaxed mb-10 max-w-lg mx-auto"
+            className="text-cream/65 text-lg leading-relaxed mb-10 max-w-lg"
           >
             {editing
               ? <EditField fieldKey="hero_subtitle" className="text-cream/65 text-lg leading-relaxed" placeholder="תיאור קצר" multiline />
@@ -110,7 +94,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.7 }}
-            className="flex flex-wrap gap-4 justify-center"
+            className="flex flex-wrap gap-4"
           >
             <a href="#contact" className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-cream font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-300 hover:shadow-2xl hover:shadow-gold/35 hover:-translate-y-0.5">
               קבל הצעת מחיר
@@ -130,7 +114,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
-            className="flex items-center justify-center gap-6 mt-12 pt-8 border-t border-cream/15"
+            className="flex items-center gap-6 mt-12 pt-8 border-t border-cream/15"
           >
             {[
               { key: 'stat_years', val: statYears, label: 'שנות ניסיון' },
