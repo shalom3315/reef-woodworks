@@ -17,7 +17,7 @@ interface ImageItem {
   error?: string
 }
 
-const CATEGORIES = ['ריהוט', 'שולחנות', 'חדר שינה', 'מטבח', 'ריהוט גן', 'חיצוני', 'אחר']
+const CATEGORIES = ['פרגולות', 'פרגולה הצללה', 'דקים', 'גדרות', 'ריהוט גן', 'פרויקטים מיוחדים']
 
 async function toBase64(file: File): Promise<string> {
   return new Promise((resolve) => {
