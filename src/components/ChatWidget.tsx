@@ -61,7 +61,19 @@ export default function ChatWidget() {
         body: JSON.stringify({ messages: newMessages }),
       })
       const data = await res.json()
-      const clean = (data.text || 'מצטער, הייתה שגיאה. נסה שוב.').replace(/\*+/g, '')
+      const raw = data.text || 'מצטער, הייתה שגיאה. נסה שוב.'
+      // תיקון • שנמצאת לבד בשורה — מחברים אותה לשורה הבאה
+      const lines = raw.replace(/\*+/g, '').split('\n')
+      const fixed: string[] = []
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].trim() === '•' && i + 1 < lines.length && lines[i + 1].trim()) {
+          fixed.push('• ' + lines[i + 1].trim())
+          i++
+        } else {
+          fixed.push(lines[i])
+        }
+      }
+      const clean = fixed.join('\n').replace(/\n{3,}/g, '\n\n').trim()
       setMessages([...newMessages, { role: 'assistant', content: clean }])
     } catch {
       setMessages([...newMessages, { role: 'assistant', content: 'מצטער, הייתה שגיאה. נסה שוב.' }])
