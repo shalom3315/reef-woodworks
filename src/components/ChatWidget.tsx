@@ -150,12 +150,19 @@ export default function ChatWidget() {
       )}
 
       {/* Toggle button */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-14 h-14 bg-charcoal hover:bg-charcoal/80 text-cream rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl"
-      >
-        {open ? <X size={22} /> : <MessageCircle size={22} />}
-      </button>
+      <div className="flex items-center gap-2.5">
+        {!open && (
+          <span className="bg-charcoal/90 text-cream text-xs font-medium px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap" dir="rtl">
+            שאל את ה-ReefBot
+          </span>
+        )}
+        <button
+          onClick={() => setOpen(!open)}
+          className="w-14 h-14 bg-charcoal hover:bg-charcoal/80 text-cream rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl"
+        >
+          {open ? <X size={22} /> : <MessageCircle size={22} />}
+        </button>
+      </div>
     </div>
   )
 }
