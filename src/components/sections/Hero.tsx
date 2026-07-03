@@ -42,7 +42,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-charcoal/75 via-charcoal/45 to-charcoal/85" />
       <div className="absolute inset-0 bg-gradient-to-l from-transparent to-charcoal/30" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-36">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
