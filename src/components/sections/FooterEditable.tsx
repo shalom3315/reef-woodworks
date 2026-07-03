@@ -9,7 +9,7 @@ export default function FooterEditable() {
 
   const businessName = draft.business_name || 'Reef Woodworks'
   const phone = draft.phone || '053-313-9394'
-  const whatsapp = draft.whatsapp || '972533139394'
+  const whatsapp = (draft.whatsapp || '972533139394').replace(/\D/g, '')
   const email = draft.email || 'reefww3939@gmail.com'
   const address = draft.address || 'מרכז הארץ'
   const instagram = draft.instagram || '#'

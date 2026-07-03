@@ -10,7 +10,7 @@ export default function CTA() {
   const { editing, draft } = useEditContext()
 
   const phone = draft.phone || '053-313-9394'
-  const whatsapp = draft.whatsapp || '972533139394'
+  const whatsapp = (draft.whatsapp || '972533139394').replace(/\D/g, '')
   const ctaBadge = draft.cta_badge || 'יש לכם רעיון?'
   const ctaTitle = draft.cta_title || 'נהפוך אותו לעץ אמיתי'
   const ctaSubtitle = draft.cta_subtitle || 'שיחה ראשונה היא תמיד חינם וללא התחייבות.'
@@ -50,7 +50,7 @@ export default function CTA() {
                 : <span>{ctaBtnWhatsapp}</span>
               }
             </motion.a>
-            <motion.a href={`tel:+${whatsapp}`} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center justify-center gap-3 border-2 border-cream/25 hover:border-cream/60 text-cream font-semibold px-9 py-4 rounded-xl text-lg transition-all duration-300 hover:bg-cream/8">
+            <motion.a href={`tel:${phone}`} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center justify-center gap-3 border-2 border-cream/25 hover:border-cream/60 text-cream font-semibold px-9 py-4 rounded-xl text-lg transition-all duration-300 hover:bg-cream/8">
               <Phone size={20} />
               {editing
                 ? <EditField fieldKey="phone" className="text-cream font-semibold text-lg" placeholder="מספר טלפון" />
