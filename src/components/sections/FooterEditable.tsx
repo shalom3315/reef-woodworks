@@ -143,7 +143,12 @@ export default function FooterEditable() {
 
         <div className="border-t border-cream/8 pt-8 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-cream/25 text-xs">© {year} {businessName}. כל הזכויות שמורות.</p>
-          <a href="/admin/login" className="text-cream/15 hover:text-cream/35 text-xs transition-colors">כניסה לניהול</a>
+          <div className="flex items-center gap-4">
+            <a href="https://wa.me/9720556752495" target="_blank" rel="noopener noreferrer" className="text-cream/20 hover:text-cream/45 text-xs transition-colors">
+              Built by Shalom
+            </a>
+            <a href="/admin/login" className="text-cream/15 hover:text-cream/35 text-xs transition-colors">כניסה לניהול</a>
+          </div>
         </div>
       </div>
     </footer>
