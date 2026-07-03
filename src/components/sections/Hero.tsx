@@ -19,7 +19,7 @@ export default function Hero() {
   const heroVideo = (draft.hero_video && draft.hero_video.startsWith('http')) ? draft.hero_video : null
 
   return (
-    <section className="relative h-screen min-h-[720px] overflow-hidden">
+    <section className="relative z-[60] h-screen min-h-[720px] overflow-hidden">
       {heroVideo ? (
         <video
           src={heroVideo}
