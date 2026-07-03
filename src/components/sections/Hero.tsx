@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Play } from 'lucide-react'
 import { useEditContext } from '@/contexts/EditContext'
 import { EditField } from '@/components/EditField'
 
@@ -101,6 +101,12 @@ export default function Hero() {
             </a>
             <a href="#gallery" className="inline-flex items-center gap-2 border-2 border-cream/40 hover:border-cream/80 text-cream font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-300 hover:bg-cream/10 backdrop-blur-sm">
               צפה בעבודות
+            </a>
+            <a href="#videos" className="inline-flex items-center gap-2 text-cream/70 hover:text-cream font-medium px-4 py-4 text-lg transition-all duration-300">
+              <div className="w-9 h-9 rounded-full border border-cream/40 flex items-center justify-center">
+                <Play size={14} className="ms-0.5" />
+              </div>
+              גלריית וידאו
             </a>
           </motion.div>
 
