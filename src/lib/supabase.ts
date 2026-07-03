@@ -11,6 +11,8 @@ export function createClient(): SupabaseClient {
         fetch: (input, init) =>
           fetch(input, { ...init, cache: 'no-store' }),
       },
+      realtime: { enabled: false } as never,
+      db: { schema: 'public' },
     }
   )
 }

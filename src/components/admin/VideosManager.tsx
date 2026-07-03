@@ -37,8 +37,13 @@ export default function VideosManager() {
   const save = async () => {
     if (!form.title || !form.video_url) return
     setSaving(true)
-    await supabase.from('videos').insert([{ ...form, order_index: videos.length + 1 }])
+    const { error } = await supabase.from('videos').insert([{ ...form, order_index: videos.length + 1 }])
     setSaving(false)
+    if (error) {
+      setToast(`שגיאה: ${error.message}`)
+      setTimeout(() => setToast(''), 5000)
+      return
+    }
     setIsNew(false)
     setForm(EMPTY)
     load()

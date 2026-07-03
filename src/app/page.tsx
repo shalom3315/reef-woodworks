@@ -11,6 +11,7 @@ import About from '@/components/sections/About'
 import Testimonials from '@/components/sections/Testimonials'
 import CTA from '@/components/sections/CTA'
 import FooterEditable from '@/components/sections/FooterEditable'
+import Videos from '@/components/sections/Videos'
 import type { Project, Testimonial, SiteSettings } from '@/types'
 
 const DEFAULT_SETTINGS: SiteSettings = {
@@ -41,10 +42,11 @@ async function getData() {
   try {
     const supabase = createClient()
 
-    const [settingsRes, projectsRes, testimonialsRes] = await Promise.all([
+    const [settingsRes, projectsRes, testimonialsRes, videosRes] = await Promise.all([
       supabase.from('site_settings').select('key, value'),
       supabase.from('projects').select('*').order('order_index'),
       supabase.from('testimonials').select('*').order('created_at'),
+      supabase.from('videos').select('*').order('order_index'),
     ])
 
     const settings: SiteSettings = { ...DEFAULT_SETTINGS }
@@ -58,14 +60,15 @@ async function getData() {
       settings,
       projects: (projectsRes.data as Project[]) || [],
       testimonials: (testimonialsRes.data as Testimonial[]) || [],
+      videos: (videosRes.data as { id: string; title: string; description: string; video_url: string; order_index: number }[]) || [],
     }
   } catch {
-    return { settings: DEFAULT_SETTINGS, projects: [], testimonials: [] }
+    return { settings: DEFAULT_SETTINGS, projects: [], testimonials: [], videos: [] }
   }
 }
 
 export default async function Home() {
-  const { settings, projects, testimonials } = await getData()
+  const { settings, projects, testimonials, videos } = await getData()
 
   return (
     <main className="overflow-x-hidden">
@@ -75,6 +78,7 @@ export default async function Home() {
         <Benefits />
         <Gallery projects={projects} />
         <Process />
+        <Videos videos={videos} />
         <About />
         <Testimonials testimonials={testimonials} />
         <CTA />
