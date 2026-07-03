@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import type { Project } from '@/types'
-import { Plus, Pencil, Trash2, X, Check, Image as ImageIcon, CheckCircle } from 'lucide-react'
+import { Plus, Pencil, Trash2, X, Check, Image as ImageIcon, CheckCircle, Upload } from 'lucide-react'
 import ImageUploader from './ImageUploader'
+import BulkImporter from './BulkImporter'
 
 const EMPTY: Omit<Project, 'id' | 'created_at'> = {
   title: '',
@@ -24,6 +25,7 @@ export default function ProjectsManager() {
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<Project | null>(null)
   const [isNew, setIsNew] = useState(false)
+  const [bulkOpen, setBulkOpen] = useState(false)
   const [form, setForm] = useState(EMPTY)
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState('')
@@ -97,14 +99,43 @@ export default function ProjectsManager() {
       )}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-charcoal">פרויקטים בגלריה</h2>
-        <button
-          onClick={openNew}
-          className="flex items-center gap-2 bg-gold hover:bg-gold-light text-cream px-4 py-2 rounded-xl text-sm font-medium transition-colors"
-        >
-          <Plus size={16} />
-          פרויקט חדש
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setBulkOpen(true)}
+            className="flex items-center gap-2 bg-cream hover:bg-gold/15 text-charcoal border border-charcoal/12 px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+          >
+            <Upload size={15} />
+            ייבוא מרובה + AI
+          </button>
+          <button
+            onClick={openNew}
+            className="flex items-center gap-2 bg-gold hover:bg-gold-light text-cream px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+          >
+            <Plus size={16} />
+            פרויקט חדש
+          </button>
+        </div>
       </div>
+
+      {/* Bulk importer modal */}
+      {bulkOpen && (
+        <div className="fixed inset-0 z-50 bg-charcoal/60 backdrop-blur-sm flex items-start justify-center overflow-y-auto py-6 px-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl mt-4">
+            <div className="flex items-center justify-between p-6 border-b border-charcoal/8">
+              <div>
+                <h3 className="font-semibold text-charcoal">ייבוא תמונות מרובות</h3>
+                <p className="text-charcoal/45 text-xs mt-0.5">AI יכתוב תיאור לכל תמונה אוטומטית</p>
+              </div>
+              <button onClick={() => { setBulkOpen(false); load() }} className="w-8 h-8 bg-cream rounded-lg flex items-center justify-center hover:bg-gold/15 transition-colors">
+                <X size={16} />
+              </button>
+            </div>
+            <div className="p-6">
+              <BulkImporter onDone={() => { setBulkOpen(false); load() }} />
+            </div>
+          </div>
+        </div>
+      )}
 
       {loading ? (
         <div className="flex justify-center py-12">
