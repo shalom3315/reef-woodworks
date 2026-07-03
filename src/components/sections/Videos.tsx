@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
-import { Play, Pause } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Play, X, Maximize2 } from 'lucide-react'
 
 interface VideoItem {
   id: string
@@ -13,6 +13,8 @@ interface VideoItem {
 }
 
 export default function Videos({ videos }: { videos: VideoItem[] }) {
+  const [active, setActive] = useState<VideoItem | null>(null)
+
   if (!videos || videos.length === 0) return null
 
   return (
@@ -36,38 +38,60 @@ export default function Videos({ videos }: { videos: VideoItem[] }) {
           </p>
         </motion.div>
 
-        <div className={`grid gap-8 ${videos.length === 1 ? 'max-w-2xl mx-auto' : videos.length === 2 ? 'md:grid-cols-2 max-w-4xl mx-auto' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
+        <div className={`grid gap-6 ${videos.length === 1 ? 'max-w-3xl mx-auto' : videos.length === 2 ? 'md:grid-cols-2 max-w-4xl mx-auto' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
           {videos.map((v, i) => (
-            <VideoCard key={v.id} video={v} index={i} />
+            <VideoCard key={v.id} video={v} index={i} onOpen={() => setActive(v)} />
           ))}
         </div>
       </div>
+
+      {/* מודל מסך מלא */}
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center p-4"
+            onClick={() => setActive(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="w-full max-w-5xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-3 px-1">
+                <h3 className="text-cream font-heading text-xl">{active.title}</h3>
+                <button
+                  onClick={() => setActive(null)}
+                  className="w-9 h-9 bg-cream/10 hover:bg-cream/20 rounded-full flex items-center justify-center transition-colors"
+                >
+                  <X size={18} className="text-cream" />
+                </button>
+              </div>
+              <video
+                src={active.video_url}
+                controls
+                autoPlay
+                playsInline
+                className="w-full rounded-2xl max-h-[75vh] bg-black"
+              />
+              {active.description && (
+                <p className="text-cream/50 text-sm mt-3 px-1">{active.description}</p>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
 
-function VideoCard({ video, index }: { video: VideoItem; index: number }) {
+function VideoCard({ video, index, onOpen }: { video: VideoItem; index: number; onOpen: () => void }) {
   const ref = useRef<HTMLVideoElement>(null)
-  const [playing, setPlaying] = useState(false)
-
-  const toggle = () => {
-    if (!ref.current) return
-    if (playing) {
-      ref.current.pause()
-      setPlaying(false)
-    } else {
-      ref.current.play()
-      setPlaying(true)
-    }
-  }
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const onEnd = () => setPlaying(false)
-    el.addEventListener('ended', onEnd)
-    return () => el.removeEventListener('ended', onEnd)
-  }, [])
 
   return (
     <motion.div
@@ -75,22 +99,29 @@ function VideoCard({ video, index }: { video: VideoItem; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.15 }}
-      className="group bg-charcoal-dark rounded-2xl overflow-hidden border border-cream/8 hover:border-gold/30 transition-colors"
+      className="group bg-black rounded-2xl overflow-hidden border border-cream/8 hover:border-gold/40 transition-all cursor-pointer"
+      onClick={onOpen}
     >
-      <div className="relative aspect-video bg-black cursor-pointer" onClick={toggle}>
+      {/* תצוגה מקדימה — גובה גדול */}
+      <div className="relative w-full bg-black" style={{ aspectRatio: '16/10' }}>
         <video
           ref={ref}
           src={video.video_url}
           className="w-full h-full object-cover"
           preload="metadata"
           playsInline
+          muted
         />
-        <div className={`absolute inset-0 flex items-center justify-center transition-opacity ${playing ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'}`}>
-          <div className="w-14 h-14 rounded-full bg-gold/90 backdrop-blur-sm flex items-center justify-center shadow-xl">
-            {playing
-              ? <Pause size={20} className="text-cream" />
-              : <Play size={20} className="text-cream ms-1" />
-            }
+        {/* שכבת hover */}
+        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-16 h-16 rounded-full bg-gold group-hover:bg-gold-light flex items-center justify-center shadow-2xl transition-all group-hover:scale-110 duration-300">
+              <Play size={24} className="text-cream ms-1" />
+            </div>
+            <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+              <Maximize2 size={12} className="text-cream/70" />
+              <span className="text-cream/70 text-xs">פתח מסך מלא</span>
+            </div>
           </div>
         </div>
       </div>
