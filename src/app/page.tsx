@@ -17,7 +17,7 @@ import type { Project, Testimonial, SiteSettings, FAQ as FAQType } from '@/types
 
 const DEFAULT_SETTINGS: SiteSettings = {
   business_name: 'Reef Woodworks',
-  logo_url: '/logo.png',
+  logo_url: undefined,
   hero_title: 'עבודות עץ בהתאמה אישית',
   hero_subtitle: 'רהיטים, שולחנות ופתרונות עץ בעבודת יד. מחומרים מהטבע, עם תשומת לב לכל פרט.',
   hero_badge: 'נגרות בהתאמה אישית · עבודת יד',
