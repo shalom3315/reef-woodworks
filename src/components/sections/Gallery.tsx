@@ -20,7 +20,9 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
   const [selected, setSelected] = useState<Project | null>(null)
   const [filter, setFilter] = useState('הכל')
 
-  const categories = ['הכל', ...Array.from(new Set(data.map((p) => p.category)))]
+  const ALL_CATEGORIES = ['פרגולות', 'פרגולה הצללה', 'דקים', 'גדרות', 'ריהוט גן', 'פרויקטים מיוחדים']
+  const usedCategories = new Set(data.map((p) => p.category))
+  const categories = ['הכל', ...ALL_CATEGORIES.filter(c => usedCategories.has(c))]
   const filtered = filter === 'הכל' ? data : data.filter((p) => p.category === filter)
 
   return (
