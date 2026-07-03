@@ -12,6 +12,7 @@ import Testimonials from '@/components/sections/Testimonials'
 import CTA from '@/components/sections/CTA'
 import FooterEditable from '@/components/sections/FooterEditable'
 import Videos from '@/components/sections/Videos'
+import FAQ from '@/components/sections/FAQ'
 import type { Project, Testimonial, SiteSettings } from '@/types'
 
 const DEFAULT_SETTINGS: SiteSettings = {
@@ -81,6 +82,7 @@ export default async function Home() {
         <Videos videos={videos} />
         <About />
         <Testimonials testimonials={testimonials} />
+        <FAQ />
         <CTA />
         <FooterEditable />
       </EditProvider>
