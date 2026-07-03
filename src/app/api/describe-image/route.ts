@@ -1,8 +1,15 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { NextRequest } from 'next/server'
 
-const client = new Anthropic()
+const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  // Admin-only endpoint — requires the HTTP-only session cookie set at login
+  const adminToken = req.cookies.get('admin_token')?.value
+  if (!adminToken) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   try {
     const { base64, mediaType } = await req.json()
 

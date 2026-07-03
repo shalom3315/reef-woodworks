@@ -10,6 +10,8 @@ import TestimonialsManager from '@/components/admin/TestimonialsManager'
 import SettingsManager from '@/components/admin/SettingsManager'
 import VideosManager from '@/components/admin/VideosManager'
 import FAQManager from '@/components/admin/FAQManager'
+import BotManager from '@/components/admin/BotManager'
+import type { Testimonial } from '@/types'
 import {
   LayoutGrid,
   MessageSquare,
@@ -20,15 +22,26 @@ import {
   X,
   Video,
   HelpCircle,
+  Bot,
 } from 'lucide-react'
 
-type Tab = 'projects' | 'testimonials' | 'settings' | 'videos' | 'faq'
+type Tab = 'projects' | 'testimonials' | 'settings' | 'videos' | 'faq' | 'bot'
+
+interface VideoItem {
+  id: string
+  title: string
+  description: string
+  video_url: string
+  order_index: number
+  created_at: string
+}
 
 const TABS = [
   { id: 'projects' as Tab, label: 'פרויקטים', icon: LayoutGrid },
   { id: 'videos' as Tab, label: 'סרטונים', icon: Video },
   { id: 'testimonials' as Tab, label: 'המלצות', icon: MessageSquare },
   { id: 'faq' as Tab, label: 'שאלות נפוצות', icon: HelpCircle },
+  { id: 'bot' as Tab, label: 'הגדרות בוט', icon: Bot },
   { id: 'settings' as Tab, label: 'הגדרות', icon: Settings },
 ]
 
@@ -37,22 +50,33 @@ export default function AdminDashboard() {
   const [user, setUser] = useState<{ email?: string } | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [checkingAuth, setCheckingAuth] = useState(true)
+  const [initialTestimonials, setInitialTestimonials] = useState<Testimonial[] | undefined>()
+  const [initialVideos, setInitialVideos] = useState<VideoItem[] | undefined>()
   const router = useRouter()
   const supabase = createClient()
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
       if (!data.session) {
         router.replace('/admin/login')
-      } else {
-        setUser(data.session.user)
-        setCheckingAuth(false)
+        return
       }
+      setUser(data.session.user)
+
+      // Pre-fetch data for tabs that need it so they open instantly (no spinner)
+      const [{ data: testimonials }, { data: videos }] = await Promise.all([
+        supabase.from('testimonials').select('*').order('created_at', { ascending: false }),
+        supabase.from('videos').select('*').order('order_index'),
+      ])
+      setInitialTestimonials(testimonials || [])
+      setInitialVideos(videos || [])
+      setCheckingAuth(false)
     })
   }, [])
 
   const logout = async () => {
     await supabase.auth.signOut()
+    await fetch('/api/admin/auth', { method: 'DELETE' })
     router.replace('/admin/login')
   }
 
@@ -63,8 +87,6 @@ export default function AdminDashboard() {
       </div>
     )
   }
-
-  const ActiveTab = tab === 'projects' ? ProjectsManager : tab === 'testimonials' ? TestimonialsManager : tab === 'videos' ? VideosManager : tab === 'faq' ? FAQManager : SettingsManager
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -164,7 +186,6 @@ export default function AdminDashboard() {
 
         {/* Main content */}
         <main className="flex-1 p-6 md:p-8 max-w-5xl">
-          {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-charcoal/40 mb-6">
             <span>ניהול</span>
             <span>/</span>
@@ -173,7 +194,12 @@ export default function AdminDashboard() {
             </span>
           </div>
 
-          <ActiveTab />
+          {tab === 'projects' && <ProjectsManager />}
+          {tab === 'testimonials' && <TestimonialsManager initialData={initialTestimonials} />}
+          {tab === 'videos' && <VideosManager initialData={initialVideos} />}
+          {tab === 'faq' && <FAQManager />}
+          {tab === 'bot' && <BotManager />}
+          {tab === 'settings' && <SettingsManager />}
         </main>
       </div>
     </div>

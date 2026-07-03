@@ -76,7 +76,7 @@ export default async function Home() {
   return (
     <main className="overflow-x-hidden">
       <EditProvider initialSettings={settings}>
-        <Navbar businessName={settings.business_name ?? 'Reef Woodworks'} />
+        <Navbar businessName={settings.business_name ?? 'Reef Woodworks'} logoUrl={settings.logo_url} />
         <Hero />
         <Benefits />
         <Gallery projects={projects} />

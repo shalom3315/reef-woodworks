@@ -1,54 +1,73 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase'
+import { buildBotPrompt, parseBotSettings } from '@/lib/buildBotPrompt'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-const SYSTEM = `אתה מומחה נגרות של ריף וודוורקס — עסק נגרות בהתאמה אישית של אלי מרקוס, בן 26, מרכז הארץ.
+// In-memory IP rate limiter: 20 requests per minute per IP
+const rl = new Map<string, { count: number; resetAt: number }>()
+const RL_WINDOW = 60_000
+const RL_MAX = 20
 
-אתה עוזר ללקוחות לבחור סוג עץ, גימור, עיצוב ומידות לרהיטים שלהם. אתה ידידותי, מקצועי, עונה בעברית בלבד.
+function isLimited(ip: string): boolean {
+  const now = Date.now()
+  const entry = rl.get(ip)
+  if (!entry || now > entry.resetAt) {
+    rl.set(ip, { count: 1, resetAt: now + RL_WINDOW })
+    return false
+  }
+  if (entry.count >= RL_MAX) return true
+  entry.count++
+  return false
+}
 
-כללי עיצוב תשובות:
-- תשובות קצרות — מקסימום 4-5 שורות
-- כשיש רשימה, כל פריט מתחיל ב-• ואחריו ישר הטקסט באותה שורה: "• טקסט כאן"
-- אסור לשים • לבד בשורה ריקה
-- אל תשתמש כלל בכוכביות או markdown — טקסט רגיל בלבד
-- אל תכתוב פסקאות ארוכות — העדף רשימות קצרות
+// Cache bot settings for 60 seconds to avoid a DB hit on every chat message
+let settingsCache: { data: Record<string, string>; expiresAt: number } | null = null
 
-פרטי העסק:
-- שם: ריף וודוורקס
-- בעלים: אלי מרקוס
-- טלפון/וואטסאפ: 053-313-9394
-- התמחות: שולחנות אוכל, ארונות, מיטות, מדפים, פינות אוכל — הכל בהתאמה אישית מעץ מלא
+async function getBotSettings(): Promise<Record<string, string>> {
+  const now = Date.now()
+  if (settingsCache && now < settingsCache.expiresAt) return settingsCache.data
 
-ידע שלך בסוגי עץ:
-- אלון: קשה, עמיד, גרגר יפה, מחיר בינוני-גבוה, מתאים לרהיטים כבדי שימוש
-- אגוז (וולנט): כהה, יוקרתי, רך יחסית, מחיר גבוה, מתאים לשולחנות ראווה
-- אש: בהיר, גרגר ישר, מחיר בינוני, חזק, גמיש לעיצוב
-- עץ מחזור: ייחודי, בר קיימא, כל חתיכה שונה, אופי מיוחד
-- אקציה: קשה מאוד, עמיד לחוץ, מתאים לשולחנות חוץ
+  try {
+    const { data } = await createClient()
+      .from('site_settings')
+      .select('key, value')
+      .like('key', 'bot_%')
 
-ידע בגימורים:
-- שמן טבעי: מראה טבעי, מחדש בקלות, לא מבריק
-- לכה: הגנה גבוהה, מבריק, קשה לתיקון שריטות
-- שעווה: קירות חם, תחזוקה קלה, פחות עמיד למים
-- פיגמנט: ניתן לצבוע בכל צבע
-
-מחירון משוער:
-- שולחן אוכל ארוך: החל מ-5,000 ₪
-- מחירים משתנים לפי סוג עץ, מידות וגימור
-- הצעת מחיר מדויקת — רק אחרי שיחה עם אלי
-
-כשלקוח רוצה הצעת מחיר — הפנה אותו לאלי בוואטסאפ 053-313-9394.
-ענה בצורה קצרה וברורה. שאל שאלות להבנת הצורך לפני שתמליץ.`
+    const map: Record<string, string> = {}
+    ;(data || []).forEach((r: { key: string; value: string }) => { map[r.key] = r.value })
+    settingsCache = { data: map, expiresAt: now + 60_000 }
+    return map
+  } catch {
+    // On DB error, return empty so buildBotPrompt falls back to defaults
+    return {}
+  }
+}
 
 export async function POST(req: NextRequest) {
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown'
+
+  if (isLimited(ip)) {
+    return NextResponse.json(
+      { error: 'יותר מדי הודעות. נסה שוב בעוד דקה.' },
+      { status: 429, headers: { 'Retry-After': '60' } }
+    )
+  }
+
   try {
     const { messages } = await req.json()
+
+    const raw = await getBotSettings()
+    const system = buildBotPrompt(parseBotSettings(raw))
 
     const response = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 500,
-      system: SYSTEM,
+      system,
       messages,
     })
 

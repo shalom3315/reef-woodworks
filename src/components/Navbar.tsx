@@ -15,7 +15,7 @@ const navLinks = [
   { href: '#contact', label: 'צור קשר' },
 ]
 
-export default function Navbar({ businessName = 'Reef Woodworks' }: { businessName?: string }) {
+export default function Navbar({ businessName = 'Reef Woodworks', logoUrl }: { businessName?: string; logoUrl?: string }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const { editing, draft } = useEditContext()
@@ -44,6 +44,8 @@ export default function Navbar({ businessName = 'Reef Woodworks' }: { businessNa
           <Link href="/" className="flex items-center gap-3" onClick={editing ? (e) => e.preventDefault() : undefined}>
             {editing ? (
               <EditField fieldKey="business_name" className="font-heading text-2xl font-bold text-cream tracking-wide" placeholder="שם העסק" />
+            ) : logoUrl ? (
+              <img src={logoUrl} alt={displayName} className="h-10 w-auto object-contain" />
             ) : (
               <span className="font-heading text-2xl font-bold text-cream tracking-wide">
                 <span className="text-gold">{first}</span>{rest.length ? ' ' + rest.join(' ') : ''}

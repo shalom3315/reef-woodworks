@@ -38,9 +38,14 @@ export default function EditProvider({
     setSaving(true)
     setError('')
     try {
+      const { createClient } = await import('@/lib/supabase')
+      const { data: { session } } = await createClient().auth.getSession()
       const res = await fetch('/api/settings', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+        },
         body: JSON.stringify(draft),
       })
       const data = await res.json()

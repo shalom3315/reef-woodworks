@@ -27,14 +27,22 @@ export default function AdminLogin() {
     setLoading(true)
     setError('')
 
-    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password })
 
-    if (authError) {
+    if (authError || !data.session) {
       setError('פרטי ההתחברות שגויים. בדקו את האימייל והסיסמה.')
       setLoading(false)
-    } else {
-      router.replace('/admin/dashboard')
+      return
     }
+
+    // Store JWT in HTTP-only cookie so middleware can verify it server-side
+    await fetch('/api/admin/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: data.session.access_token }),
+    })
+
+    router.replace('/admin/dashboard')
   }
 
   return (

@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
-import { X, ZoomIn, Clock, Layers } from 'lucide-react'
+import { X, ChevronRight, ChevronLeft, Clock, Layers, MessageCircle } from 'lucide-react'
 import type { Project } from '@/types'
 
 const DEFAULT_PROJECTS: Project[] = [
@@ -15,9 +15,12 @@ const DEFAULT_PROJECTS: Project[] = [
   { id: '6', title: 'ארונות מטבח עץ מלא', description: 'מטבח שלם מעץ אגוז מלא עם חזיתות ידיות משוקעות. לפיות עץ מוצק תואמות.', material: 'אגוז + ספיר', duration: '8 שבועות', image_url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=80', category: 'מטבח', featured: true, order_index: 6, created_at: '' },
 ]
 
+const PHONE = '0533139394'
+const WA_BASE = `https://wa.me/972${PHONE.replace(/^0/, '')}`
+
 export default function Gallery({ projects }: { projects?: Project[] }) {
   const data = (projects && projects.length > 0) ? projects : DEFAULT_PROJECTS
-  const [selected, setSelected] = useState<Project | null>(null)
+  const [selectedIdx, setSelectedIdx] = useState<number | null>(null)
   const [filter, setFilter] = useState('הכל')
 
   const ALL_CATEGORIES = ['פרגולות', 'פרגולה הצללה', 'דקים', 'גדרות', 'ריהוט גן', 'פרויקטים מיוחדים']
@@ -25,24 +28,77 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
   const categories = ['הכל', ...ALL_CATEGORIES.filter(c => usedCategories.has(c))]
   const filtered = filter === 'הכל' ? data : data.filter((p) => p.category === filter)
 
+  const selected = selectedIdx !== null ? filtered[selectedIdx] : null
+
+  const close = useCallback(() => setSelectedIdx(null), [])
+  const prev = useCallback(() => {
+    if (selectedIdx === null) return
+    setSelectedIdx((selectedIdx - 1 + filtered.length) % filtered.length)
+  }, [selectedIdx, filtered.length])
+  const next = useCallback(() => {
+    if (selectedIdx === null) return
+    setSelectedIdx((selectedIdx + 1) % filtered.length)
+  }, [selectedIdx, filtered.length])
+
+  useEffect(() => {
+    if (selectedIdx === null) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close()
+      if (e.key === 'ArrowLeft') next()   // RTL: left = forward
+      if (e.key === 'ArrowRight') prev()  // RTL: right = back
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [selectedIdx, close, prev, next])
+
+  // Lock body scroll when lightbox is open
+  useEffect(() => {
+    document.body.style.overflow = selectedIdx !== null ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [selectedIdx])
+
+  const safeUrl = (url?: string) =>
+    url?.startsWith('http') ? url : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=80'
+
   return (
     <section id="gallery" className="py-28 bg-white">
       <div className="max-w-7xl mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
           <span className="inline-block text-gold font-medium text-sm tracking-[0.2em] uppercase mb-4">הגלריה שלנו</span>
           <h2 className="font-heading text-4xl md:text-5xl text-charcoal mb-4">עבודות נבחרות</h2>
-          <p className="text-charcoal/55 max-w-md mx-auto leading-relaxed">כל פרויקט הוא סיפור אחר. לחצו על תמונה לפרטים נוספים.</p>
+          <p className="text-charcoal/55 max-w-md mx-auto leading-relaxed">כל פרויקט הוא סיפור אחר. לחצו על תמונה לצפייה בגודל מלא.</p>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex flex-wrap justify-center gap-3 mb-12">
+        {/* Filter buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="flex flex-wrap justify-center gap-3 mb-12"
+        >
           {categories.map((cat) => (
-            <button key={cat} onClick={() => setFilter(cat)} className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${filter === cat ? 'bg-gold text-cream shadow-lg shadow-gold/25' : 'bg-cream text-charcoal hover:bg-gold/12 border border-charcoal/10'}`}>
+            <button
+              key={cat}
+              onClick={() => { setFilter(cat); setSelectedIdx(null) }}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                filter === cat
+                  ? 'bg-gold text-cream shadow-lg shadow-gold/25'
+                  : 'bg-cream text-charcoal hover:bg-gold/12 border border-charcoal/10'
+              }`}
+            >
               {cat}
             </button>
           ))}
         </motion.div>
 
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Grid */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <AnimatePresence mode="popLayout">
             {filtered.map((project, i) => (
               <motion.div
@@ -51,20 +107,28 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
                 initial={{ opacity: 0, scale: 0.94 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.94 }}
-                transition={{ duration: 0.35, delay: i * 0.05 }}
+                transition={{ duration: 0.3, delay: i * 0.04 }}
                 className="group relative rounded-2xl overflow-hidden cursor-pointer shadow-wood hover:shadow-wood-lg transition-shadow duration-400"
                 style={{ aspectRatio: '4/3' }}
-                onClick={() => setSelected(project)}
+                onClick={() => setSelectedIdx(i)}
               >
-                <Image src={project.image_url?.startsWith('http') ? project.image_url : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=80'} alt={project.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-350" />
-                <div className="absolute top-4 right-4 bg-charcoal/70 backdrop-blur-sm text-cream/80 text-xs px-3 py-1 rounded-full border border-cream/15">{project.category}</div>
-                <div className="absolute top-4 left-4 w-9 h-9 bg-gold rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100">
-                  <ZoomIn size={16} className="text-cream" />
+                <Image
+                  src={safeUrl(project.image_url)}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-opacity duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* Category badge */}
+                <div className="absolute top-3 right-3 bg-charcoal/70 backdrop-blur-sm text-cream/85 text-xs px-3 py-1 rounded-full border border-cream/15">
+                  {project.category}
                 </div>
-                <div className="absolute bottom-0 right-0 left-0 p-6 translate-y-3 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-350">
-                  <h3 className="text-cream font-heading text-xl mb-1">{project.title}</h3>
-                  <p className="text-cream/65 text-sm line-clamp-2 leading-relaxed">{project.description}</p>
+                {/* Title on hover */}
+                <div className="absolute bottom-0 right-0 left-0 p-5 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  <h3 className="text-cream font-heading text-lg leading-snug">{project.title}</h3>
+                  <p className="text-cream/60 text-xs mt-1">{project.material} · {project.duration}</p>
                 </div>
               </motion.div>
             ))}
@@ -72,45 +136,104 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
         </motion.div>
       </div>
 
+      {/* ─── Full-screen Lightbox ─── */}
       <AnimatePresence>
-        {selected && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-charcoal/96 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setSelected(null)}>
-            <motion.div initial={{ scale: 0.88, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.88, opacity: 0 }} transition={{ type: 'spring', damping: 25 }} className="bg-white rounded-3xl overflow-hidden max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-              <div className="relative" style={{ aspectRatio: '16/9' }}>
-                <Image src={selected.image_url?.startsWith('http') ? selected.image_url : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=80'} alt={selected.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" />
+        {selected && selectedIdx !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 z-50 bg-black flex flex-col"
+            onClick={close}
+          >
+            {/* Top bar */}
+            <div className="flex-shrink-0 flex items-center justify-between px-5 py-4 bg-black/80">
+              <span className="text-white/50 text-sm tabular-nums">
+                {selectedIdx + 1} / {filtered.length}
+              </span>
+              <span className="text-white font-heading text-base truncate max-w-xs text-center">{selected.title}</span>
+              <button
+                onClick={close}
+                className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 flex items-center justify-center transition-colors"
+              >
+                <X size={20} className="text-white" />
+              </button>
+            </div>
+
+            {/* Image — fills remaining space */}
+            <div className="flex-1 relative min-h-0" onClick={(e) => e.stopPropagation()}>
+              <Image
+                src={safeUrl(selected.image_url)}
+                alt={selected.title}
+                fill
+                className="object-contain"
+                sizes="100vw"
+                priority
+                unoptimized
+              />
+
+              {/* Prev arrow — right side (RTL) */}
+              {filtered.length > 1 && (
+                <button
+                  onClick={(e) => { e.stopPropagation(); prev() }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 flex items-center justify-center transition-all"
+                  aria-label="הקודם"
+                >
+                  <ChevronRight size={30} className="text-white" />
+                </button>
+              )}
+              {/* Next arrow — left side (RTL) */}
+              {filtered.length > 1 && (
+                <button
+                  onClick={(e) => { e.stopPropagation(); next() }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 flex items-center justify-center transition-all"
+                  aria-label="הבא"
+                >
+                  <ChevronLeft size={30} className="text-white" />
+                </button>
+              )}
+            </div>
+
+            {/* Bottom info bar */}
+            <div
+              className="bg-charcoal/95 backdrop-blur-sm px-5 py-4 flex items-center gap-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Category + title */}
+              <div className="flex-1 min-w-0">
+                <span className="text-gold text-xs font-semibold tracking-widest uppercase">{selected.category}</span>
+                <h3 className="text-white font-heading text-lg leading-tight mt-0.5 truncate">{selected.title}</h3>
               </div>
-              <div className="p-8">
-                <div className="flex items-start justify-between gap-4 mb-4">
-                  <div>
-                    <span className="text-gold text-xs font-semibold tracking-wide uppercase">{selected.category}</span>
-                    <h3 className="font-heading text-2xl text-charcoal mt-1">{selected.title}</h3>
-                  </div>
-                  <button onClick={() => setSelected(null)} className="w-9 h-9 flex-shrink-0 bg-cream rounded-full flex items-center justify-center hover:bg-gold/15 transition-colors">
-                    <X size={17} className="text-charcoal" />
-                  </button>
-                </div>
-                <p className="text-charcoal/65 leading-relaxed mb-6">{selected.description}</p>
-                <div className="flex gap-8 pt-5 border-t border-charcoal/8">
+
+              {/* Meta chips */}
+              <div className="hidden sm:flex items-center gap-5 flex-shrink-0">
+                {selected.material && (
                   <div className="flex items-center gap-2">
-                    <Layers size={16} className="text-gold" />
-                    <div>
-                      <div className="text-xs text-charcoal/45 mb-0.5">חומר</div>
-                      <div className="font-semibold text-charcoal text-sm">{selected.material}</div>
-                    </div>
+                    <Layers size={14} className="text-gold flex-shrink-0" />
+                    <span className="text-white/60 text-sm">{selected.material}</span>
                   </div>
+                )}
+                {selected.duration && (
                   <div className="flex items-center gap-2">
-                    <Clock size={16} className="text-gold" />
-                    <div>
-                      <div className="text-xs text-charcoal/45 mb-0.5">זמן ייצור</div>
-                      <div className="font-semibold text-charcoal text-sm">{selected.duration}</div>
-                    </div>
+                    <Clock size={14} className="text-gold flex-shrink-0" />
+                    <span className="text-white/60 text-sm">{selected.duration}</span>
                   </div>
-                </div>
-                <a href="#contact" onClick={() => setSelected(null)} className="mt-6 w-full block text-center bg-gold hover:bg-gold-light text-cream font-semibold py-3.5 rounded-xl transition-colors">
-                  הזמינו פרויקט דומה
-                </a>
+                )}
               </div>
-            </motion.div>
+
+              {/* WhatsApp CTA */}
+              <a
+                href={`${WA_BASE}?text=שלום אלי, ראיתי את הפרויקט "${selected.title}" באתר ואשמח לקבל הצעת מחיר`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-shrink-0 flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MessageCircle size={16} />
+                <span className="hidden sm:inline">רוצה כזה</span>
+              </a>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

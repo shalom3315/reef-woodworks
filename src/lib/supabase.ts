@@ -1,18 +1,23 @@
 import { createClient as createSupabaseClient, type SupabaseClient } from '@supabase/supabase-js'
 
+const URL = () => process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+const KEY = () => process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'
+
 export function createClient(): SupabaseClient {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
-  return createSupabaseClient(
-    url || 'https://placeholder.supabase.co',
-    key || 'placeholder',
-    {
-      global: {
-        fetch: (input, init) =>
-          fetch(input, { ...init, cache: 'no-store' }),
-      },
-      realtime: { enabled: false } as never,
-      db: { schema: 'public' },
-    }
-  )
+  return createSupabaseClient(URL(), KEY(), {
+    global: { fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }) },
+    realtime: { enabled: false } as never,
+    db: { schema: 'public' },
+  })
+}
+
+export function createAuthClient(accessToken: string): SupabaseClient {
+  return createSupabaseClient(URL(), KEY(), {
+    global: {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }),
+    },
+    auth: { persistSession: false },
+    db: { schema: 'public' },
+  })
 }

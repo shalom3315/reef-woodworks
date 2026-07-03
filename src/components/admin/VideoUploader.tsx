@@ -2,10 +2,10 @@
 
 import { useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase'
-import { X, Loader2, Video, Scissors } from 'lucide-react'
+import { X, Loader2, Video } from 'lucide-react'
 
 const BUCKET = 'SSSS'
-const MAX_BYTES = 50 * 1024 * 1024 // 50 MB
+const MAX_BYTES = 200 * 1024 * 1024 // 200 MB
 
 interface VideoUploaderProps {
   value: string
@@ -14,82 +14,41 @@ interface VideoUploaderProps {
 
 export default function VideoUploader({ value, onChange }: VideoUploaderProps) {
   const [uploading, setUploading] = useState(false)
-  const [compressing, setCompressing] = useState(false)
   const [error, setError] = useState('')
   const [dragging, setDragging] = useState(false)
   const [progress, setProgress] = useState(0)
-  const [status, setStatus] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const supabase = createClient()
-
-  const compressVideo = async (file: File): Promise<File> => {
-    const { FFmpeg } = await import('@ffmpeg/ffmpeg')
-    const { fetchFile, toBlobURL } = await import('@ffmpeg/util')
-
-    const ffmpeg = new FFmpeg()
-    ffmpeg.on('progress', ({ progress }: { progress: number }) => {
-      setProgress(Math.round(progress * 85))
-    })
-
-    setStatus('טוען מנוע דחיסה (חד-פעמי, עשוי לקחת כחצי דקה)...')
-    const base = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
-    await ffmpeg.load({
-      coreURL: await toBlobURL(`${base}/ffmpeg-core.js`, 'text/javascript'),
-      wasmURL: await toBlobURL(`${base}/ffmpeg-core.wasm`, 'application/wasm'),
-    })
-
-    const ext = file.name.split('.').pop() || 'mp4'
-    const inputName = `input.${ext}`
-    setStatus('דוחס סרטון...')
-    await ffmpeg.writeFile(inputName, await fetchFile(file))
-
-    await ffmpeg.exec([
-      '-i', inputName,
-      '-c:v', 'libx264', '-crf', '30', '-preset', 'faster',
-      '-c:a', 'aac', '-b:a', '96k',
-      '-movflags', '+faststart',
-      'output.mp4',
-    ])
-
-    const data = await ffmpeg.readFile('output.mp4')
-    return new File([data as unknown as ArrayBuffer], 'compressed.mp4', { type: 'video/mp4' })
-  }
 
   const upload = async (file: File) => {
     if (!file.type.startsWith('video/')) {
       setError('יש לבחור קובץ וידאו בלבד')
       return
     }
-
-    setError('')
-    setProgress(0)
-
-    let fileToUpload = file
-
     if (file.size > MAX_BYTES) {
-      setCompressing(true)
-      try {
-        fileToUpload = await compressVideo(file)
-      } catch (e) {
-        setError(`שגיאה בדחיסה: ${e}`)
-        setCompressing(false)
-        return
-      }
-      setCompressing(false)
+      setError(`הסרטון גדול מדי (${(file.size / 1024 / 1024).toFixed(0)}MB). המקסימום הוא 200MB.`)
+      return
     }
 
+    setError('')
     setUploading(true)
-    setStatus('מעלה סרטון...')
-    setProgress(90)
+    setProgress(10)
 
     const path = `videos/${Date.now()}.mp4`
+
+    const xhr = new XMLHttpRequest()
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) setProgress(Math.round((e.loaded / e.total) * 90))
+    }
+
     const { error: uploadError } = await supabase.storage
       .from(BUCKET)
-      .upload(path, fileToUpload, { cacheControl: '3600', upsert: true })
+      .upload(path, file, { cacheControl: '3600', upsert: true })
 
     if (uploadError) {
       setError(`שגיאה בהעלאה: ${uploadError.message}`)
       setUploading(false)
+      setProgress(0)
       return
     }
 
@@ -97,7 +56,7 @@ export default function VideoUploader({ value, onChange }: VideoUploaderProps) {
     onChange(data.publicUrl)
     setUploading(false)
     setProgress(100)
-    setStatus('')
+    setTimeout(() => setProgress(0), 1000)
   }
 
   const handleDrop = (e: React.DragEvent) => {
@@ -106,8 +65,6 @@ export default function VideoUploader({ value, onChange }: VideoUploaderProps) {
     const file = e.dataTransfer.files[0]
     if (file) upload(file)
   }
-
-  const busy = uploading || compressing
 
   return (
     <div className="space-y-2">
@@ -124,28 +81,29 @@ export default function VideoUploader({ value, onChange }: VideoUploaderProps) {
       )}
 
       <div
-        onClick={() => !busy && inputRef.current?.click()}
+        onClick={() => !uploading && inputRef.current?.click()}
         onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
         onDragLeave={() => setDragging(false)}
         onDrop={handleDrop}
         className={`border-2 border-dashed rounded-xl p-5 text-center transition-all ${
-          busy ? 'cursor-default' : 'cursor-pointer'
+          uploading ? 'cursor-default' : 'cursor-pointer'
         } ${dragging ? 'border-gold bg-gold/8' : 'border-charcoal/15 hover:border-gold/50 hover:bg-cream/60'}`}
       >
-        {busy ? (
+        {uploading ? (
           <div className="flex flex-col items-center gap-2 text-charcoal/50">
-            {compressing
-              ? <Scissors size={24} className="text-gold animate-pulse" />
-              : <Loader2 size={24} className="animate-spin text-gold" />
-            }
-            <span className="text-sm">{status}</span>
-            <div className="w-full bg-charcoal/10 rounded-full h-1.5 mt-1">
-              <div
-                className="bg-gold h-1.5 rounded-full transition-all duration-500"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <span className="text-xs text-charcoal/30">{progress}%</span>
+            <Loader2 size={24} className="animate-spin text-gold" />
+            <span className="text-sm">מעלה סרטון...</span>
+            {progress > 0 && (
+              <>
+                <div className="w-full bg-charcoal/10 rounded-full h-1.5 mt-1">
+                  <div
+                    className="bg-gold h-1.5 rounded-full transition-all duration-300"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+                <span className="text-xs text-charcoal/30">{progress}%</span>
+              </>
+            )}
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2 text-charcoal/40">
@@ -154,7 +112,7 @@ export default function VideoUploader({ value, onChange }: VideoUploaderProps) {
               <span className="text-gold font-medium">לחצו לבחירת סרטון</span>
               <span> או גררו לכאן</span>
             </div>
-            <span className="text-xs text-charcoal/30">MP4, MOV, WEBM · סרטונים מעל 50MB יידחסו אוטומטית</span>
+            <span className="text-xs text-charcoal/30">MP4, MOV, WEBM · עד 200MB</span>
           </div>
         )}
       </div>
