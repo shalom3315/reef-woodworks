@@ -61,7 +61,8 @@ export default function ChatWidget() {
         body: JSON.stringify({ messages: newMessages }),
       })
       const data = await res.json()
-      setMessages([...newMessages, { role: 'assistant', content: data.text || 'מצטער, הייתה שגיאה. נסה שוב.' }])
+      const clean = (data.text || 'מצטער, הייתה שגיאה. נסה שוב.').replace(/\*+/g, '')
+      setMessages([...newMessages, { role: 'assistant', content: clean }])
     } catch {
       setMessages([...newMessages, { role: 'assistant', content: 'מצטער, הייתה שגיאה. נסה שוב.' }])
     } finally {
