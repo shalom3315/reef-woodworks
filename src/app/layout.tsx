@@ -59,9 +59,65 @@ export const metadata: Metadata = {
   },
 }
 
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': SITE_URL,
+  name: 'ריף וודוורקס',
+  alternateName: 'Reef Woodworks',
+  description: 'נגרות חוץ בהתאמה אישית — פרגולות, דקים, גדרות וריהוט גן מעץ מלא. אלי מרקוס, מרכז הארץ.',
+  url: SITE_URL,
+  telephone: '+972533139394',
+  email: 'reefww3939@gmail.com',
+  priceRange: '₪₪',
+  image: OG_IMAGE,
+  logo: `${SITE_URL}/logo.png`,
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'IL',
+    addressRegion: 'מרכז',
+    addressLocality: 'גוש דן',
+  },
+  areaServed: [
+    { '@type': 'City', name: 'תל אביב' },
+    { '@type': 'City', name: 'רמת גן' },
+    { '@type': 'City', name: 'פתח תקווה' },
+    { '@type': 'City', name: 'ראשון לציון' },
+    { '@type': 'City', name: 'חולון' },
+    { '@type': 'AdministrativeArea', name: 'מרכז הארץ' },
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'שירותי נגרות חוץ',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'פרגולות עץ בהתאמה אישית' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'דקים מעץ' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'גדרות עץ' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'ריהוט גן מעץ' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'הצללה וסוכות עץ' } },
+    ],
+  },
+  sameAs: [
+    'https://www.tiktok.com/@reef.woodworks',
+  ],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+972533139394',
+    contactType: 'customer service',
+    availableLanguage: 'Hebrew',
+    contactOption: 'TollFree',
+  },
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="he" dir="rtl" className={`${frank.variable} ${heebo.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
+      </head>
       <body className="font-body bg-cream text-charcoal antialiased">
         {children}
         <ChatWidget />

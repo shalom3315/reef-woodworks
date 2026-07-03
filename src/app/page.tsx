@@ -73,8 +73,24 @@ async function getData() {
 export default async function Home() {
   const { settings, projects, testimonials, videos, faqs } = await getData()
 
+  const faqSchema = faqs.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  } : null
+
   return (
     <main className="overflow-x-hidden">
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <EditProvider initialSettings={settings}>
         <Navbar businessName={settings.business_name ?? 'Reef Woodworks'} logoUrl={settings.logo_url} />
         <Hero />
