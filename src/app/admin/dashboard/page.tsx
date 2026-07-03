@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase'
 import ProjectsManager from '@/components/admin/ProjectsManager'
 import TestimonialsManager from '@/components/admin/TestimonialsManager'
 import SettingsManager from '@/components/admin/SettingsManager'
+import VideosManager from '@/components/admin/VideosManager'
 import {
   LayoutGrid,
   MessageSquare,
@@ -16,12 +17,14 @@ import {
   ExternalLink,
   Menu,
   X,
+  Video,
 } from 'lucide-react'
 
-type Tab = 'projects' | 'testimonials' | 'settings'
+type Tab = 'projects' | 'testimonials' | 'settings' | 'videos'
 
 const TABS = [
   { id: 'projects' as Tab, label: 'פרויקטים', icon: LayoutGrid },
+  { id: 'videos' as Tab, label: 'סרטונים', icon: Video },
   { id: 'testimonials' as Tab, label: 'המלצות', icon: MessageSquare },
   { id: 'settings' as Tab, label: 'הגדרות', icon: Settings },
 ]
@@ -58,7 +61,7 @@ export default function AdminDashboard() {
     )
   }
 
-  const ActiveTab = tab === 'projects' ? ProjectsManager : tab === 'testimonials' ? TestimonialsManager : SettingsManager
+  const ActiveTab = tab === 'projects' ? ProjectsManager : tab === 'testimonials' ? TestimonialsManager : tab === 'videos' ? VideosManager : SettingsManager
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
