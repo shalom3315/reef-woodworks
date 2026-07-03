@@ -69,6 +69,16 @@ export default function About() {
                 : text
               }
             </p>
+
+            {/* כרטיס משפחה */}
+            <div className="mt-8 flex items-center gap-3 bg-cream/60 border border-gold/15 rounded-2xl px-5 py-4">
+              <div className="text-2xl">🌿</div>
+              <p className="text-charcoal/60 text-sm leading-relaxed">
+                בעלה של <span className="text-charcoal font-medium">מטי</span> ואבא של{' '}
+                <span className="text-gold font-semibold">ריף</span> — הילד שנתן את שמו למותג
+              </p>
+            </div>
+
             <div className="mt-8 pt-8 border-t border-charcoal/10 flex items-center gap-4">
               <div className="w-12 h-12 bg-gold/15 rounded-full flex items-center justify-center">
                 <span className="font-heading text-gold text-lg font-bold">{(draft.about_name || name).charAt(0)}</span>
