@@ -16,16 +16,42 @@ const heebo = Heebo({
   display: 'swap',
 })
 
+const SITE_URL = 'https://reef-woodworks.vercel.app'
+const OG_IMAGE = 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=1200&q=80'
+
 export const metadata: Metadata = {
-  title: 'Reef Woodworks | עבודות עץ בהתאמה אישית',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'ריף וודוורקס | נגרות בהתאמה אישית — אלי מרקוס',
+    template: '%s | ריף וודוורקס',
+  },
   description:
-    'רהיטים, שולחנות ופתרונות עץ בעבודת יד מקצועית. התאמה אישית מלאה, חומרים איכותיים, ניסיון של שנים.',
-  keywords: 'נגרות, רהיטים, עץ, שולחנות, ארונות, עבודת יד, התאמה אישית, נגר, Reef Woodworks',
+    'רהיטים, שולחנות וארונות בעבודת יד מקצועית. אלי מרקוס — נגר עם תשומת לב לכל פרט. הצעת מחיר חינם, מרכז הארץ.',
+  keywords: 'נגרות, נגר, רהיטים בהתאמה אישית, שולחנות עץ, ארונות עץ, עבודת יד, ריף וודוורקס, אלי מרקוס, מרכז הארץ',
+  authors: [{ name: 'אלי מרקוס', url: SITE_URL }],
+  creator: 'אלי מרקוס',
   openGraph: {
-    title: 'Reef Woodworks | עבודות עץ בהתאמה אישית',
-    description: 'רהיטים ופתרונות עץ בעבודת יד מקצועית.',
     type: 'website',
     locale: 'he_IL',
+    url: SITE_URL,
+    siteName: 'ריף וודוורקס',
+    title: 'ריף וודוורקס | נגרות בהתאמה אישית',
+    description: 'רהיטים, שולחנות וארונות עץ בעבודת יד — אלי מרקוס. הצעת מחיר חינם.',
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: 'ריף וודוורקס — עבודות עץ בהתאמה אישית' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ריף וודוורקס | נגרות בהתאמה אישית',
+    description: 'רהיטים, שולחנות וארונות עץ בעבודת יד — אלי מרקוס.',
+    images: [OG_IMAGE],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
+  alternates: {
+    canonical: SITE_URL,
   },
 }
 
