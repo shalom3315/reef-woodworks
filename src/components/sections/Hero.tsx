@@ -16,17 +16,29 @@ export default function Hero() {
   const statProjects = draft.stat_projects || '200+'
   const statHandmade = draft.stat_handmade || '100%'
   const heroImage = (draft.hero_image && draft.hero_image.startsWith('http')) ? draft.hero_image : '/hero.jpg'
+  const heroVideo = (draft.hero_video && draft.hero_video.startsWith('http')) ? draft.hero_video : null
 
   return (
     <section className="relative h-screen min-h-[720px] flex items-center overflow-hidden">
-      <Image
-        src={heroImage}
-        alt="Reef Woodworks – עבודת יד מקצועית"
-        fill
-        className="object-cover object-center"
-        priority
-        sizes="100vw"
-      />
+      {heroVideo ? (
+        <video
+          src={heroVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+      ) : (
+        <Image
+          src={heroImage}
+          alt="Reef Woodworks – עבודת יד מקצועית"
+          fill
+          className="object-cover object-center"
+          priority
+          sizes="100vw"
+        />
+      )}
       <div className="absolute inset-0 bg-gradient-to-b from-charcoal/75 via-charcoal/45 to-charcoal/85" />
       <div className="absolute inset-0 bg-gradient-to-l from-transparent to-charcoal/30" />
 

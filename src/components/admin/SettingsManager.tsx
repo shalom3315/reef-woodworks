@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Check, AlertCircle } from 'lucide-react'
 import ImageUploader from './ImageUploader'
+import VideoUploader from './VideoUploader'
 
 const FIELDS = [
   // כללי
@@ -120,6 +121,15 @@ export default function SettingsManager() {
               <ImageUploader value={values['logo_url'] || ''} onChange={(url) => set('logo_url', url)} folder="logo" />
             </div>
           </div>
+        </div>
+
+        {/* סרטון רקע */}
+        <div>
+          <h3 className="text-xs font-bold text-charcoal/45 uppercase tracking-[0.15em] mb-4 pb-2 border-b border-charcoal/8">
+            סרטון רקע (Hero)
+          </h3>
+          <p className="text-xs text-charcoal/45 mb-3">כשיש סרטון הוא מוצג במקום תמונת הפתיחה. רצוי MP4 קצר ומלוטש.</p>
+          <VideoUploader value={values['hero_video'] || ''} onChange={(url) => set('hero_video', url)} />
         </div>
 
         {/* שאר השדות */}
