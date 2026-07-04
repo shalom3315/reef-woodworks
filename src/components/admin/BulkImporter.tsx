@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase'
-import { Upload, X, Check, Loader2, Wand2, Save, RefreshCw } from 'lucide-react'
+import { Upload, X, Check, Loader2, Save } from 'lucide-react'
 
 interface ImageItem {
   id: string
@@ -19,70 +19,30 @@ interface ImageItem {
 
 const CATEGORIES = ['פרגולות', 'פרגולה הצללה', 'דקים', 'גדרות', 'ריהוט גן', 'פרויקטים מיוחדים']
 
-async function toBase64(file: File): Promise<string> {
-  return new Promise((resolve) => {
-    const reader = new FileReader()
-    reader.onload = () => {
-      const result = reader.result as string
-      resolve(result.split(',')[1])
-    }
-    reader.readAsDataURL(file)
-  })
-}
-
 export default function BulkImporter({ onDone }: { onDone: () => void }) {
   const [items, setItems] = useState<ImageItem[]>([])
   const [saving, setSaving] = useState(false)
   const supabase = createClient()
 
-  const analyzeImage = useCallback(async (item: ImageItem) => {
-    try {
-      const base64 = await toBase64(item.file)
-      const res = await fetch('/api/describe-image', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ base64, mediaType: item.file.type }),
-      })
-      const data = await res.json()
-      setItems(prev => prev.map(i => i.id === item.id ? {
-        ...i,
-        status: 'ready',
-        title: data.title || '',
-        description: data.description || '',
-        material: data.material || '',
-        duration: data.duration || '',
-        category: CATEGORIES.includes(data.category) ? data.category : 'ריהוט',
-      } : i))
-    } catch {
-      setItems(prev => prev.map(i => i.id === item.id ? { ...i, status: 'error', error: 'שגיאה בניתוח AI' } : i))
-    }
-  }, [])
-
-  const addFiles = useCallback(async (files: FileList) => {
+  const addFiles = useCallback((files: FileList) => {
     const newItems: ImageItem[] = Array.from(files)
       .filter(f => f.type.startsWith('image/'))
       .map(file => ({
         id: `${Date.now()}_${Math.random().toString(36).slice(2)}`,
         file,
         preview: URL.createObjectURL(file),
-        status: 'analyzing' as const,
-        title: '', description: '', material: '', duration: '', category: 'ריהוט',
+        status: 'ready' as const,
+        title: '', description: '', material: '', duration: '', category: 'פרגולות',
       }))
 
     setItems(prev => [...prev, ...newItems])
-    for (const item of newItems) analyzeImage(item)
-  }, [analyzeImage])
+  }, [])
 
   const update = (id: string, field: string, value: string) =>
     setItems(prev => prev.map(i => i.id === id ? { ...i, [field]: value } : i))
 
   const remove = (id: string) =>
     setItems(prev => prev.filter(i => i.id !== id))
-
-  const retry = (item: ImageItem) => {
-    setItems(prev => prev.map(i => i.id === item.id ? { ...i, status: 'analyzing', error: undefined } : i))
-    analyzeImage(item)
-  }
 
   const saveAll = async () => {
     const ready = items.filter(i => i.status === 'ready')
@@ -125,7 +85,6 @@ export default function BulkImporter({ onDone }: { onDone: () => void }) {
   const allDone = items.length > 0 && items.every(i => i.status === 'done')
   const readyCount = items.filter(i => i.status === 'ready').length
   const doneCount = items.filter(i => i.status === 'done').length
-  const analyzingCount = items.filter(i => i.status === 'analyzing').length
 
   return (
     <div className="space-y-5" dir="rtl">
@@ -140,7 +99,7 @@ export default function BulkImporter({ onDone }: { onDone: () => void }) {
           <Upload size={24} className="text-charcoal/40 group-hover:text-gold transition-colors" />
         </div>
         <p className="text-charcoal/70 font-medium mb-1">גרור תמונות לכאן או לחץ לבחירה</p>
-        <p className="text-charcoal/35 text-sm">ניתן לבחור מספר תמונות בבת אחת — AI יכתוב תיאור לכל אחת אוטומטית</p>
+        <p className="text-charcoal/35 text-sm">ניתן לבחור מספר תמונות בבת אחת</p>
         <input
           id="bulk-file-input"
           type="file"
@@ -151,13 +110,6 @@ export default function BulkImporter({ onDone }: { onDone: () => void }) {
         />
       </div>
 
-      {/* Status summary */}
-      {items.length > 0 && analyzingCount > 0 && (
-        <div className="flex items-center gap-2 bg-gold/8 border border-gold/20 rounded-xl px-4 py-3">
-          <Wand2 size={16} className="text-gold animate-pulse" />
-          <span className="text-charcoal/70 text-sm">AI מנתח {analyzingCount} תמונות...</span>
-        </div>
-      )}
 
       {/* Image cards */}
       {items.map(item => (
@@ -170,12 +122,6 @@ export default function BulkImporter({ onDone }: { onDone: () => void }) {
             {/* Thumbnail */}
             <div className="w-28 h-28 rounded-xl overflow-hidden flex-shrink-0 bg-cream relative">
               <img src={item.preview} alt="" className="w-full h-full object-cover" />
-              {item.status === 'analyzing' && (
-                <div className="absolute inset-0 bg-charcoal/60 flex flex-col items-center justify-center gap-1.5">
-                  <Loader2 size={20} className="animate-spin text-gold" />
-                  <span className="text-cream/80 text-[10px]">מנתח...</span>
-                </div>
-              )}
               {item.status === 'uploading' && (
                 <div className="absolute inset-0 bg-charcoal/60 flex flex-col items-center justify-center gap-1.5">
                   <Loader2 size={20} className="animate-spin text-gold" />
@@ -191,13 +137,6 @@ export default function BulkImporter({ onDone }: { onDone: () => void }) {
 
             {/* Fields */}
             <div className="flex-1 min-w-0">
-              {item.status === 'analyzing' && (
-                <div className="flex items-center gap-2 py-8">
-                  <Wand2 size={15} className="text-gold" />
-                  <span className="text-charcoal/50 text-sm">AI כותב תיאור...</span>
-                </div>
-              )}
-
               {item.status === 'done' && (
                 <div className="py-2">
                   <p className="font-semibold text-charcoal">{item.title}</p>
@@ -208,11 +147,7 @@ export default function BulkImporter({ onDone }: { onDone: () => void }) {
 
               {item.status === 'error' && (
                 <div className="py-2">
-                  <p className="text-red-500 text-sm mb-2">{item.error}</p>
-                  <button onClick={() => retry(item)} className="flex items-center gap-1.5 text-xs text-charcoal/50 hover:text-gold transition-colors">
-                    <RefreshCw size={12} />
-                    נסה שוב
-                  </button>
+                  <p className="text-red-500 text-sm">{item.error}</p>
                 </div>
               )}
 
@@ -268,8 +203,7 @@ export default function BulkImporter({ onDone }: { onDone: () => void }) {
       {items.length > 0 && (
         <div className="sticky bottom-0 bg-white/95 backdrop-blur-sm border border-charcoal/10 rounded-2xl p-4 flex items-center justify-between shadow-lg">
           <div className="text-sm text-charcoal/50">
-            {analyzingCount > 0 && <span className="ml-3">⏳ מנתח {analyzingCount}</span>}
-            {readyCount > 0 && <span className="ml-3">✏️ מוכן {readyCount}</span>}
+            {readyCount > 0 && <span className="ml-3">✏️ ממתין {readyCount}</span>}
             {doneCount > 0 && <span className="text-green-600">✅ נשמר {doneCount}</span>}
           </div>
           <div className="flex gap-3">
