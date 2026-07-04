@@ -3,12 +3,11 @@
 import { motion } from 'framer-motion'
 import { Hammer, Leaf, Sliders, HeartHandshake } from 'lucide-react'
 import { useEditContext } from '@/contexts/EditContext'
-import { EditField } from '@/components/EditField'
 
 const ICONS = [Hammer, Leaf, Sliders, HeartHandshake]
 
 export default function Benefits() {
-  const { editing, draft } = useEditContext()
+  const { draft } = useEditContext()
 
   const label   = draft.benefits_label   || 'למה לבחור בנו'
   const heading = draft.benefits_heading || 'הבדל שמרגישים'
@@ -35,21 +34,9 @@ export default function Benefits() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="inline-block text-gold font-medium text-sm tracking-[0.2em] uppercase mb-4">
-            {editing
-              ? <EditField fieldKey="benefits_label" className="text-gold font-medium text-sm tracking-[0.2em] uppercase" placeholder="תווית קטנה" />
-              : label}
-          </span>
-          <h2 className="font-heading text-4xl md:text-5xl text-charcoal">
-            {editing
-              ? <EditField fieldKey="benefits_heading" className="font-heading text-4xl md:text-5xl text-charcoal" placeholder="כותרת" />
-              : heading}
-          </h2>
-          <p className="text-charcoal/55 mt-4 max-w-md mx-auto leading-relaxed">
-            {editing
-              ? <EditField fieldKey="benefits_desc" className="text-charcoal/55 leading-relaxed" placeholder="תיאור" multiline />
-              : desc}
-          </p>
+          <span className="inline-block text-gold font-medium text-sm tracking-[0.2em] uppercase mb-4">{label}</span>
+          <h2 className="font-heading text-4xl md:text-5xl text-charcoal">{heading}</h2>
+          <p className="text-charcoal/55 mt-4 max-w-md mx-auto leading-relaxed">{desc}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -65,26 +52,12 @@ export default function Benefits() {
                 className="group bg-white rounded-2xl p-8 shadow-wood border border-wood-dark/8 hover:shadow-wood-lg hover:border-gold/25 transition-all duration-400 relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 left-0 h-0.5 bg-gradient-to-r from-transparent via-gold/0 to-transparent group-hover:via-gold/60 transition-all duration-500" />
-
                 <div className="w-14 h-14 bg-gold/10 group-hover:bg-gold/20 rounded-xl flex items-center justify-center mb-6 transition-colors duration-300">
                   <Icon className="text-gold" size={26} strokeWidth={1.5} />
                 </div>
-
-                <span className="text-gold/70 text-xs font-medium tracking-wide uppercase mb-2 block">
-                  {editing
-                    ? <EditField fieldKey={`benefits_${i}_accent`} className="text-gold/70 text-xs font-medium tracking-wide uppercase" placeholder="טקסט קטן" />
-                    : b.accent}
-                </span>
-                <h3 className="font-heading text-xl text-charcoal mb-3">
-                  {editing
-                    ? <EditField fieldKey={`benefits_${i}_title`} className="font-heading text-xl text-charcoal" placeholder="כותרת כרטיס" />
-                    : b.title}
-                </h3>
-                <p className="text-charcoal/58 leading-relaxed text-sm">
-                  {editing
-                    ? <EditField fieldKey={`benefits_${i}_desc`} className="text-charcoal/58 leading-relaxed text-sm" placeholder="תיאור" multiline />
-                    : b.desc}
-                </p>
+                <span className="text-gold/70 text-xs font-medium tracking-wide uppercase mb-2 block">{b.accent}</span>
+                <h3 className="font-heading text-xl text-charcoal mb-3">{b.title}</h3>
+                <p className="text-charcoal/58 leading-relaxed text-sm">{b.desc}</p>
               </motion.div>
             )
           })}

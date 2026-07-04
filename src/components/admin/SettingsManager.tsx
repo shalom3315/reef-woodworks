@@ -19,6 +19,23 @@ const FIELDS = [
   { key: 'stat_projects', label: 'סטטיסטיקה – פרויקטים', placeholder: '200+', section: 'מסך פתיחה (Hero)' },
   { key: 'stat_handmade', label: 'סטטיסטיקה – עבודת יד', placeholder: '100%', section: 'מסך פתיחה (Hero)' },
 
+  // יתרונות
+  { key: 'benefits_label',   label: 'תווית קטנה',        placeholder: 'למה לבחור בנו',    section: 'יתרונות (הבדל שמרגישים)' },
+  { key: 'benefits_heading', label: 'כותרת',              placeholder: 'הבדל שמרגישים',   section: 'יתרונות (הבדל שמרגישים)' },
+  { key: 'benefits_desc',    label: 'תיאור מתחת לכותרת', placeholder: 'כל פרויקט הוא...', section: 'יתרונות (הבדל שמרגישים)', multiline: true },
+  { key: 'benefits_0_accent', label: 'כרטיס 1 – טקסט זהב', placeholder: 'מהשנה הראשונה',       section: 'יתרונות (הבדל שמרגישים)' },
+  { key: 'benefits_0_title',  label: 'כרטיס 1 – כותרת',   placeholder: 'עבודת יד מקצועית',     section: 'יתרונות (הבדל שמרגישים)' },
+  { key: 'benefits_0_desc',   label: 'כרטיס 1 – תיאור',   placeholder: 'כל פריט נבנה ביד...', section: 'יתרונות (הבדל שמרגישים)', multiline: true },
+  { key: 'benefits_1_accent', label: 'כרטיס 2 – טקסט זהב', placeholder: 'ללא פשרות על חומר',    section: 'יתרונות (הבדל שמרגישים)' },
+  { key: 'benefits_1_title',  label: 'כרטיס 2 – כותרת',   placeholder: 'חומרים איכותיים',      section: 'יתרונות (הבדל שמרגישים)' },
+  { key: 'benefits_1_desc',   label: 'כרטיס 2 – תיאור',   placeholder: 'עץ טבעי מסוגים...', section: 'יתרונות (הבדל שמרגישים)', multiline: true },
+  { key: 'benefits_2_accent', label: 'כרטיס 3 – טקסט זהב', placeholder: 'ייחודי לכם בלבד',      section: 'יתרונות (הבדל שמרגישים)' },
+  { key: 'benefits_2_title',  label: 'כרטיס 3 – כותרת',   placeholder: 'התאמה אישית מלאה',     section: 'יתרונות (הבדל שמרגישים)' },
+  { key: 'benefits_2_desc',   label: 'כרטיס 3 – תיאור',   placeholder: 'אין "מדף"...', section: 'יתרונות (הבדל שמרגישים)', multiline: true },
+  { key: 'benefits_3_accent', label: 'כרטיס 4 – טקסט זהב', placeholder: 'ליווי לאורך כל הדרך',  section: 'יתרונות (הבדל שמרגישים)' },
+  { key: 'benefits_3_title',  label: 'כרטיס 4 – כותרת',   placeholder: 'שירות אישי',           section: 'יתרונות (הבדל שמרגישים)' },
+  { key: 'benefits_3_desc',   label: 'כרטיס 4 – תיאור',   placeholder: 'מהשיחה הראשונה...', section: 'יתרונות (הבדל שמרגישים)', multiline: true },
+
   // אודות
   { key: 'about_text', label: 'טקסט "אודות"', placeholder: 'ספרו על עצמכם...', section: 'אודות', multiline: true },
   { key: 'about_name', label: 'שם בעל העסק', placeholder: 'יוסי בן-דוד', section: 'אודות' },
