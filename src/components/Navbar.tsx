@@ -78,6 +78,13 @@ export default function Navbar({ businessName = 'Reef Woodworks', logoUrl }: { b
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[80] bg-charcoal flex flex-col items-center justify-center gap-8"
           >
+            <button
+              onClick={() => setMenuOpen(false)}
+              className="absolute top-5 left-5 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-cream transition-colors"
+              aria-label="סגור תפריט"
+            >
+              <X size={22} />
+            </button>
             {navLinks.map((link, i) => (
               <motion.a
                 key={link.href}
