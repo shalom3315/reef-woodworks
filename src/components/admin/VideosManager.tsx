@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
-import { Plus, Trash2, Check, Video, CheckCircle } from 'lucide-react'
+import { Plus, Trash2, Check, Video, CheckCircle, Pencil } from 'lucide-react'
 import VideoUploader from './VideoUploader'
 import { Input, Textarea } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -27,6 +27,7 @@ export default function VideosManager({ initialData }: Props) {
   const [videos, setVideos] = useState<VideoItem[]>(initialData ?? [])
   const [loading, setLoading] = useState(!initialData)
   const [isNew, setIsNew] = useState(false)
+  const [editing, setEditing] = useState<VideoItem | null>(null)
   const [form, setForm] = useState(EMPTY)
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState('')
@@ -41,7 +42,7 @@ export default function VideosManager({ initialData }: Props) {
 
   useEffect(() => { if (!initialData) load() }, [])
 
-  const close = () => { setIsNew(false); setForm(EMPTY) }
+  const close = () => { setIsNew(false); setEditing(null); setForm(EMPTY) }
 
   const save = async () => {
     if (!form.title || !form.video_url) return
@@ -56,6 +57,27 @@ export default function VideosManager({ initialData }: Props) {
     close()
     load()
     setToast('הסרטון נוסף בהצלחה!')
+    setTimeout(() => setToast(''), 3000)
+  }
+
+  const openEdit = (v: VideoItem) => {
+    setEditing(v)
+    setForm({ title: v.title, description: v.description, video_url: v.video_url, order_index: v.order_index })
+  }
+
+  const saveEdit = async () => {
+    if (!editing || !form.title) return
+    setSaving(true)
+    const { error } = await supabase.from('videos').update({ title: form.title, description: form.description }).eq('id', editing.id)
+    setSaving(false)
+    if (error) {
+      setToast(`שגיאה: ${error.message}`)
+      setTimeout(() => setToast(''), 5000)
+      return
+    }
+    close()
+    load()
+    setToast('הסרטון עודכן!')
     setTimeout(() => setToast(''), 3000)
   }
 
@@ -96,9 +118,14 @@ export default function VideosManager({ initialData }: Props) {
                 {v.description && <p className="text-charcoal/45 text-xs mt-0.5 truncate">{v.description}</p>}
                 <p className="text-charcoal/30 text-xs mt-1 truncate">{v.video_url}</p>
               </div>
-              <Button variant="danger" onClick={() => del(v.id)} className="flex-shrink-0">
-                <Trash2 size={14} className="text-red-400" />
-              </Button>
+              <div className="flex gap-2 flex-shrink-0">
+                <Button variant="secondary" onClick={() => openEdit(v)}>
+                  <Pencil size={14} className="text-charcoal/60" />
+                </Button>
+                <Button variant="danger" onClick={() => del(v.id)}>
+                  <Trash2 size={14} className="text-red-400" />
+                </Button>
+              </div>
             </div>
           ))}
 
@@ -110,6 +137,29 @@ export default function VideosManager({ initialData }: Props) {
           )}
         </div>
       )}
+
+      <Modal
+        open={!!editing}
+        onClose={close}
+        title="עריכת סרטון"
+        footer={
+          <>
+            <Button variant="secondary" onClick={close}>ביטול</Button>
+            <Button variant="primary" onClick={saveEdit} disabled={saving || !form.title}>
+              <Check size={15} />{saving ? 'שומר...' : 'שמור'}
+            </Button>
+          </>
+        }
+      >
+        <div>
+          <label className="block text-xs font-medium text-charcoal/60 mb-1.5">שם הסרטון *</label>
+          <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="שם הסרטון..." />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-charcoal/60 mb-1.5">תיאור (אופציונלי)</label>
+          <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} placeholder="תיאור קצר..." />
+        </div>
+      </Modal>
 
       <Modal
         open={isNew}
