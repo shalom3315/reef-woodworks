@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
-import { X, ChevronRight, ChevronLeft, Clock, Layers, MessageCircle } from 'lucide-react'
+import { X, ChevronRight, ChevronLeft, Clock, Layers, MessageCircle, ExternalLink } from 'lucide-react'
+import Link from 'next/link'
 import type { Project } from '@/types'
 
 const DEFAULT_PROJECTS: Project[] = [
@@ -221,6 +222,16 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
                   </div>
                 )}
               </div>
+
+              {/* View full page */}
+              <Link
+                href={`/projects/${selected.id}`}
+                className="flex-shrink-0 flex items-center gap-2 border border-white/20 hover:border-gold text-white/70 hover:text-gold text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ExternalLink size={15} />
+                <span className="hidden sm:inline">עמוד מלא</span>
+              </Link>
 
               {/* WhatsApp CTA */}
               <a
