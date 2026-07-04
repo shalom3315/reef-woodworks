@@ -105,7 +105,7 @@ export default function ProjectsManager() {
             className="flex items-center gap-2 bg-cream hover:bg-gold/15 text-charcoal border border-charcoal/12 px-4 py-2 rounded-xl text-sm font-medium transition-colors"
           >
             <Upload size={15} />
-            ייבוא מרובה + AI
+            ייבוא מרובה
           </button>
           <button
             onClick={openNew}
@@ -124,7 +124,7 @@ export default function ProjectsManager() {
             <div className="flex items-center justify-between p-6 border-b border-charcoal/8">
               <div>
                 <h3 className="font-semibold text-charcoal">ייבוא תמונות מרובות</h3>
-                <p className="text-charcoal/45 text-xs mt-0.5">AI יכתוב תיאור לכל תמונה אוטומטית</p>
+                <p className="text-charcoal/45 text-xs mt-0.5">העלאת מספר תמונות בבת אחת</p>
               </div>
               <button onClick={() => { setBulkOpen(false); load() }} className="w-8 h-8 bg-cream rounded-lg flex items-center justify-center hover:bg-gold/15 transition-colors">
                 <X size={16} />
