@@ -12,7 +12,7 @@ export interface BotSettings {
 const DEFAULTS: BotSettings = {
   name:      'ריף וודוורקס',
   owner:     'אלי מרקוס',
-  phone:     '053-313-9394',
+  phone:     '053-221-3939',
   specialty: 'שולחנות אוכל, ארונות, מיטות, מדפים, פרגולות ודקים — הכל בהתאמה אישית',
   priceFrom: 'שולחן אוכל ארוך: החל מ-5,000 ₪',
   woodTypes: 'אלון, אגוז (וולנט), אש, עץ מחזור, אקציה',

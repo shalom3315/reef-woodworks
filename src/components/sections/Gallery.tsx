@@ -15,7 +15,7 @@ const DEFAULT_PROJECTS: Project[] = [
   { id: '6', title: 'ארונות מטבח עץ מלא', description: 'מטבח שלם מעץ אגוז מלא עם חזיתות ידיות משוקעות. לפיות עץ מוצק תואמות.', material: 'אגוז + ספיר', duration: '8 שבועות', image_url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=80', category: 'מטבח', featured: true, order_index: 6, created_at: '' },
 ]
 
-const PHONE = '0533139394'
+const PHONE = '0532213939'
 const WA_BASE = `https://wa.me/972${PHONE.replace(/^0/, '')}`
 
 export default function Gallery({ projects }: { projects?: Project[] }) {

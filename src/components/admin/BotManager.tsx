@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/Button'
 const FIELDS = [
   { key: 'bot_name',       label: 'שם העסק',           placeholder: 'ריף וודוורקס',                         type: 'input' },
   { key: 'bot_owner',      label: 'שם הבעלים',          placeholder: 'אלי מרקוס',                             type: 'input' },
-  { key: 'bot_phone',      label: 'טלפון / וואטסאפ',    placeholder: '053-313-9394',                          type: 'input' },
+  { key: 'bot_phone',      label: 'טלפון / וואטסאפ',    placeholder: '053-221-3939',                          type: 'input' },
   { key: 'bot_specialty',  label: 'התמחות העסק',         placeholder: 'שולחנות, ארונות, פרגולות...',           type: 'textarea' },
   { key: 'bot_price_from', label: 'מחיר התחלתי',         placeholder: 'שולחן אוכל ארוך: החל מ-5,000 ₪',       type: 'input' },
   { key: 'bot_wood_types', label: 'סוגי עץ (מופרדים בפסיק)', placeholder: 'אלון, אגוז, אש, עץ מחזור, אקציה', type: 'textarea' },

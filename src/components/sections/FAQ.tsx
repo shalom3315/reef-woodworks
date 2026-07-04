@@ -78,7 +78,7 @@ export default function FAQ({ faqs }: { faqs?: FAQ[] }) {
         >
           <p className="text-charcoal/45 text-sm mb-4">לא מצאתם תשובה? דברו איתנו ישירות</p>
           <a
-            href="https://wa.me/972533139394"
+            href="https://wa.me/972532213939"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-cream font-semibold px-7 py-3 rounded-xl transition-all hover:shadow-lg hover:shadow-gold/25"

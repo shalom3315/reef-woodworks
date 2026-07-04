@@ -48,8 +48,8 @@ const FIELDS = [
   { key: 'cta_btn_whatsapp', label: 'טקסט כפתור WhatsApp', placeholder: 'שלחו הודעה בוואטסאפ', section: 'קריאה לפעולה (CTA)' },
 
   // פרטי קשר
-  { key: 'phone', label: 'טלפון', placeholder: '053-313-9394', section: 'פרטי קשר' },
-  { key: 'whatsapp', label: 'WhatsApp (ספרות בלבד)', placeholder: '972533139394', section: 'פרטי קשר' },
+  { key: 'phone', label: 'טלפון', placeholder: '053-221-3939', section: 'פרטי קשר' },
+  { key: 'whatsapp', label: 'WhatsApp (ספרות בלבד)', placeholder: '972532213939', section: 'פרטי קשר' },
   { key: 'email', label: 'אימייל', placeholder: 'reefww3939@gmail.com', section: 'פרטי קשר' },
   { key: 'address', label: 'כתובת / אזור', placeholder: 'מרכז הארץ', section: 'פרטי קשר' },
 

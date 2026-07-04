@@ -67,7 +67,7 @@ const localBusinessSchema = {
   alternateName: 'Reef Woodworks',
   description: 'נגרות חוץ בהתאמה אישית — פרגולות, דקים, גדרות וריהוט גן מעץ מלא. אלי מרקוס, מרכז הארץ.',
   url: SITE_URL,
-  telephone: '+972533139394',
+  telephone: '+972532213939',
   email: 'reefww3939@gmail.com',
   priceRange: '₪₪',
   image: OG_IMAGE,
@@ -102,7 +102,7 @@ const localBusinessSchema = {
   ],
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: '+972533139394',
+    telephone: '+972532213939',
     contactType: 'customer service',
     availableLanguage: 'Hebrew',
     contactOption: 'TollFree',
@@ -144,10 +144,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             TikTok
           </a>
           <a
-            href="https://wa.me/972533139394"
+            href="https://wa.me/972532213939"
             target="_blank"
             rel="noopener noreferrer"
-            title="אלי מרקוס · 053-313-9394"
+            title="אלי מרקוס · 053-221-3939"
             className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white text-xs font-medium px-3.5 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">

@@ -8,8 +8,8 @@ export default function FooterEditable() {
   const { editing, draft } = useEditContext()
 
   const businessName = draft.business_name || 'Reef Woodworks'
-  const phone = draft.phone || '053-313-9394'
-  const whatsapp = (draft.whatsapp || '972533139394').replace(/\D/g, '')
+  const phone = draft.phone || '053-221-3939'
+  const whatsapp = (draft.whatsapp || '972532213939').replace(/\D/g, '')
   const email = draft.email || 'reefww3939@gmail.com'
   const address = draft.address || 'מרכז הארץ'
   const instagram = draft.instagram || '#'
@@ -94,9 +94,9 @@ export default function FooterEditable() {
                     {editing
                       ? <>
                           <label className="text-cream/30 text-xs mb-1 block">טלפון (תצוגה)</label>
-                          <EditField fieldKey="phone" className="text-cream/55 text-sm" placeholder="053-313-9394" />
+                          <EditField fieldKey="phone" className="text-cream/55 text-sm" placeholder="053-221-3939" />
                           <label className="text-cream/30 text-xs mt-2 mb-1 block">וואטסאפ (מספר בינלאומי)</label>
-                          <EditField fieldKey="whatsapp" className="text-cream/40 text-xs" placeholder="972533139394" />
+                          <EditField fieldKey="whatsapp" className="text-cream/40 text-xs" placeholder="972532213939" />
                         </>
                       : <a href={`tel:+${whatsapp}`} className="flex items-center gap-2 group">
                           <span className="text-cream/55 group-hover:text-cream transition-colors text-sm">{phone}</span>

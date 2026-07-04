@@ -4,3 +4,15 @@ node_modules
 .env
 *.log
 .DS_Store
+
+# Large media folders
+אלי/
+גן/
+extracted_frames/
+frames_renamed/
+frames_map.txt
+extract_frames.py
+rename_frames.py
+upload-*.mjs
+fix-missing.mjs
+לוגו_קטן-removebg-preview.png

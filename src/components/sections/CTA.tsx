@@ -9,8 +9,8 @@ import { EditField } from '@/components/EditField'
 export default function CTA() {
   const { editing, draft } = useEditContext()
 
-  const phone = draft.phone || '053-313-9394'
-  const whatsapp = (draft.whatsapp || '972533139394').replace(/\D/g, '')
+  const phone = draft.phone || '053-221-3939'
+  const whatsapp = (draft.whatsapp || '972532213939').replace(/\D/g, '')
   const ctaBadge = draft.cta_badge || 'יש לכם רעיון?'
   const ctaTitle = draft.cta_title || 'נהפוך אותו לעץ אמיתי'
   const ctaSubtitle = draft.cta_subtitle || 'שיחה ראשונה היא תמיד חינם וללא התחייבות.'
@@ -62,7 +62,7 @@ export default function CTA() {
           {editing && (
             <div className="mt-8 p-4 bg-cream/5 rounded-xl border border-gold/20 text-right max-w-sm mx-auto">
               <label className="text-cream/40 text-xs block mb-1">וואטסאפ (מספר בינלאומי לקישורים)</label>
-              <EditField fieldKey="whatsapp" className="text-cream/60 text-sm" placeholder="972533139394" />
+              <EditField fieldKey="whatsapp" className="text-cream/60 text-sm" placeholder="972532213939" />
             </div>
           )}
 
