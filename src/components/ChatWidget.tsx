@@ -42,6 +42,15 @@ export default function ChatWidget() {
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (sessionStorage.getItem('chat_opened')) return
+    const t = setTimeout(() => {
+      setOpen(true)
+      sessionStorage.setItem('chat_opened', '1')
+    }, 3000)
+    return () => clearTimeout(t)
+  }, [])
+
+  useEffect(() => {
     if (open) bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, open])
 
