@@ -51,7 +51,7 @@ export default function Process() {
             תהליך פשוט, תוצאה מושלמת
           </h2>
           <p className="text-charcoal/55 max-w-md mx-auto">
-            מהרגע הראשון שאתם מתקשרים ועד שהרהיט עומד בבית – אנחנו ביחד.
+            מהרגע הראשון שאתם מתקשרים ועד שהמוצר בבית – אנחנו ביחד.
           </p>
         </motion.div>
 
