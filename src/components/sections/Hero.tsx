@@ -42,23 +42,6 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-charcoal/75 via-charcoal/45 to-charcoal/85" />
       <div className="absolute inset-0 bg-gradient-to-l from-transparent to-charcoal/30" />
 
-      {/* Logo — absolute center-left, below navbar */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.2, duration: 0.8 }}
-        className="absolute hidden lg:flex z-10 left-12"
-        style={{ top: 'calc(50% + 35px)', transform: 'translateY(-50%)' }}
-      >
-        <Image
-          src="/logo.png"
-          alt="Reef Woodworks"
-          width={300}
-          height={300}
-          className="object-contain drop-shadow-2xl"
-          priority
-        />
-      </motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-20">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="max-w-2xl">
