@@ -129,7 +129,7 @@ export default function Hero() {
               className="inline-flex items-center gap-2 border border-cream/50 hover:border-gold text-cream hover:text-gold font-heading font-semibold px-8 py-3.5 text-base tracking-wider transition-all duration-300"
               style={{ clipPath: 'polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)' }}
             >
-              צפה בעבודות
+              צפה בגלריה
             </a>
           </motion.div>
 

@@ -112,8 +112,8 @@ export default async function Home() {
         <Hero />
         <Benefits />
         <Gallery projects={projects} />
-        <Process />
         <Videos videos={videos} />
+        <Process />
         <About />
         <Testimonials testimonials={testimonials} />
         <FAQ faqs={faqs} />
