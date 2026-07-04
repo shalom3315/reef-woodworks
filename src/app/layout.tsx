@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Frank_Ruhl_Libre, Heebo } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 import ChatWidget from '@/components/ChatWidget'
 
@@ -113,6 +114,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="he" dir="rtl" className={`${frank.variable} ${heebo.variable}`}>
       <head>
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-JHYEVWJL0Q" strategy="afterInteractive" />
+        <Script id="ga4" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-JHYEVWJL0Q');
+        `}</Script>
+      </head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
