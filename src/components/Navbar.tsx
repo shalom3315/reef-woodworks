@@ -64,8 +64,8 @@ export default function Navbar({ businessName = 'Reef Woodworks', logoUrl }: { b
             </a>
           </div>
 
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-cream p-1" aria-label="תפריט">
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-cream w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 transition-colors" aria-label="תפריט">
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </motion.nav>
@@ -76,7 +76,7 @@ export default function Navbar({ businessName = 'Reef Woodworks', logoUrl }: { b
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-charcoal/98 flex flex-col items-center justify-center gap-8"
+            className="fixed inset-0 z-[80] bg-charcoal flex flex-col items-center justify-center gap-8"
           >
             {navLinks.map((link, i) => (
               <motion.a
