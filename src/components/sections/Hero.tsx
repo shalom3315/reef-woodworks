@@ -27,7 +27,8 @@ export default function Hero() {
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full"
+          style={{ width: 'auto', height: 'auto' }}
         />
       ) : (
         <Image
