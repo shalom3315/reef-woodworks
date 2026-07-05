@@ -119,6 +119,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="he" dir="rtl" className={`${frank.variable} ${heebo.variable}`}>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
+      </head>
+      <body className="font-body bg-cream text-charcoal antialiased">
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-JHYEVWJL0Q" strategy="afterInteractive" />
         <Script id="ga4" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];
@@ -126,13 +132,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           gtag('js', new Date());
           gtag('config', 'G-JHYEVWJL0Q');
         `}</Script>
-      </head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-        />
-      </head>
-      <body className="font-body bg-cream text-charcoal antialiased">
         {children}
         <ChatWidget />
         <a

@@ -7,9 +7,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let projectUrls: MetadataRoute.Sitemap = []
   try {
     const supabase = createClient()
-    const { data } = await supabase.from('projects').select('id, created_at')
-    projectUrls = (data || []).map((p: { id: string; created_at: string }) => ({
-      url: `${SITE_URL}/projects/${p.id}`,
+    const { data } = await supabase.from('projects').select('id, slug, created_at')
+    projectUrls = (data || []).map((p: { id: string; slug?: string; created_at: string }) => ({
+      url: `${SITE_URL}/projects/${p.slug || p.id}`,
       lastModified: p.created_at ? new Date(p.created_at) : new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
@@ -20,9 +20,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     { url: SITE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
-    { url: `${SITE_URL}/#about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${SITE_URL}/#gallery`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${SITE_URL}/#contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     ...projectUrls,
   ]
 }

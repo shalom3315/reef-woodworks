@@ -11,11 +11,14 @@ import type { Project } from '@/types'
 const SITE_URL = 'https://reef-woodworks.vercel.app'
 const WA_NUMBER = '972532213939'
 
-async function getProject(id: string): Promise<Project | null> {
+async function getProject(slugOrId: string): Promise<Project | null> {
   try {
     const supabase = createClient()
-    const { data } = await supabase.from('projects').select('*').eq('id', id).single()
-    return data as Project | null
+    // Try by slug first, then by id
+    const { data: bySlug } = await supabase.from('projects').select('*').eq('slug', slugOrId).single()
+    if (bySlug) return bySlug as Project
+    const { data: byId } = await supabase.from('projects').select('*').eq('id', slugOrId).single()
+    return byId as Project | null
   } catch {
     return null
   }
@@ -24,8 +27,8 @@ async function getProject(id: string): Promise<Project | null> {
 export async function generateStaticParams() {
   try {
     const supabase = createClient()
-    const { data } = await supabase.from('projects').select('id')
-    return (data || []).map((p: { id: string }) => ({ id: p.id }))
+    const { data } = await supabase.from('projects').select('id, slug')
+    return (data || []).map((p: { id: string; slug?: string }) => ({ id: p.slug || p.id }))
   } catch {
     return []
   }
@@ -36,10 +39,11 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const project = await getProject(id)
   if (!project) return { title: 'פרויקט לא נמצא' }
 
+  const urlSlug = project.slug || project.id
   const title = `${project.title} | ריף וודוורקס`
   const description = project.description
     ? `${project.description} — ${project.material ? `חומר: ${project.material}` : ''} — עבודת יד מקצועית, ריף וודוורקס.`
-    : `${project.title} — עבודת עץ בהתאמה אישית. ${project.material || ''} ${project.duration ? `· ${project.duration}` : ''} — ריף וודוורקס.`
+    : `${project.title} — נגרות חוץ בהתאמה אישית. ${project.material || ''} ${project.duration ? `· ${project.duration}` : ''} — ריף וודוורקס.`
 
   return {
     title,
@@ -52,7 +56,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       locale: 'he_IL',
       siteName: 'ריף וודוורקס',
     },
-    alternates: { canonical: `${SITE_URL}/projects/${id}` },
+    alternates: { canonical: `${SITE_URL}/projects/${urlSlug}` },
   }
 }
 
@@ -71,7 +75,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: project.title,
-    description: project.description || `${project.title} — עבודת עץ בהתאמה אישית`,
+    description: project.description || `${project.title} — נגרות חוץ בהתאמה אישית`,
     image: safeImage,
     category: project.category,
     brand: { '@type': 'Brand', name: 'ריף וודוורקס' },
@@ -96,7 +100,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
 
-      {/* Minimal nav header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-charcoal/95 backdrop-blur-md shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
@@ -113,7 +116,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
       </header>
 
       <main className="min-h-screen bg-cream pt-[72px]" dir="rtl">
-        {/* Hero image */}
         <div className="relative h-[55vh] min-h-[360px] bg-charcoal overflow-hidden">
           <Image
             src={safeImage}
@@ -125,7 +127,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
           />
           <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent" />
 
-          {/* Breadcrumb over image */}
           <div className="absolute bottom-6 right-0 left-0 px-6 max-w-7xl mx-auto">
             <nav className="flex items-center gap-2 text-cream/60 text-xs mb-3">
               <Link href="/" className="hover:text-gold transition-colors">בית</Link>
@@ -143,11 +144,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
           </div>
         </div>
 
-        {/* Content */}
         <div className="max-w-4xl mx-auto px-6 py-12">
           <div className="flex flex-col md:flex-row gap-8 md:gap-16">
-
-            {/* Left: details */}
             <div className="flex-1">
               {project.description && (
                 <p className="text-charcoal/75 text-lg leading-relaxed mb-8 font-body">
@@ -155,7 +153,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                 </p>
               )}
 
-              {/* Meta chips */}
               <div className="flex flex-wrap gap-4 mb-10">
                 {project.material && (
                   <div className="flex items-center gap-2.5 bg-white border border-charcoal/10 rounded-xl px-4 py-3 shadow-sm">
@@ -177,7 +174,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                 )}
               </div>
 
-              {/* Divider */}
               <div className="flex items-center gap-3 mb-8">
                 <div className="h-[2px] w-10 bg-gold" />
                 <span className="text-gold">✦</span>
@@ -188,7 +184,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                 כל פרויקט מותאם אישית לפי הצרכים, המידות והסגנון שלך. שיחה ראשונה היא תמיד חינם וללא התחייבות.
               </p>
 
-              {/* CTA */}
               <div className="flex flex-wrap gap-3">
                 <a
                   href={`https://wa.me/${WA_NUMBER}?text=${waMessage}`}
@@ -209,7 +204,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
               </div>
             </div>
 
-            {/* Right: trust badges */}
             <div className="md:w-64 flex-shrink-0">
               <div className="bg-white rounded-2xl border border-charcoal/8 p-6 shadow-sm">
                 <h3 className="font-heading text-charcoal text-lg mb-5">למה ריף וודוורקס?</h3>

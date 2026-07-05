@@ -9,6 +9,7 @@ export interface Project {
   featured: boolean
   order_index: number
   created_at: string
+  slug?: string
 }
 
 export interface Testimonial {

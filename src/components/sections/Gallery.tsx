@@ -225,7 +225,7 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
 
               {/* View full page */}
               <Link
-                href={`/projects/${selected.id}`}
+                href={`/projects/${selected.slug || selected.id}`}
                 className="flex-shrink-0 flex items-center gap-2 border border-white/20 hover:border-gold text-white/70 hover:text-gold text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >
