@@ -58,6 +58,11 @@ export const metadata: Metadata = {
   verification: {
     google: 'Vgm6iSrVMI0fYgvON7V54dgteWLgOjIF09PD_dUiHuY',
   },
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 }
 
 const localBusinessSchema = {
