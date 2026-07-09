@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase'
 import { Check, Bot, RotateCcw } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
+import { DEFAULTS } from '@/lib/buildBotPrompt'
 
 const FIELDS = [
   { key: 'bot_name',       label: 'שם העסק',           placeholder: 'ריף וודוורקס',                         type: 'input' },
@@ -20,7 +21,16 @@ const FIELDS = [
 type FieldKey = (typeof FIELDS)[number]['key']
 type FormState = Record<FieldKey, string>
 
-const EMPTY: FormState = Object.fromEntries(FIELDS.map(f => [f.key, ''])) as FormState
+const EMPTY: FormState = {
+  bot_name:       DEFAULTS.name,
+  bot_owner:      DEFAULTS.owner,
+  bot_phone:      DEFAULTS.phone,
+  bot_specialty:  DEFAULTS.specialty,
+  bot_price_from: DEFAULTS.priceFrom,
+  bot_wood_types: DEFAULTS.woodTypes,
+  bot_finishes:   DEFAULTS.finishes,
+  bot_extra_info: DEFAULTS.extraInfo,
+}
 
 export default function BotManager() {
   const [form, setForm] = useState<FormState>(EMPTY)

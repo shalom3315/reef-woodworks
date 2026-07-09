@@ -9,7 +9,7 @@ export interface BotSettings {
   extraInfo: string
 }
 
-const DEFAULTS: BotSettings = {
+export const DEFAULTS: BotSettings = {
   name:      'ריף וודוורקס',
   owner:     'אלי מרקוס',
   phone:     '053-221-3939',
