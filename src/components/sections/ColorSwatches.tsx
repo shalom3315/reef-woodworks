@@ -1,9 +1,40 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Paintbrush2, CheckCircle2 } from 'lucide-react'
 import { COLOR_GROUPS, type ColorSwatch, type ColorGroup } from '@/data/colorSwatches'
+
+function woodStyle(hex: string): React.CSSProperties {
+  return {
+    backgroundColor: hex,
+    backgroundImage: `
+      repeating-linear-gradient(
+        89deg,
+        transparent 0px,
+        rgba(255,255,255,0.07) 1px,
+        transparent 2px,
+        transparent 6px,
+        rgba(0,0,0,0.05) 7px,
+        transparent 9px,
+        transparent 14px,
+        rgba(255,255,255,0.05) 15px,
+        transparent 17px,
+        transparent 28px,
+        rgba(0,0,0,0.04) 29px,
+        transparent 31px,
+        transparent 40px
+      ),
+      repeating-linear-gradient(
+        91deg,
+        transparent 0px,
+        rgba(0,0,0,0.03) 1px,
+        transparent 2px,
+        transparent 4px
+      )
+    `,
+  }
+}
 
 function Modal({ color, onClose }: { color: ColorSwatch; onClose: () => void }) {
   return (
@@ -24,7 +55,7 @@ function Modal({ color, onClose }: { color: ColorSwatch; onClose: () => void }) 
           onClick={(e) => e.stopPropagation()}
         >
           {/* Color bar */}
-          <div className="h-32 w-full relative" style={{ backgroundColor: color.hex }}>
+          <div className="h-32 w-full relative" style={woodStyle(color.hex)}>
             <button
               onClick={onClose}
               className="absolute top-3 left-3 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center transition-colors"
@@ -121,8 +152,8 @@ export default function ColorSwatches() {
               className="group flex flex-col items-center gap-2 cursor-pointer"
             >
               <div
-                className="w-full aspect-[4/3] rounded-xl shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-200 border border-charcoal/8"
-                style={{ backgroundColor: color.hex }}
+                className="w-full aspect-[4/3] rounded-xl shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-200 border border-charcoal/8 overflow-hidden"
+                style={woodStyle(color.hex)}
               />
               <div className="text-center">
                 <p className="text-xs font-medium text-charcoal group-hover:text-gold transition-colors leading-tight">{color.name}</p>
