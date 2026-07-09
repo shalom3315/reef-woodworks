@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
-import { Frank_Ruhl_Libre, Heebo } from 'next/font/google'
+import { Rubik, Heebo } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import ChatWidget from '@/components/ChatWidget'
 import CookieBanner from '@/components/CookieBanner'
+import AccessibilityWidget from '@/components/AccessibilityWidget'
 
-const frank = Frank_Ruhl_Libre({
+const frank = Rubik({
   subsets: ['hebrew', 'latin'],
   weight: ['400', '500', '700', '900'],
   variable: '--font-frank',
@@ -136,6 +137,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <ChatWidget />
         <CookieBanner />
+        <AccessibilityWidget />
         <a
           href="https://wa.me/9720556752495"
           target="_blank"

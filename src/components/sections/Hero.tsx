@@ -118,7 +118,9 @@ export default function Hero() {
             className="flex flex-wrap gap-4"
           >
             <a
-              href="#contact"
+              href="https://wa.me/972532213939?text=שלום אלי, אני מעוניין בהצעת מחיר"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-charcoal font-heading font-bold px-8 py-3.5 text-base tracking-wider transition-all duration-300 hover:shadow-2xl hover:shadow-gold/40 hover:-translate-y-0.5"
               style={{ clipPath: 'polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)' }}
             >

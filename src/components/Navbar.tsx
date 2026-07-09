@@ -59,7 +59,7 @@ export default function Navbar({ businessName = 'Reef Woodworks', logoUrl }: { b
                 {link.label}
               </a>
             ))}
-            <a href="#contact" className="bg-gold hover:bg-gold-light text-cream px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-gold/30">
+            <a href="https://wa.me/972532213939?text=שלום אלי, אני מעוניין בהצעת מחיר" target="_blank" rel="noopener noreferrer" className="bg-gold hover:bg-gold-light text-cream px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-gold/30">
               קבל הצעת מחיר
             </a>
           </div>
@@ -99,7 +99,9 @@ export default function Navbar({ businessName = 'Reef Woodworks', logoUrl }: { b
               </motion.a>
             ))}
             <motion.a
-              href="#contact"
+              href="https://wa.me/972532213939?text=שלום אלי, אני מעוניין בהצעת מחיר"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setMenuOpen(false)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
