@@ -5,35 +5,49 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Paintbrush2, CheckCircle2 } from 'lucide-react'
 import { COLOR_GROUPS, type ColorSwatch, type ColorGroup } from '@/data/colorSwatches'
 
-function woodStyle(hex: string): React.CSSProperties {
-  return {
-    backgroundColor: hex,
-    backgroundImage: `
-      repeating-linear-gradient(
-        89deg,
-        transparent 0px,
-        rgba(255,255,255,0.07) 1px,
-        transparent 2px,
-        transparent 6px,
-        rgba(0,0,0,0.05) 7px,
-        transparent 9px,
-        transparent 14px,
-        rgba(255,255,255,0.05) 15px,
-        transparent 17px,
-        transparent 28px,
-        rgba(0,0,0,0.04) 29px,
-        transparent 31px,
-        transparent 40px
-      ),
-      repeating-linear-gradient(
-        91deg,
-        transparent 0px,
-        rgba(0,0,0,0.03) 1px,
-        transparent 2px,
-        transparent 4px
-      )
-    `,
-  }
+function WoodPlank({ hex, className, seed = 5 }: { hex: string; className?: string; seed?: number }) {
+  const id = `wg-${hex.slice(1)}-${seed}`
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={{ display: 'block', width: '100%', height: '100%' }}
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <defs>
+        <filter id={id} x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
+          {/* Fine vertical grain lines */}
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.72" numOctaves="5" seed={seed} result="noise" />
+          {/* Convert to grayscale for grain texture */}
+          <feColorMatrix type="saturate" values="0" in="noise" result="gray" />
+          {/* Increase contrast of the grain */}
+          <feComponentTransfer in="gray" result="grain">
+            <feFuncR type="linear" slope="1.6" intercept="-0.28" />
+            <feFuncG type="linear" slope="1.6" intercept="-0.28" />
+            <feFuncB type="linear" slope="1.6" intercept="-0.28" />
+          </feComponentTransfer>
+        </filter>
+      </defs>
+      {/* White base + grain filter */}
+      <rect width="100%" height="100%" fill="white" filter={`url(#${id})`} />
+      {/* Color overlay via multiply blending — exactly like real wood stain */}
+      <rect width="100%" height="100%" fill={hex} style={{ mixBlendMode: 'multiply' }} />
+      {/* Subtle highlight shimmer */}
+      <rect
+        width="100%"
+        height="100%"
+        fill="url(#shine)"
+        style={{ mixBlendMode: 'screen', opacity: 0.12 }}
+      />
+      <defs>
+        <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="white" stopOpacity="0.4" />
+          <stop offset="50%" stopColor="white" stopOpacity="0" />
+          <stop offset="100%" stopColor="white" stopOpacity="0.15" />
+        </linearGradient>
+      </defs>
+    </svg>
+  )
 }
 
 function Modal({ color, onClose }: { color: ColorSwatch; onClose: () => void }) {
@@ -54,11 +68,12 @@ function Modal({ color, onClose }: { color: ColorSwatch; onClose: () => void }) 
           className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Color bar */}
-          <div className="h-32 w-full relative" style={woodStyle(color.hex)}>
+          {/* Wood plank header */}
+          <div className="h-36 w-full relative overflow-hidden">
+            <WoodPlank hex={color.hex} seed={7} className="absolute inset-0" />
             <button
               onClick={onClose}
-              className="absolute top-3 left-3 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center transition-colors"
+              className="absolute top-3 left-3 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center transition-colors z-10"
             >
               <X size={14} className="text-charcoal" />
             </button>
@@ -70,7 +85,9 @@ function Modal({ color, onClose }: { color: ColorSwatch; onClose: () => void }) 
                 <h3 className="font-heading text-xl font-bold text-charcoal">{color.name}</h3>
                 <span className="text-xs text-charcoal/40 font-mono">{color.code}</span>
               </div>
-              <div className="w-10 h-10 rounded-xl border border-charcoal/10 shadow-sm flex-shrink-0" style={{ backgroundColor: color.hex }} />
+              <div className="w-10 h-10 rounded-xl border border-charcoal/10 shadow-sm flex-shrink-0 overflow-hidden">
+                <WoodPlank hex={color.hex} seed={3} />
+              </div>
             </div>
 
             <p className="text-charcoal/70 text-sm leading-relaxed mb-4">{color.description}</p>
@@ -143,18 +160,17 @@ export default function ColorSwatches() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3"
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4"
         >
-          {group.colors.map((color) => (
+          {group.colors.map((color, i) => (
             <button
               key={color.code}
               onClick={() => setSelected(color)}
               className="group flex flex-col items-center gap-2 cursor-pointer"
             >
-              <div
-                className="w-full aspect-[4/3] rounded-xl shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-200 border border-charcoal/8 overflow-hidden"
-                style={woodStyle(color.hex)}
-              />
+              <div className="w-full aspect-[4/3] rounded-xl shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-200 border border-charcoal/8 overflow-hidden">
+                <WoodPlank hex={color.hex} seed={i + 2} />
+              </div>
               <div className="text-center">
                 <p className="text-xs font-medium text-charcoal group-hover:text-gold transition-colors leading-tight">{color.name}</p>
                 <p className="text-[10px] text-charcoal/35 font-mono">{color.code}</p>
@@ -163,7 +179,6 @@ export default function ColorSwatches() {
           ))}
         </motion.div>
 
-        {/* Disclaimer */}
         <p className="text-center text-charcoal/30 text-xs mt-10 font-body">
           הגוונים מוצגים לצורך התרשמות בלבד — הצבעים האמיתיים עשויים להיות שונים מהמסך. ניתן לצפות בדוגמיות פיזיות בפגישת ייעוץ.
         </p>
