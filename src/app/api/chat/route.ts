@@ -64,16 +64,21 @@ export async function POST(req: NextRequest) {
     const raw = await getBotSettings()
     const system = buildBotPrompt(parseBotSettings(raw))
 
+    // Anthropic requires the first message to be 'user' — drop any leading assistant messages
+    const firstUserIdx = (messages as { role: string }[]).findIndex(m => m.role === 'user')
+    const apiMessages = firstUserIdx >= 0 ? messages.slice(firstUserIdx) : messages
+
     const response = await client.messages.create({
       model: 'claude-3-5-haiku-20241022',
       max_tokens: 500,
       system,
-      messages,
+      messages: apiMessages,
     })
 
     const text = response.content[0].type === 'text' ? response.content[0].text : ''
     return NextResponse.json({ text })
   } catch (e) {
+    console.error('Chat API error:', e)
     return NextResponse.json({ error: String(e) }, { status: 500 })
   }
 }
