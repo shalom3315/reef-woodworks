@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Paintbrush2, CheckCircle2 } from 'lucide-react'
-import { COLOR_GROUPS, type ColorSwatch, type ColorGroup } from '@/data/colorSwatches'
+import { COLOR_GROUPS, type ColorSwatch } from '@/data/colorSwatches'
 
 function WoodPlank({ hex, className, seed = 5 }: { hex: string; className?: string; seed?: number }) {
   const id = `wg-${hex.slice(1)}-${seed}`
@@ -16,36 +16,23 @@ function WoodPlank({ hex, className, seed = 5 }: { hex: string; className?: stri
     >
       <defs>
         <filter id={id} x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
-          {/* Fine vertical grain lines */}
           <feTurbulence type="fractalNoise" baseFrequency="0.012 0.72" numOctaves="5" seed={seed} result="noise" />
-          {/* Convert to grayscale for grain texture */}
           <feColorMatrix type="saturate" values="0" in="noise" result="gray" />
-          {/* Increase contrast of the grain */}
           <feComponentTransfer in="gray" result="grain">
             <feFuncR type="linear" slope="1.6" intercept="-0.28" />
             <feFuncG type="linear" slope="1.6" intercept="-0.28" />
             <feFuncB type="linear" slope="1.6" intercept="-0.28" />
           </feComponentTransfer>
         </filter>
-      </defs>
-      {/* White base + grain filter */}
-      <rect width="100%" height="100%" fill="white" filter={`url(#${id})`} />
-      {/* Color overlay via multiply blending — exactly like real wood stain */}
-      <rect width="100%" height="100%" fill={hex} style={{ mixBlendMode: 'multiply' }} />
-      {/* Subtle highlight shimmer */}
-      <rect
-        width="100%"
-        height="100%"
-        fill="url(#shine)"
-        style={{ mixBlendMode: 'screen', opacity: 0.12 }}
-      />
-      <defs>
-        <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id={`shine-${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="white" stopOpacity="0.4" />
           <stop offset="50%" stopColor="white" stopOpacity="0" />
           <stop offset="100%" stopColor="white" stopOpacity="0.15" />
         </linearGradient>
       </defs>
+      <rect width="100%" height="100%" fill="white" filter={`url(#${id})`} />
+      <rect width="100%" height="100%" fill={hex} style={{ mixBlendMode: 'multiply' }} />
+      <rect width="100%" height="100%" fill={`url(#shine-${id})`} style={{ mixBlendMode: 'screen', opacity: 0.12 }} />
     </svg>
   )
 }
@@ -68,7 +55,6 @@ function Modal({ color, onClose }: { color: ColorSwatch; onClose: () => void }) 
           className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Wood plank header */}
           <div className="h-36 w-full relative overflow-hidden">
             <WoodPlank hex={color.hex} seed={7} className="absolute inset-0" />
             <button
@@ -77,6 +63,11 @@ function Modal({ color, onClose }: { color: ColorSwatch; onClose: () => void }) 
             >
               <X size={14} className="text-charcoal" />
             </button>
+            {color.transparent && (
+              <span className="absolute top-3 right-3 bg-white/80 text-charcoal/60 text-[10px] font-medium px-2 py-0.5 rounded-full">
+                שקוף
+              </span>
+            )}
           </div>
 
           <div className="p-5" dir="rtl">
@@ -107,10 +98,10 @@ function Modal({ color, onClose }: { color: ColorSwatch; onClose: () => void }) 
 }
 
 export default function ColorSwatches() {
-  const [activeGroup, setActiveGroup] = useState<string>(COLOR_GROUPS[0].id)
   const [selected, setSelected] = useState<ColorSwatch | null>(null)
-
-  const group: ColorGroup = COLOR_GROUPS.find(g => g.id === activeGroup)!
+  const group = COLOR_GROUPS[0]
+  const colored = group.colors.filter(c => !c.transparent)
+  const transparent = group.colors.filter(c => c.transparent)
 
   return (
     <section className="py-24 bg-white" id="colors">
@@ -126,43 +117,17 @@ export default function ColorSwatches() {
             <div className="h-px w-12 bg-gold/40" />
           </div>
           <h2 className="font-heading text-3xl md:text-4xl text-charcoal mb-3">
-            גוונים לעץ חיצוני
+            AquaTECH לזור — גוונים לעץ חיצוני
           </h2>
           <p className="text-charcoal/50 text-base max-w-xl mx-auto font-body">
-            כל הגוונים הם מחברת <strong className="text-charcoal/70">גוונים</strong> — הספק המרכזי שלנו לצבעים ושמנים לעץ.
+            ציפוי לעץ חיצוני על בסיס מים עם הגנת UV, מחברת <strong className="text-charcoal/70">גוונים</strong>.
             לחצו על גוון לפרטים והמלצת שימוש.
           </p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
-          {COLOR_GROUPS.map((g) => (
-            <button
-              key={g.id}
-              onClick={() => setActiveGroup(g.id)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
-                activeGroup === g.id
-                  ? 'bg-charcoal text-cream shadow-lg'
-                  : 'bg-cream text-charcoal/60 hover:text-charcoal hover:bg-charcoal/8 border border-charcoal/10'
-              }`}
-            >
-              {g.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Group subtitle */}
-        <p className="text-center text-charcoal/45 text-sm mb-8 font-body">{group.subtitle}</p>
-
-        {/* Swatches grid */}
-        <motion.div
-          key={activeGroup}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4"
-        >
-          {group.colors.map((color, i) => (
+        {/* Colored swatches */}
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 mb-10">
+          {colored.map((color, i) => (
             <button
               key={color.code}
               onClick={() => setSelected(color)}
@@ -177,7 +142,35 @@ export default function ColorSwatches() {
               </div>
             </button>
           ))}
-        </motion.div>
+        </div>
+
+        {/* Transparent / clear coatings */}
+        {transparent.length > 0 && (
+          <>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-px flex-1 bg-charcoal/10" />
+              <span className="text-xs text-charcoal/40 tracking-widest uppercase">ציפויים שקופים</span>
+              <div className="h-px flex-1 bg-charcoal/10" />
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              {transparent.map((color, i) => (
+                <button
+                  key={color.code}
+                  onClick={() => setSelected(color)}
+                  className="group flex flex-col items-center gap-2 cursor-pointer"
+                >
+                  <div className="w-full aspect-[4/3] rounded-xl shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-200 border border-charcoal/8 overflow-hidden">
+                    <WoodPlank hex={color.hex} seed={i + 20} />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs font-medium text-charcoal group-hover:text-gold transition-colors leading-tight">{color.name}</p>
+                    <p className="text-[10px] text-charcoal/35 font-mono">{color.code}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
 
         <p className="text-center text-charcoal/30 text-xs mt-10 font-body">
           הגוונים מוצגים לצורך התרשמות בלבד — הצבעים האמיתיים עשויים להיות שונים מהמסך. ניתן לצפות בדוגמיות פיזיות בפגישת ייעוץ.
