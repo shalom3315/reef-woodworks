@@ -3,6 +3,7 @@ import { Frank_Ruhl_Libre, Heebo } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import ChatWidget from '@/components/ChatWidget'
+import CookieBanner from '@/components/CookieBanner'
 
 const frank = Frank_Ruhl_Libre({
   subsets: ['hebrew', 'latin'],
@@ -134,6 +135,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         `}</Script>
         {children}
         <ChatWidget />
+        <CookieBanner />
         <a
           href="https://wa.me/9720556752495"
           target="_blank"
