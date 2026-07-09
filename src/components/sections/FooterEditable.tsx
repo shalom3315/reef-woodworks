@@ -144,6 +144,7 @@ export default function FooterEditable() {
         <div className="border-t border-cream/8 pt-8 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-cream/25 text-xs">© {year} {businessName}. כל הזכויות שמורות.</p>
           <div className="flex items-center gap-4">
+            <a href="/privacy" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">מדיניות פרטיות</a>
             <a href="https://wa.me/9720556752495" target="_blank" rel="noopener noreferrer" className="text-cream/20 hover:text-cream/45 text-xs transition-colors">
               Built by Shalom
             </a>
