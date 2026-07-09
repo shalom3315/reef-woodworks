@@ -172,9 +172,17 @@ export default function ColorSwatches() {
           </>
         )}
 
-        <p className="text-center text-charcoal/30 text-xs mt-10 font-body">
-          הגוונים מוצגים לצורך התרשמות בלבד — הצבעים האמיתיים עשויים להיות שונים מהמסך. ניתן לצפות בדוגמיות פיזיות בפגישת ייעוץ.
-        </p>
+        <div className="text-center mt-10 space-y-1">
+          <p className="text-charcoal/30 text-xs font-body">
+            הגוונים מוצגים לצורך התרשמות בלבד — הצבעים האמיתיים עשויים להיות שונים מהמסך. ניתן לצפות בדוגמיות פיזיות בפגישת ייעוץ.
+          </p>
+          <p className="text-charcoal/30 text-xs font-body">
+            גוונים באדיבות{' '}
+            <a href="https://gvanim.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-gold transition-colors">
+              חברת גוונים
+            </a>
+          </p>
+        </div>
       </div>
 
       {selected && <Modal color={selected} onClose={() => setSelected(null)} />}
