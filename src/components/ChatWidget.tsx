@@ -70,7 +70,7 @@ export default function ChatWidget() {
         body: JSON.stringify({ messages: newMessages }),
       })
       const data = await res.json()
-      const raw = data.text || 'מצטער, הייתה שגיאה. נסה שוב.'
+      const raw = data.text || (data.error ? `שגיאה: ${data.error}` : 'מצטער, הייתה שגיאה. נסה שוב.')
       // תיקון • שנמצאת לבד בשורה — מחברים אותה לשורה הבאה
       const lines = raw.replace(/\*+/g, '').split('\n')
       const fixed: string[] = []
