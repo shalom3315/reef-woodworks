@@ -16,6 +16,26 @@ const EMPTY: Omit<Project, 'id' | 'created_at'> = {
   category: 'ריהוט',
   featured: false,
   order_index: 0,
+  slug: '',
+}
+
+function titleToSlug(title: string): string {
+  const map: Record<string, string> = {
+    'פרגולה': 'pergola', 'פרגולות': 'pergolot', 'דק': 'deck', 'דקים': 'decks',
+    'גדר': 'gader', 'גדרות': 'gaderot', 'שולחן': 'shulhan', 'שולחנות': 'shulhanot',
+    'ספסל': 'safsal', 'כיסא': 'kise', 'ארון': 'aron', 'מיטה': 'mita',
+    'מדרגות': 'madregot', 'פרגוד': 'pargod', 'אורן': 'oren', 'אגוז': 'egoz',
+    'מרפסת': 'mirpeset', 'גן': 'gan', 'חצר': 'hatzar', 'עץ': 'etz',
+    'רהיט': 'rehit', 'ריהוט': 'rehitim', 'גינה': 'gina', 'צד': 'tzad',
+  }
+  const words = title.split(/\s+/)
+  return words
+    .map((w) => map[w] || w.replace(/[^\w]/g, ''))
+    .filter(Boolean)
+    .join('-')
+    .toLowerCase()
+    .replace(/-+/g, '-')
+    .slice(0, 60)
 }
 
 const CATEGORIES = ['פרגולות', 'פרגולה הצללה', 'דקים', 'גדרות', 'ריהוט גן', 'פרויקטים מיוחדים']
@@ -55,6 +75,7 @@ export default function ProjectsManager() {
       category: project.category,
       featured: project.featured,
       order_index: project.order_index,
+      slug: project.slug || '',
     })
   }
 
@@ -171,6 +192,10 @@ export default function ProjectsManager() {
                   </span>
                 </div>
                 <p className="text-charcoal/45 text-xs mt-1 truncate">{p.material} · {p.duration}</p>
+                {p.slug
+                  ? <p className="text-gold/60 text-xs mt-0.5 font-mono truncate">/projects/{p.slug}</p>
+                  : <p className="text-red-400/60 text-xs mt-0.5">⚠ חסר slug — URL לא SEO</p>
+                }
               </div>
 
               <div className="flex gap-2 flex-shrink-0">
@@ -218,6 +243,28 @@ export default function ProjectsManager() {
                   className={inputCls}
                   placeholder="שולחן אוכל אגוז"
                 />
+              </Field>
+
+              <Field label="Slug (לURL)">
+                <div className="flex gap-2">
+                  <input
+                    value={form.slug || ''}
+                    onChange={(e) => setForm({ ...form, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-') })}
+                    className={inputCls}
+                    placeholder="pergola-oren-ramat-gan"
+                    dir="ltr"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setForm({ ...form, slug: titleToSlug(form.title) })}
+                    className="px-3 py-2 rounded-xl border border-charcoal/15 text-xs text-charcoal/60 hover:bg-cream whitespace-nowrap transition-colors"
+                  >
+                    יצור אוטו
+                  </button>
+                </div>
+                {form.slug && (
+                  <p className="text-xs text-charcoal/35 mt-1 dir-ltr text-left">/projects/{form.slug}</p>
+                )}
               </Field>
 
               <Field label="תיאור">
