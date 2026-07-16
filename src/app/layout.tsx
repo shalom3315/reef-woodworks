@@ -19,7 +19,7 @@ const heebo = Heebo({
 })
 
 const SITE_URL = 'https://reef-woodworks.vercel.app'
-const OG_IMAGE = 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=1200&q=80'
+const OG_IMAGE = `${SITE_URL}/hero.jpg`
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -90,7 +90,18 @@ const localBusinessSchema = {
     { '@type': 'City', name: 'פתח תקווה' },
     { '@type': 'City', name: 'ראשון לציון' },
     { '@type': 'City', name: 'חולון' },
+    { '@type': 'City', name: 'בת ים' },
+    { '@type': 'City', name: 'הרצליה' },
+    { '@type': 'City', name: 'גבעתיים' },
+    { '@type': 'City', name: 'בני ברק' },
+    { '@type': 'City', name: 'רמלה' },
+    { '@type': 'City', name: 'לוד' },
+    { '@type': 'City', name: 'נס ציונה' },
+    { '@type': 'City', name: 'יהוד' },
+    { '@type': 'City', name: 'אור יהודה' },
+    { '@type': 'City', name: 'גדרה' },
     { '@type': 'AdministrativeArea', name: 'מרכז הארץ' },
+    { '@type': 'AdministrativeArea', name: 'גוש דן' },
   ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
@@ -111,7 +122,6 @@ const localBusinessSchema = {
     telephone: '+972532213939',
     contactType: 'customer service',
     availableLanguage: 'Hebrew',
-    contactOption: 'TollFree',
   },
 }
 

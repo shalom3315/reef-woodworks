@@ -78,6 +78,12 @@ export default function FooterEditable() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a href="/blog" className="text-cream/40 hover:text-gold transition-colors text-sm flex items-center gap-2 group">
+                  <span className="w-0 group-hover:w-3 h-px bg-gold transition-all duration-300 flex-shrink-0" />
+                  מאמרים ומדריכים
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -144,6 +150,7 @@ export default function FooterEditable() {
         <div className="border-t border-cream/8 pt-8 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-cream/25 text-xs">© {year} {businessName}. כל הזכויות שמורות.</p>
           <div className="flex items-center gap-4">
+            <a href="/accessibility" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">הצהרת נגישות</a>
             <a href="/privacy" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">מדיניות פרטיות</a>
             <a href="https://wa.me/9720556752495" target="_blank" rel="noopener noreferrer" className="text-cream/20 hover:text-cream/45 text-xs transition-colors">
               Built by Shalom
