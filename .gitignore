@@ -5,9 +5,23 @@ node_modules
 *.log
 .DS_Store
 
-# Large media folders
+# Large media files and folders
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.ogg
+*.m4a
+*.mp3
+*.jpeg
+*.jpg
+*.png
+*.crdownload
 אלי/
 גן/
+גדרות/
+דק/
+סורוצקין/
 extracted_frames/
 frames_renamed/
 frames_map.txt
@@ -15,4 +29,9 @@ extract_frames.py
 rename_frames.py
 upload-*.mjs
 fix-missing.mjs
-לוגו_קטן-removebg-preview.png
+delete-bad-images.mjs
+contract.html
+screenshot_*.png
+CLAUDE.md
+
+.vercel
