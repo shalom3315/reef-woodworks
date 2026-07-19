@@ -25,6 +25,7 @@ body {
   color: var(--charcoal);
   font-family: var(--font-heebo), 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
+  scrollbar-gutter: stable;
 }
 
 ::-webkit-scrollbar {

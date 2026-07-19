@@ -43,10 +43,11 @@ export default function ChatWidget() {
 
   useEffect(() => {
     if (sessionStorage.getItem('chat_opened')) return
+    if (window.innerWidth < 768) return
     const t = setTimeout(() => {
       setOpen(true)
       sessionStorage.setItem('chat_opened', '1')
-    }, 3000)
+    }, 5000)
     return () => clearTimeout(t)
   }, [])
 
