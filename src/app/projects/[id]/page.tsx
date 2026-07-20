@@ -8,7 +8,7 @@ import { createClient } from '@/lib/supabase'
 import { ChevronRight, Clock, Layers, MessageCircle, ArrowRight } from 'lucide-react'
 import type { Project } from '@/types'
 
-const SITE_URL = 'https://reef-woodworks.vercel.app'
+const SITE_URL = 'https://woodworking-landing-three.vercel.app'
 const WA_NUMBER = '972532213939'
 
 async function getProject(slugOrId: string): Promise<Project | null> {

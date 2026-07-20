@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import { ARTICLES } from '@/data/articles'
 
-const SITE_URL = 'https://reef-woodworks.vercel.app'
+const SITE_URL = 'https://woodworking-landing-three.vercel.app'
 
 export const metadata: Metadata = {
   title: 'מאמרים ומדריכים | ריף וודוורקס',

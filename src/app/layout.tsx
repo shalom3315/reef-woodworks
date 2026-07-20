@@ -18,7 +18,7 @@ const heebo = Heebo({
   display: 'swap',
 })
 
-const SITE_URL = 'https://reef-woodworks.vercel.app'
+const SITE_URL = 'https://woodworking-landing-three.vercel.app'
 const OG_IMAGE = `${SITE_URL}/hero.jpg`
 
 export const metadata: Metadata = {

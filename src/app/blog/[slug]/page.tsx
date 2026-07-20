@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { ChevronRight, MessageCircle, Calendar } from 'lucide-react'
 import { ARTICLES, getArticle } from '@/data/articles'
 
-const SITE_URL = 'https://reef-woodworks.vercel.app'
+const SITE_URL = 'https://woodworking-landing-three.vercel.app'
 const WA_NUMBER = '972532213939'
 
 export function generateStaticParams() {

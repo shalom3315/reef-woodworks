@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 import { createClient } from '@/lib/supabase'
 import { ARTICLES } from '@/data/articles'
 
-const SITE_URL = 'https://reef-woodworks.vercel.app'
+const SITE_URL = 'https://woodworking-landing-three.vercel.app'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let projectUrls: MetadataRoute.Sitemap = []

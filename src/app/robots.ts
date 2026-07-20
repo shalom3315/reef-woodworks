@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/admin/', '/api/'],
     },
-    sitemap: 'https://reef-woodworks.vercel.app/sitemap.xml',
+    sitemap: 'https://woodworking-landing-three.vercel.app/sitemap.xml',
   }
 }

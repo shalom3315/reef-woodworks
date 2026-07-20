@@ -22,7 +22,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="font-heading text-xl text-charcoal mb-3">כללי</h2>
             <p className="leading-relaxed">
-              ריף וודוורקס (להלן: &quot;אנחנו&quot; או &quot;החברה&quot;) מכבדת את פרטיות המשתמשים באתר <strong>reef-woodworks.vercel.app</strong>.
+              ריף וודוורקס (להלן: &quot;אנחנו&quot; או &quot;החברה&quot;) מכבדת את פרטיות המשתמשים באתר <strong>woodworking-landing-three.vercel.app</strong>.
               מסמך זה מפרט אילו נתונים נאספים, למה הם נאספים, כיצד הם מוגנים, ומהן זכויותיכם.
             </p>
           </section>
