@@ -36,7 +36,7 @@ export default function Videos({ videos }: { videos: VideoItem[] }) {
           </p>
         </motion.div>
 
-        <div className={`grid gap-6 ${videos.length === 1 ? 'max-w-3xl mx-auto' : videos.length === 2 ? 'md:grid-cols-2 max-w-4xl mx-auto' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
+        <div className={`grid gap-6 ${videos.length === 1 ? 'max-w-3xl mx-auto' : 'md:grid-cols-2 max-w-5xl mx-auto'}`}>
           {videos.map((v, i) => (
             <VideoCard key={v.id} video={v} index={i} />
           ))}

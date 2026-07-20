@@ -44,6 +44,16 @@ body {
   color: white;
 }
 
+/* Fix video fullscreen — use contain (letterbox) instead of cover (crop) */
+video:fullscreen,
+video:-webkit-full-screen,
+video:-moz-full-screen {
+  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: black;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
