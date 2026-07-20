@@ -83,7 +83,7 @@ function VideoCard({ video, index }: { video: VideoItem; index: number }) {
         <video
           ref={ref}
           src={`${video.video_url}#t=1`}
-          className="w-full h-full object-cover"
+          className={`w-full h-full ${playing ? 'object-contain bg-black' : 'object-cover'}`}
           preload="metadata"
           playsInline
           muted
