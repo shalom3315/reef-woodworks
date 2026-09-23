@@ -25,7 +25,7 @@ export default function TermsPage() {
           <section>
             <h2 className="font-heading text-xl text-charcoal mb-3">כללי</h2>
             <p className="leading-relaxed">
-              אתר זה (<strong>woodworking-landing-three.vercel.app</strong>) מופעל על ידי ריף וודוורקס, בבעלות אלי מרקוס (להלן: &quot;אנחנו&quot; או &quot;החברה&quot;).
+              אתר זה (<strong>reefwoodwork.com</strong>) מופעל על ידי ריף וודוורקס, בבעלות אלי מרקוס (להלן: &quot;אנחנו&quot; או &quot;החברה&quot;).
               הגלישה והשימוש באתר מהווים הסכמה לתנאים המפורטים במסמך זה. אם אינכם מסכימים לתנאים, אנא הימנעו משימוש באתר.
             </p>
             <p className="leading-relaxed mt-3 text-sm text-charcoal/50">

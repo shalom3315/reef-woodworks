@@ -15,6 +15,16 @@ const nextConfig = {
       { protocol: 'https', hostname: '*.gstatic.com' },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'woodworking-landing-three.vercel.app' }],
+        destination: 'https://reefwoodwork.com/:path*',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {
