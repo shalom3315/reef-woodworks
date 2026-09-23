@@ -152,6 +152,7 @@ export default function FooterEditable() {
           <div className="flex items-center gap-4">
             <a href="/accessibility" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">הצהרת נגישות</a>
             <a href="/privacy" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">מדיניות פרטיות</a>
+            <a href="/terms" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">תנאי שימוש</a>
             <a href="https://wa.me/9720556752495" target="_blank" rel="noopener noreferrer" className="text-cream/20 hover:text-cream/45 text-xs transition-colors">
               Built by Shalom
             </a>

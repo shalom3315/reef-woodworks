@@ -1,12 +1,17 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest } from 'next/server'
+import { createAuthClient } from '@/lib/supabase'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 export async function POST(req: NextRequest) {
-  // Admin-only endpoint — requires the HTTP-only session cookie set at login
+  // Admin-only endpoint — verify the session cookie is a real, current Supabase JWT
   const adminToken = req.cookies.get('admin_token')?.value
   if (!adminToken) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  const { data: { user } } = await createAuthClient(adminToken).auth.getUser()
+  if (!user) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

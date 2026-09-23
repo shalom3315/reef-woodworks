@@ -1,9 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+const SITE_URL = 'https://reefwoodwork.com'
+
 export const metadata: Metadata = {
   title: 'מדיניות פרטיות | ריף וודוורקס',
   description: 'מדיניות הפרטיות של ריף וודוורקס — איזה מידע נאסף, למה ואיך הוא מוגן',
+  alternates: { canonical: `${SITE_URL}/privacy` },
 }
 
 export default function PrivacyPage() {
@@ -136,6 +139,7 @@ export default function PrivacyPage() {
 
           <div className="flex flex-wrap gap-4 pt-4 border-t border-charcoal/10">
             <Link href="/accessibility" className="text-sm text-gold hover:underline">הצהרת נגישות</Link>
+            <Link href="/terms" className="text-sm text-gold hover:underline">תנאי שימוש</Link>
             <Link href="/" className="text-sm text-charcoal/40 hover:text-gold transition-colors">חזרה לאתר</Link>
           </div>
         </div>

@@ -1,9 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+const SITE_URL = 'https://reefwoodwork.com'
+
 export const metadata: Metadata = {
   title: 'הצהרת נגישות | ריף וודוורקס',
   description: 'הצהרת נגישות של אתר ריף וודוורקס בהתאם לתקן ישראלי 5568 ורמה AA של WCAG 2.1',
+  alternates: { canonical: `${SITE_URL}/accessibility` },
 }
 
 export default function AccessibilityPage() {
@@ -80,6 +83,12 @@ export default function AccessibilityPage() {
               אם אתם זקוקים למידע מהאתר בפורמט נגיש אחר, אנא פנו אלינו בטלפון או במייל ונשתדל לספק את המידע בפורמט המתאים לכם.
             </p>
           </section>
+
+          <div className="flex flex-wrap gap-4 pt-4 border-t border-charcoal/10">
+            <Link href="/privacy" className="text-sm text-gold hover:underline">מדיניות פרטיות</Link>
+            <Link href="/terms" className="text-sm text-gold hover:underline">תנאי שימוש</Link>
+            <Link href="/" className="text-sm text-charcoal/40 hover:text-gold transition-colors">חזרה לאתר</Link>
+          </div>
 
         </div>
       </div>

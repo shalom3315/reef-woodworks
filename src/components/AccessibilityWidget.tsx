@@ -1,38 +1,53 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Accessibility, X, ZoomIn, ZoomOut, Contrast, Eye, RotateCcw } from 'lucide-react'
+import { Accessibility, X, ZoomIn, ZoomOut, Contrast, Eye, Pause, RotateCcw } from 'lucide-react'
+
+const STORAGE_KEY = 'a11y-prefs'
 
 export default function AccessibilityWidget() {
   const [open, setOpen] = useState(false)
   const [fontSize, setFontSize] = useState(100)
   const [highContrast, setHighContrast] = useState(false)
   const [grayscale, setGrayscale] = useState(false)
+  const [reduceMotion, setReduceMotion] = useState(false)
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY)
+      if (saved) {
+        const p = JSON.parse(saved)
+        if (typeof p.fontSize === 'number') setFontSize(p.fontSize)
+        setHighContrast(!!p.highContrast)
+        setGrayscale(!!p.grayscale)
+        setReduceMotion(!!p.reduceMotion)
+      }
+    } catch {}
+    setLoaded(true)
+  }, [])
+
+  useEffect(() => {
+    if (!loaded) return
     document.documentElement.style.fontSize = `${fontSize}%`
-  }, [fontSize])
+    document.documentElement.classList.toggle('high-contrast', highContrast)
+    document.documentElement.classList.toggle('reduce-motion', reduceMotion)
 
-  useEffect(() => {
-    if (highContrast) {
-      document.documentElement.classList.add('high-contrast')
-    } else {
-      document.documentElement.classList.remove('high-contrast')
-    }
-  }, [highContrast])
+    // filter must sit on <html>: on any other element it turns into a containing
+    // block for position:fixed descendants and unpins the floating widgets
+    const filters = []
+    if (grayscale) filters.push('grayscale(100%)')
+    if (highContrast) filters.push('contrast(1.35)')
+    document.documentElement.style.filter = filters.join(' ')
 
-  useEffect(() => {
-    if (grayscale) {
-      document.body.style.filter = 'grayscale(100%)'
-    } else {
-      document.body.style.filter = ''
-    }
-  }, [grayscale])
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ fontSize, highContrast, grayscale, reduceMotion }))
+  }, [loaded, fontSize, highContrast, grayscale, reduceMotion])
 
   const reset = () => {
     setFontSize(100)
     setHighContrast(false)
     setGrayscale(false)
+    setReduceMotion(false)
   }
 
   return (
@@ -70,6 +85,7 @@ export default function AccessibilityWidget() {
             {/* High contrast */}
             <button
               onClick={() => setHighContrast(v => !v)}
+              aria-pressed={highContrast}
               className={`w-full flex items-center gap-2.5 border rounded-lg px-3 py-2.5 text-sm transition-colors ${highContrast ? 'border-gold bg-gold/10 text-gold' : 'border-charcoal/15 text-charcoal hover:bg-cream'}`}
             >
               <Contrast size={16} />
@@ -79,10 +95,21 @@ export default function AccessibilityWidget() {
             {/* Grayscale */}
             <button
               onClick={() => setGrayscale(v => !v)}
+              aria-pressed={grayscale}
               className={`w-full flex items-center gap-2.5 border rounded-lg px-3 py-2.5 text-sm transition-colors ${grayscale ? 'border-gold bg-gold/10 text-gold' : 'border-charcoal/15 text-charcoal hover:bg-cream'}`}
             >
               <Eye size={16} />
               גווני אפור
+            </button>
+
+            {/* Reduce motion */}
+            <button
+              onClick={() => setReduceMotion(v => !v)}
+              aria-pressed={reduceMotion}
+              className={`w-full flex items-center gap-2.5 border rounded-lg px-3 py-2.5 text-sm transition-colors ${reduceMotion ? 'border-gold bg-gold/10 text-gold' : 'border-charcoal/15 text-charcoal hover:bg-cream'}`}
+            >
+              <Pause size={16} />
+              עצירת אנימציות
             </button>
 
             {/* Reset */}
@@ -99,6 +126,7 @@ export default function AccessibilityWidget() {
 
       <button
         onClick={() => setOpen(v => !v)}
+        aria-expanded={open}
         className="w-12 h-12 bg-charcoal hover:bg-charcoal/85 text-cream rounded-full shadow-xl flex items-center justify-center transition-all hover:scale-110"
         aria-label="תפריט נגישות"
       >

@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import { Rubik, Heebo } from 'next/font/google'
-import Script from 'next/script'
 import './globals.css'
 import SiteWidgets from '@/components/SiteWidgets'
+import Analytics from '@/components/Analytics'
+import { safeJsonLd } from '@/lib/safeJsonLd'
 
 const frank = Rubik({
   subsets: ['hebrew', 'latin'],
@@ -18,7 +19,7 @@ const heebo = Heebo({
   display: 'swap',
 })
 
-const SITE_URL = 'https://woodworking-landing-three.vercel.app'
+const SITE_URL = 'https://reefwoodwork.com'
 const OG_IMAGE = `${SITE_URL}/hero.jpg`
 
 export const metadata: Metadata = {
@@ -132,17 +133,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: `history.scrollRestoration='manual';window.scrollTo(0,0);` }} />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(localBusinessSchema) }}
         />
       </head>
       <body className="font-body bg-cream text-charcoal antialiased">
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-JHYEVWJL0Q" strategy="afterInteractive" />
-        <Script id="ga4" strategy="afterInteractive">{`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-JHYEVWJL0Q');
-        `}</Script>
+        <Analytics />
         {children}
         <SiteWidgets />
       </body>

@@ -1,6 +1,7 @@
 export const revalidate = 3600
 
 import { createClient } from '@/lib/supabase'
+import { safeJsonLd } from '@/lib/safeJsonLd'
 import EditProvider from '@/components/EditProvider'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/sections/Hero'
@@ -105,7 +106,7 @@ export default async function Home() {
       {faqSchema && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(faqSchema) }}
         />
       )}
       <EditProvider initialSettings={settings}>

@@ -5,10 +5,11 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
+import { safeJsonLd } from '@/lib/safeJsonLd'
 import { ChevronRight, Clock, Layers, MessageCircle, ArrowRight } from 'lucide-react'
 import type { Project } from '@/types'
 
-const SITE_URL = 'https://woodworking-landing-three.vercel.app'
+const SITE_URL = 'https://reefwoodwork.com'
 const WA_NUMBER = '972532213939'
 
 async function getProject(slugOrId: string): Promise<Project | null> {
@@ -97,7 +98,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(productSchema) }}
       />
 
       <header className="fixed top-0 left-0 right-0 z-50 bg-charcoal/95 backdrop-blur-md shadow-xl">

@@ -3,8 +3,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ChevronRight, MessageCircle, Calendar } from 'lucide-react'
 import { ARTICLES, getArticle } from '@/data/articles'
+import { safeJsonLd } from '@/lib/safeJsonLd'
 
-const SITE_URL = 'https://woodworking-landing-three.vercel.app'
+const SITE_URL = 'https://reefwoodwork.com'
 const WA_NUMBER = '972532213939'
 
 export function generateStaticParams() {
@@ -52,7 +53,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="min-h-screen bg-cream" dir="rtl">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(articleSchema) }} />
 
       {/* Top nav */}
       <div className="bg-white border-b border-charcoal/8">
