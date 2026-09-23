@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   verification: {
-    google: 'Vgm6iSrVMI0fYgvON7V54dgteWLgOjIF09PD_dUiHuY',
+    google: ['Vgm6iSrVMI0fYgvON7V54dgteWLgOjIF09PD_dUiHuY', 'dCLJwcDFwL2rfAcWNCWZZ4Ab5KzTHkBDB_H5fX970nY'],
   },
   icons: {
     icon: '/logo.png',
