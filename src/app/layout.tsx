@@ -60,13 +60,9 @@ export const metadata: Metadata = {
     google: ['Vgm6iSrVMI0fYgvON7V54dgteWLgOjIF09PD_dUiHuY', 'dCLJwcDFwL2rfAcWNCWZZ4Ab5KzTHkBDB_H5fX970nY'],
   },
   icons: {
-    // Google Search requires a square favicon (multiple of 48px) — logo.png is 596x419 and gets ignored
-    icon: [
-      { url: '/favicon.ico?v=3', sizes: '48x48' },
-      { url: '/icon-512.png?v=3', type: 'image/png', sizes: '512x512' },
-    ],
-    shortcut: '/favicon.ico?v=3',
-    apple: '/icon-512.png?v=3',
+    icon: '/logo.png?v=4',
+    shortcut: '/logo.png?v=4',
+    apple: '/logo.png?v=4',
   },
 }
 
