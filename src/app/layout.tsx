@@ -60,9 +60,9 @@ export const metadata: Metadata = {
     google: ['Vgm6iSrVMI0fYgvON7V54dgteWLgOjIF09PD_dUiHuY', 'dCLJwcDFwL2rfAcWNCWZZ4Ab5KzTHkBDB_H5fX970nY'],
   },
   icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
-    apple: '/logo.png',
+    icon: '/logo.png?v=2',
+    shortcut: '/logo.png?v=2',
+    apple: '/logo.png?v=2',
   },
 }
 
