@@ -71,7 +71,7 @@ export default function ChatWidget() {
         body: JSON.stringify({ messages: newMessages }),
       })
       const data = await res.json()
-      const raw = data.text || (data.error ? `שגיאה: ${data.error}` : 'מצטער, הייתה שגיאה. נסה שוב.')
+      const raw = data.text || (data.error || 'אנחנו עושים כרגע שדרוג קטן לצ׳אט ונחזור ממש בקרוב 🙂 בינתיים אפשר לשלוח לנו הודעה בוואטסאפ ונחזור אליך בהקדם.')
       // תיקון • שנמצאת לבד בשורה — מחברים אותה לשורה הבאה
       const lines = raw.replace(/\*+/g, '').split('\n')
       const fixed: string[] = []
@@ -86,7 +86,7 @@ export default function ChatWidget() {
       const clean = fixed.join('\n').replace(/\n{3,}/g, '\n\n').trim()
       setMessages([...newMessages, { role: 'assistant', content: clean }])
     } catch {
-      setMessages([...newMessages, { role: 'assistant', content: 'מצטער, הייתה שגיאה. נסה שוב.' }])
+      setMessages([...newMessages, { role: 'assistant', content: 'אנחנו עושים כרגע שדרוג קטן לצ׳אט ונחזור ממש בקרוב 🙂 בינתיים אפשר לשלוח לנו הודעה בוואטסאפ ונחזור אליך בהקדם.' }])
     } finally {
       setLoading(false)
     }

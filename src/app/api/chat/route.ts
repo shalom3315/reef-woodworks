@@ -79,6 +79,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ text })
   } catch (e) {
     console.error('Chat API error:', e)
-    return NextResponse.json({ error: String(e) }, { status: 500 })
+    return NextResponse.json(
+      { error: 'אנחנו עושים כרגע שדרוג קטן לצ׳אט ונחזור ממש בקרוב 🙂 בינתיים אפשר לשלוח לנו הודעה בוואטסאפ ונחזור אליך בהקדם.' },
+      { status: 503 }
+    )
   }
 }
