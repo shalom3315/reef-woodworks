@@ -117,7 +117,7 @@ export default function ColorSwatches() {
             <div className="h-px w-12 bg-gold/40" />
           </div>
           <h2 className="font-heading text-3xl md:text-4xl text-charcoal mb-3">
-            AquaTECH לזור — גוונים לעץ חיצוני
+            AquaTECH לזור: גוונים לעץ חיצוני
           </h2>
           <p className="text-charcoal/50 text-base max-w-xl mx-auto font-body">
             ציפוי לעץ חיצוני על בסיס מים עם הגנת UV, מחברת <strong className="text-charcoal/70">גוונים</strong>.
@@ -174,7 +174,7 @@ export default function ColorSwatches() {
 
         <div className="text-center mt-10 space-y-1">
           <p className="text-charcoal/30 text-xs font-body">
-            הגוונים מוצגים לצורך התרשמות בלבד — הצבעים האמיתיים עשויים להיות שונים מהמסך. ניתן לצפות בדוגמיות פיזיות בפגישת ייעוץ.
+            הגוונים מוצגים לצורך התרשמות בלבד, והצבעים האמיתיים עשויים להיות שונים מהמסך. ניתן לצפות בדוגמיות פיזיות בפגישת ייעוץ.
           </p>
           <p className="text-charcoal/30 text-xs font-body">
             גוונים באדיבות{' '}

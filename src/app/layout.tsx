@@ -3,6 +3,7 @@ import { Rubik, Heebo } from 'next/font/google'
 import './globals.css'
 import SiteWidgets from '@/components/SiteWidgets'
 import Analytics from '@/components/Analytics'
+import MotionProvider from '@/components/MotionProvider'
 import { safeJsonLd } from '@/lib/safeJsonLd'
 
 const frank = Rubik({
@@ -25,11 +26,11 @@ const OG_IMAGE = `${SITE_URL}/hero.jpg`
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'ריף וודוורקס | נגרות בהתאמה אישית — אלי מרקוס',
+    default: 'ריף וודוורקס | נגרות בהתאמה אישית | אלי מרקוס',
     template: '%s | ריף וודוורקס',
   },
   description:
-    'נגרות חוץ בהתאמה אישית במרכז הארץ — פרגולות עץ, דקים, גדרות, ריהוט גן ופרויקטים מיוחדים בעבודת יד. אלי מרקוס, ריף וודוורקס. הצעת מחיר חינם.',
+    'נגרות חוץ בהתאמה אישית במרכז הארץ: פרגולות עץ, דקים, גדרות, ריהוט גן ופרויקטים מיוחדים בעבודת יד. אלי מרקוס, ריף וודוורקס. הצעת מחיר חינם.',
   keywords: 'פרגולה עץ, פרגולות עץ, נגרות חוץ, דק עץ, דקים, גדר עץ, גדרות עץ, ריהוט גן, ריהוט גן עץ, פרגולה הצללה, סוכת עץ, גזיבו עץ, נגר חוץ, נגר מרכז הארץ, נגר גוש דן, נגר תל אביב, פרגולה מרכז הארץ, עבודות עץ חוץ, עץ בהתאמה אישית, ריף וודוורקס, אלי מרקוס',
   authors: [{ name: 'אלי מרקוס', url: SITE_URL }],
   creator: 'אלי מרקוס',
@@ -39,13 +40,13 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'ריף וודוורקס',
     title: 'ריף וודוורקס | נגרות חוץ בהתאמה אישית',
-    description: 'פרגולות, דקים, גדרות וריהוט גן מעץ בעבודת יד — אלי מרקוס. הצעת מחיר חינם.',
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: 'ריף וודוורקס — עבודות עץ בהתאמה אישית' }],
+    description: 'פרגולות, דקים, גדרות וריהוט גן מעץ בעבודת יד. אלי מרקוס. הצעת מחיר חינם.',
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: 'ריף וודוורקס: עבודות עץ בהתאמה אישית' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ריף וודוורקס | נגרות חוץ בהתאמה אישית',
-    description: 'פרגולות, דקים, גדרות וריהוט גן מעץ בעבודת יד — אלי מרקוס.',
+    description: 'פרגולות, דקים, גדרות וריהוט גן מעץ בעבודת יד. אלי מרקוס.',
     images: [OG_IMAGE],
   },
   robots: {
@@ -72,7 +73,7 @@ const localBusinessSchema = {
   '@id': SITE_URL,
   name: 'ריף וודוורקס',
   alternateName: 'Reef Woodworks',
-  description: 'נגרות חוץ בהתאמה אישית — פרגולות, דקים, גדרות וריהוט גן מעץ מלא. אלי מרקוס, מרכז הארץ.',
+  description: 'נגרות חוץ בהתאמה אישית: פרגולות, דקים, גדרות וריהוט גן מעץ מלא. אלי מרקוס, מרכז הארץ.',
   url: SITE_URL,
   telephone: '+972532213939',
   email: 'reefww3939@gmail.com',
@@ -138,8 +139,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="font-body bg-cream text-charcoal antialiased">
         <Analytics />
-        {children}
-        <SiteWidgets />
+        <MotionProvider>
+          {children}
+          <SiteWidgets />
+        </MotionProvider>
       </body>
     </html>
   )

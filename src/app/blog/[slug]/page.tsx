@@ -4,9 +4,9 @@ import Link from 'next/link'
 import { ChevronRight, MessageCircle, Calendar } from 'lucide-react'
 import { ARTICLES, getArticle } from '@/data/articles'
 import { safeJsonLd } from '@/lib/safeJsonLd'
+import { waLink } from '@/lib/contact'
 
 const SITE_URL = 'https://reefwoodwork.com'
-const WA_NUMBER = '972532213939'
 
 export function generateStaticParams() {
   return ARTICLES.map(a => ({ slug: a.slug }))
@@ -37,7 +37,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const article = getArticle(slug)
   if (!article) notFound()
 
-  const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent('שלום, ראיתי את המאמר באתר ורציתי לשאול על ' + article.title)}`
+  const articleWaLink = waLink('שלום, ראיתי את המאמר באתר ורציתי לשאול על ' + article.title)
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -124,10 +124,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <div className="mt-16 bg-charcoal rounded-2xl p-8 text-center">
           <p className="text-cream/80 text-base leading-relaxed mb-6">{article.ctaText}</p>
           <a
-            href={waLink}
+            href={articleWaLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 bg-[#25D366] hover:bg-[#20bd5c] text-white font-medium px-8 py-4 rounded-xl transition-colors text-base"
+            className="inline-flex items-center gap-2.5 bg-[#25D366] hover:bg-[#20bd5c] text-charcoal font-medium px-8 py-4 rounded-xl transition-colors text-base"
           >
             <MessageCircle size={20} />
             שלחו הודעה בוואטסאפ

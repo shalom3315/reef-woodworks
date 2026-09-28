@@ -51,7 +51,7 @@ export default function AccessibilityWidget() {
   }
 
   return (
-    <div className="fixed left-4 bottom-24 z-[90]" dir="rtl">
+    <div className="fixed left-4 bottom-[7.5rem] z-[90] float-lift" dir="rtl">
       {open && (
         <div className="mb-3 bg-white rounded-2xl shadow-2xl border border-charcoal/10 p-4 w-56">
           <div className="flex items-center justify-between mb-4">
@@ -127,7 +127,7 @@ export default function AccessibilityWidget() {
       <button
         onClick={() => setOpen(v => !v)}
         aria-expanded={open}
-        className="w-12 h-12 bg-charcoal hover:bg-charcoal/85 text-cream rounded-full shadow-xl flex items-center justify-center transition-all hover:scale-110"
+        className="w-12 h-12 bg-charcoal hover:bg-charcoal/85 text-cream rounded-full shadow-xl flex items-center justify-center hover:scale-105 press active:scale-[0.97]"
         aria-label="תפריט נגישות"
       >
         <Accessibility size={22} />

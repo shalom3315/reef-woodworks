@@ -6,11 +6,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import { safeJsonLd } from '@/lib/safeJsonLd'
+import { waLink } from '@/lib/contact'
 import { ChevronRight, Clock, Layers, MessageCircle, ArrowRight } from 'lucide-react'
 import type { Project } from '@/types'
 
 const SITE_URL = 'https://reefwoodwork.com'
-const WA_NUMBER = '972532213939'
 
 async function getProject(slugOrId: string): Promise<Project | null> {
   try {
@@ -43,8 +43,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const urlSlug = project.slug || project.id
   const title = `${project.title} | ריף וודוורקס`
   const description = project.description
-    ? `${project.description} — ${project.material ? `חומר: ${project.material}` : ''} — עבודת יד מקצועית, ריף וודוורקס.`
-    : `${project.title} — נגרות חוץ בהתאמה אישית. ${project.material || ''} ${project.duration ? `· ${project.duration}` : ''} — ריף וודוורקס.`
+    ? `${project.description}${project.material ? ` חומר: ${project.material}.` : ''} ריף וודוורקס.`
+    : `${project.title}: נגרות חוץ בהתאמה אישית. ${project.material || ''} ${project.duration ? `· ${project.duration}` : ''} | ריף וודוורקס`
 
   return {
     title,
@@ -70,13 +70,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
     ? project.image_url
     : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80'
 
-  const waMessage = encodeURIComponent(`שלום אלי, ראיתי את הפרויקט "${project.title}" באתר ואשמח לקבל הצעת מחיר`)
+  const projectWaLink = waLink(`שלום אלי, ראיתי את הפרויקט "${project.title}" באתר ואשמח לקבל הצעת מחיר`)
 
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: project.title,
-    description: project.description || `${project.title} — נגרות חוץ בהתאמה אישית`,
+    description: project.description || `${project.title}: נגרות חוץ בהתאמה אישית`,
     image: safeImage,
     category: project.category,
     brand: { '@type': 'Brand', name: 'ריף וודוורקס' },
@@ -187,13 +187,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
 
               <div className="flex flex-wrap gap-3">
                 <a
-                  href={`https://wa.me/${WA_NUMBER}?text=${waMessage}`}
+                  href={projectWaLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2.5 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-semibold px-7 py-4 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2.5 bg-[#25D366] hover:bg-[#1ebe5d] text-charcoal font-semibold px-7 py-4 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 hover:-translate-y-0.5"
                 >
                   <MessageCircle size={18} />
-                  רוצה כזה — שלח הודעה
+                  רוצה כזה? שלח הודעה
                 </a>
                 <Link
                   href="/#gallery"

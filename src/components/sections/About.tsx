@@ -2,23 +2,23 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { Award, Clock, Users, Sparkles } from 'lucide-react'
+import { Award, Clock, Users } from 'lucide-react'
 import { useEditContext } from '@/contexts/EditContext'
 import { EditField } from '@/components/EditField'
 
-const stats = [
-  { icon: Clock, value: '15+', label: 'שנות ניסיון' },
-  { icon: Users, value: '200+', label: 'לקוחות' },
-  { icon: Award, value: '100%', label: 'עבודת יד' },
-  { icon: Sparkles, value: '0', label: 'פשרות' },
-]
 
 export default function About() {
   const { editing, draft } = useEditContext()
 
-  const text = draft.about_text || 'עם למעלה מ-15 שנות ניסיון בנגרות אמנותית, אני מאמין שכל חתיכת עץ מספרת סיפור.'
-  const name = draft.about_name || 'יוסי בן-דוד'
+  const text = draft.about_text || 'אני אלי מרקוס, בן 26, ואני עובד עם עץ מאז שאני זוכר את עצמי.'
+  const name = draft.about_name || 'אלי מרקוס'
   const title = draft.about_title || 'נגר ובעל הסדנה'
+  // Same numbers the hero shows, so the two sections can't contradict each other
+  const stats = [
+    { icon: Clock, value: draft.stat_years || '7', label: 'שנות ניסיון' },
+    { icon: Users, value: draft.stat_projects || '150+', label: 'פרויקטים' },
+    { icon: Award, value: draft.stat_handmade || '100%', label: 'עבודת יד' },
+  ]
   const rawImage = draft.about_image || ''
   const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1588854337221-4cf9fa96059c?w=800&q=80'
   const image = (rawImage.startsWith('http://') || rawImage.startsWith('https://') || rawImage.startsWith('/'))
@@ -44,7 +44,7 @@ export default function About() {
               </div>
             )}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }} className="absolute -bottom-8 -left-6 bg-charcoal rounded-2xl p-5 shadow-2xl">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 {stats.map((s, i) => (
                   <div key={i} className="flex items-center gap-2.5">
                     <s.icon size={16} className="text-gold flex-shrink-0" />
@@ -59,9 +59,9 @@ export default function About() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="order-1 lg:order-2 pb-8 lg:pb-0">
-            <span className="inline-block text-gold font-medium text-sm tracking-[0.2em] uppercase mb-5">אודות</span>
+            <span className="inline-block text-gold-deep font-medium text-sm tracking-[0.2em] uppercase mb-5">אודות</span>
             <h2 className="font-heading text-4xl md:text-5xl text-charcoal leading-tight mb-8">
-              נגר שאוהב<br />את מה שהוא עושה
+              נגר שאוהב{" "}<br />את מה שהוא עושה
             </h2>
             <p className="text-charcoal/65 leading-relaxed whitespace-pre-line">
               {editing
@@ -75,7 +75,7 @@ export default function About() {
               <div className="text-2xl">🌿</div>
               <p className="text-charcoal/60 text-sm leading-relaxed">
                 בעלה של <span className="text-charcoal font-medium">מטי</span> ואבא של{' '}
-                <span className="text-gold font-semibold">ריף</span> — הילד שנתן את שמו למותג
+                <span className="text-gold font-semibold">ריף</span>, הילד שנתן את שמו למותג
               </p>
             </div>
 
@@ -99,7 +99,7 @@ export default function About() {
               </div>
             </div>
             <div className="mt-8 flex flex-wrap gap-4">
-              <a href="#contact" className="bg-gold hover:bg-gold-light text-cream font-semibold px-7 py-3.5 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-gold/25">בואו נדבר</a>
+              <a href="#contact" className="bg-gold hover:bg-gold-light text-charcoal font-semibold px-7 py-3.5 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-gold/25">בואו נדבר</a>
               <a href="#gallery" className="border border-charcoal/20 text-charcoal hover:border-gold hover:text-gold font-semibold px-7 py-3.5 rounded-xl transition-all duration-300">ראה עבודות</a>
             </div>
           </motion.div>

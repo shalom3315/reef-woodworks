@@ -62,6 +62,11 @@ export default function TestimonialsManager({ initialData }: Props) {
     load()
   }
 
+  const approve = async (id: string) => {
+    await supabase.from('testimonials').update({ approved: true }).eq('id', id)
+    load()
+  }
+
   const del = async (id: string) => {
     if (!confirm('למחוק המלצה זו?')) return
     await supabase.from('testimonials').delete().eq('id', id)
@@ -90,6 +95,9 @@ export default function TestimonialsManager({ initialData }: Props) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
                     <span className="font-semibold text-charcoal text-sm">{t.name}</span>
+                    {t.approved === false && (
+                      <span className="text-[11px] font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">ממתינה לאישור</span>
+                    )}
                     <span className="text-charcoal/40 text-xs">{t.location}</span>
                     <div className="flex gap-0.5">
                       {Array.from({ length: t.rating }).map((_, i) => (
@@ -101,6 +109,11 @@ export default function TestimonialsManager({ initialData }: Props) {
                   {t.project && <p className="text-xs text-charcoal/35 mt-1">פרויקט: {t.project}</p>}
                 </div>
                 <div className="flex gap-2 flex-shrink-0">
+                  {t.approved === false && (
+                    <Button variant="icon" onClick={() => approve(t.id)} aria-label="אישור ההמלצה" title="אישור ופרסום באתר">
+                      <Check size={14} className="text-green-600" />
+                    </Button>
+                  )}
                   <Button variant="icon" onClick={() => openEdit(t)}>
                     <Pencil size={14} className="text-charcoal/60" />
                   </Button>

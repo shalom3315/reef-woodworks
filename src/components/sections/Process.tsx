@@ -19,13 +19,13 @@ const steps = [
   {
     icon: Wrench,
     title: 'ייצור בעבודת יד',
-    description: 'נבנה את הפריט בסדנה, עם תשומת לב לכל פרט. תקבלו עדכונים ותמונות לאורך הדרך.',
+    description: 'נבנה את הפרויקט ונשלח לכם עדכונים ותמונות לאורך הדרך.',
     detail: 'עדכונים שוטפים',
   },
   {
     icon: PackageCheck,
     title: 'מסירה והתקנה',
-    description: 'נגיע אליכם, נדאג להתקנה מקצועית ונוודא שהכל מושלם ומשביע רצון לפני שנלך.',
+    description: 'נגיע אליכם, נתקין ונעבור איתכם על התוצאה לפני שנלך.',
     detail: 'שירות עד הבית',
   },
 ]
@@ -44,7 +44,7 @@ export default function Process() {
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <span className="inline-block text-gold font-medium text-sm tracking-[0.2em] uppercase mb-4">
+          <span className="inline-block text-gold-deep font-medium text-sm tracking-[0.2em] uppercase mb-4">
             איך זה עובד
           </span>
           <h2 className="font-heading text-4xl md:text-5xl text-charcoal mb-4">
@@ -107,7 +107,7 @@ export default function Process() {
         >
           <a
             href="#contact"
-            className="inline-block bg-charcoal hover:bg-charcoal/85 text-cream font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-300 hover:shadow-xl"
+            className="inline-block bg-charcoal hover:bg-charcoal/85 text-cream font-semibold px-8 py-4 rounded-xl text-lg hover:shadow-xl press active:scale-[0.97]"
           >
             בואו נתחיל
           </a>

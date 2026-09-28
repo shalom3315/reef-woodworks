@@ -6,21 +6,10 @@ import Image from 'next/image'
 import { X, ChevronRight, ChevronLeft, Clock, Layers, MessageCircle, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import type { Project } from '@/types'
-
-const DEFAULT_PROJECTS: Project[] = [
-  { id: '1', title: 'שולחן אוכל אגוז', description: 'שולחן אוכל מוצק מעץ אגוז אמריקאי, ל-8 מקומות ישיבה. רגליים מעוגלות בעיבוד ידני.', material: 'אגוז אמריקאי', duration: '4 שבועות', image_url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=80', category: 'שולחנות', featured: true, order_index: 1, created_at: '' },
-  { id: '2', title: 'ספרייה מרצפה לתקרה', description: 'ספרייה בנויה לפי מידות מרצפה לתקרה, עם ארונות תחתונים ותאים פתוחים מעץ אלון מעושן.', material: 'אלון מעושן', duration: '6 שבועות', image_url: 'https://images.unsplash.com/photo-1594312915251-48db9280c8f1?w=900&q=80', category: 'ריהוט', featured: true, order_index: 2, created_at: '' },
-  { id: '3', title: 'שידת לילה מינימליסטית', description: 'זוג שידות לילה מעץ שיטה טבעי. עיצוב נקי עם מגירה ומדף. גוון ושעווה בגימור מט.', material: 'שיטה טבעי', duration: '2 שבועות', image_url: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=900&q=80', category: 'חדר שינה', featured: false, order_index: 3, created_at: '' },
-  { id: '4', title: 'ספסל כניסה עם אחסון', description: 'ספסל כניסה עם מגירות אחסון נסתרות, ידיות פליז וכרית עור.', material: 'אלמוג + פליז', duration: '3 שבועות', image_url: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=900&q=80', category: 'ריהוט', featured: false, order_index: 4, created_at: '' },
-  { id: '5', title: 'שולחן קפה – ריינה חי', description: 'שולחן מרכזי עם לוח עץ ריינה עם שפה חיה, ממולא אפוקסי כחול. רגליים ממתכת שחורה.', material: 'ריינה + אפוקסי + מתכת', duration: '3 שבועות', image_url: 'https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=900&q=80', category: 'שולחנות', featured: false, order_index: 5, created_at: '' },
-  { id: '6', title: 'ארונות מטבח עץ מלא', description: 'מטבח שלם מעץ אגוז מלא עם חזיתות ידיות משוקעות. לפיות עץ מוצק תואמות.', material: 'אגוז + ספיר', duration: '8 שבועות', image_url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=80', category: 'מטבח', featured: true, order_index: 6, created_at: '' },
-]
-
-const PHONE = '0532213939'
-const WA_BASE = `https://wa.me/972${PHONE.replace(/^0/, '')}`
+import { waLink } from '@/lib/contact'
 
 export default function Gallery({ projects }: { projects?: Project[] }) {
-  const data = (projects && projects.length > 0) ? projects : DEFAULT_PROJECTS
+  const data = projects ?? []
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null)
   const [filter, setFilter] = useState('הכל')
 
@@ -59,7 +48,7 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
   }, [selectedIdx])
 
   const safeUrl = (url?: string) =>
-    url?.startsWith('http') ? url : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=80'
+    url?.startsWith('http') ? url : '/hero.jpg'
 
   return (
     <section id="gallery" className="py-28 bg-white">
@@ -70,9 +59,9 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <span className="inline-block text-gold font-medium text-sm tracking-[0.2em] uppercase mb-4">הגלריה שלנו</span>
+          <span className="inline-block text-gold-deep font-medium text-sm tracking-[0.2em] uppercase mb-4">הגלריה שלנו</span>
           <h2 className="font-heading text-4xl md:text-5xl text-charcoal mb-4">עבודות נבחרות</h2>
-          <p className="text-charcoal/55 max-w-md mx-auto leading-relaxed">כל פרויקט הוא סיפור אחר. לחצו על תמונה לצפייה בגודל מלא.</p>
+          <p className="text-charcoal/55 max-w-md mx-auto leading-relaxed">לחצו על תמונה כדי לראות אותה בגודל מלא.</p>
         </motion.div>
 
         {/* Filter buttons */}
@@ -87,9 +76,9 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
             <button
               key={cat}
               onClick={() => { setFilter(cat); setSelectedIdx(null) }}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-5 py-2 rounded-full text-sm font-medium press active:scale-[0.97] ${
                 filter === cat
-                  ? 'bg-gold text-cream shadow-lg shadow-gold/25'
+                  ? 'bg-gold text-charcoal shadow-lg shadow-gold/25'
                   : 'bg-cream text-charcoal hover:bg-gold/12 border border-charcoal/10'
               }`}
             >
@@ -97,6 +86,15 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
             </button>
           ))}
         </motion.div>
+
+        {data.length === 0 && (
+          <p className="text-center text-charcoal/55">
+            הגלריה מתעדכנת כרגע.{' '}
+            <a href={waLink('שלום אלי, אשמח לראות תמונות של עבודות')} target="_blank" rel="noopener noreferrer" className="text-gold underline">
+              שלחו הודעה ונשלח לכם תמונות של עבודות
+            </a>
+          </p>
+        )}
 
         {/* Grid */}
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -156,7 +154,7 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
               <span className="text-white font-heading text-base truncate max-w-xs text-center">{selected.title}</span>
               <button
                 onClick={close}
-                className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 flex items-center justify-center transition-colors"
+                className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 flex items-center justify-center press active:scale-[0.97]"
               >
                 <X size={20} className="text-white" />
               </button>
@@ -178,7 +176,7 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
               {filtered.length > 1 && (
                 <button
                   onClick={(e) => { e.stopPropagation(); prev() }}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 flex items-center justify-center transition-all"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 flex items-center justify-center press active:scale-[0.97]"
                   aria-label="הקודם"
                 >
                   <ChevronRight size={30} className="text-white" />
@@ -188,7 +186,7 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
               {filtered.length > 1 && (
                 <button
                   onClick={(e) => { e.stopPropagation(); next() }}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 flex items-center justify-center transition-all"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 flex items-center justify-center press active:scale-[0.97]"
                   aria-label="הבא"
                 >
                   <ChevronLeft size={30} className="text-white" />
@@ -226,7 +224,7 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
               {/* View full page */}
               <Link
                 href={`/projects/${selected.slug || selected.id}`}
-                className="flex-shrink-0 flex items-center gap-2 border border-white/20 hover:border-gold text-white/70 hover:text-gold text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
+                className="flex-shrink-0 flex items-center gap-2 border border-white/20 hover:border-gold text-white/70 hover:text-gold text-sm font-medium px-4 py-2.5 rounded-xl press active:scale-[0.97]"
                 onClick={(e) => e.stopPropagation()}
               >
                 <ExternalLink size={15} />
@@ -235,10 +233,10 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
 
               {/* WhatsApp CTA */}
               <a
-                href={`${WA_BASE}?text=שלום אלי, ראיתי את הפרויקט "${selected.title}" באתר ואשמח לקבל הצעת מחיר`}
+                href={waLink(`שלום אלי, ראיתי את הפרויקט "${selected.title}" באתר ואשמח לקבל הצעת מחיר`)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-shrink-0 flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
+                className="flex-shrink-0 flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-charcoal text-sm font-semibold px-4 py-2.5 rounded-xl press active:scale-[0.97]"
                 onClick={(e) => e.stopPropagation()}
               >
                 <MessageCircle size={16} />

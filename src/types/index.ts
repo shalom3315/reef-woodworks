@@ -20,6 +20,8 @@ export interface Testimonial {
   project: string
   rating: number
   created_at: string
+  // Absent until supabase/migrations/testimonials_moderation.sql is applied
+  approved?: boolean
 }
 
 export interface SiteSetting {

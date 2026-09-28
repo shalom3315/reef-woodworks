@@ -5,15 +5,16 @@ import { MessageCircle, Phone } from 'lucide-react'
 import Image from 'next/image'
 import { useEditContext } from '@/contexts/EditContext'
 import { EditField } from '@/components/EditField'
+import { normalizeWaNumber } from '@/lib/contact'
 
 export default function CTA() {
   const { editing, draft } = useEditContext()
 
   const phone = draft.phone || '053-221-3939'
-  const whatsapp = (draft.whatsapp || '972532213939').replace(/\D/g, '')
+  const whatsapp = normalizeWaNumber(draft.whatsapp)
   const ctaBadge = draft.cta_badge || 'יש לכם רעיון?'
-  const ctaTitle = draft.cta_title || 'נהפוך אותו לעץ אמיתי'
-  const ctaSubtitle = draft.cta_subtitle || 'שיחה ראשונה היא תמיד חינם וללא התחייבות.'
+  const ctaTitle = draft.cta_title || 'ספרו לנו מה אתם רוצים לבנות'
+  const ctaSubtitle = draft.cta_subtitle || 'השיחה הראשונה בחינם ובלי התחייבות. שלחו תמונה של המקום ונגיד לכם מה אפשר לעשות שם.'
   const ctaBtnWhatsapp = draft.cta_btn_whatsapp || 'שלחו הודעה בוואטסאפ'
 
   return (
@@ -43,7 +44,7 @@ export default function CTA() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <motion.a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center justify-center gap-3 bg-gold hover:bg-gold-light text-cream font-semibold px-9 py-4 rounded-xl text-lg transition-all duration-300 hover:shadow-2xl hover:shadow-gold/35">
+            <motion.a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center justify-center gap-3 bg-gold hover:bg-gold-light text-charcoal font-semibold px-9 py-4 rounded-xl text-lg transition-all duration-300 hover:shadow-2xl hover:shadow-gold/35">
               <MessageCircle size={22} />
               {editing
                 ? <EditField fieldKey="cta_btn_whatsapp" className="text-cream font-semibold text-lg" placeholder="טקסט כפתור" />

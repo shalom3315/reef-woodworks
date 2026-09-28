@@ -6,6 +6,7 @@ import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { useEditContext } from '@/contexts/EditContext'
 import { EditField } from '@/components/EditField'
+import { waLink, QUOTE_MESSAGE } from '@/lib/contact'
 
 const navLinks = [
   { href: '#gallery', label: 'עבודות' },
@@ -37,7 +38,7 @@ export default function Navbar({ businessName = 'Reef Woodworks', logoUrl }: { b
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-charcoal/97 backdrop-blur-md shadow-xl' : 'bg-charcoal/75 backdrop-blur-sm'
+          scrolled ? 'bg-charcoal/95 backdrop-blur-md shadow-xl' : 'bg-charcoal/75 backdrop-blur-sm'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -59,12 +60,12 @@ export default function Navbar({ businessName = 'Reef Woodworks', logoUrl }: { b
                 {link.label}
               </a>
             ))}
-            <a href="https://wa.me/972532213939?text=שלום אלי, אני מעוניין בהצעת מחיר" target="_blank" rel="noopener noreferrer" className="bg-gold hover:bg-gold-light text-cream px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-gold/30">
+            <a href={waLink(QUOTE_MESSAGE)} target="_blank" rel="noopener noreferrer" className="bg-gold hover:bg-gold-light text-charcoal px-6 py-2.5 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-gold/30 press active:scale-[0.97]">
               קבל הצעת מחיר
             </a>
           </div>
 
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-cream w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 transition-colors" aria-label="תפריט">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-cream w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 press active:scale-[0.97]" aria-label="תפריט">
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
@@ -99,14 +100,15 @@ export default function Navbar({ businessName = 'Reef Woodworks', logoUrl }: { b
               </motion.a>
             ))}
             <motion.a
-              href="https://wa.me/972532213939?text=שלום אלי, אני מעוניין בהצעת מחיר"
+              href={waLink(QUOTE_MESSAGE)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMenuOpen(false)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: navLinks.length * 0.07 }}
-              className="mt-4 bg-gold text-cream px-10 py-4 rounded-full text-xl font-semibold hover:bg-gold-light transition-colors"
+              whileTap={{ scale: 0.97 }}
+              className="mt-4 bg-gold text-charcoal px-10 py-4 rounded-full text-xl font-semibold hover:bg-gold-light transition-colors"
             >
               קבל הצעת מחיר
             </motion.a>

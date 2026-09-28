@@ -4,14 +4,16 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus } from 'lucide-react'
 import type { FAQ } from '@/types'
+import { waLink } from '@/lib/contact'
 
 const DEFAULT_FAQS: FAQ[] = [
-  { id: '1', order_index: 0, question: 'כמה זמן לוקח לייצר רהיט בהתאמה אישית?', answer: 'תלוי בסוג הרהיט ובעומס העבודה. שולחן אוכל לוקח בדרך כלל 3-5 שבועות, ארון גדול 5-8 שבועות. בכל מקרה תקבלו עדכון מדויק לפני תחילת העבודה.' },
-  { id: '2', order_index: 1, question: 'מה ההבדל בין סוגי העץ השונים?', answer: 'כל עץ שונה באופיו — אלון קשה ועמיד מאוד ומתאים לשימוש יומיומי, וולנט כהה ויוקרתי ומתאים לסלון, עץ אש בהיר וגמיש לעיצוב. בשיחה הראשונה נמליץ לכם על הסוג המתאים לצורך שלכם.' },
-  { id: '3', order_index: 2, question: 'האם אפשר לראות דוגמאות של עבודות קודמות?', answer: 'בהחלט — הגלריה באתר מציגה חלק מהפרויקטים שלנו. בפגישה ניתן לראות דוגמאות נוספות ולמשש את החומרים.' },
-  { id: '4', order_index: 3, question: 'האם יש אפשרות לתשלום בפריסה?', answer: 'כן. בדרך כלל 50% מקדמה בהזמנה ו-50% במסירה. לפרויקטים גדולים ניתן לסכם על תנאי תשלום גמישים יותר.' },
-  { id: '5', order_index: 4, question: 'מה קורה אם הרהיט לא מתאים בדיוק?', answer: 'כל פרויקט עובר מדידה קפדנית לפני ייצור. אם בכל זאת יש אי-התאמה קלה — מטפלים בה ללא עלות נוספת.' },
-  { id: '6', order_index: 5, question: 'האם אתם מגיעים לבית הלקוח?', answer: 'כן — כולל מדידות, ייעוץ עיצובי במקום, ומשלוח והרכבה עד הבית. הכל כלול.' },
+  { id: '1', order_index: 0, question: 'כמה זמן לוקח לבנות פרגולה או דק?', answer: 'זה תלוי בגודל הפרויקט, בסוג העץ ובמה שכבר יש בשטח. אחרי שנראה את המקום תקבלו לוח זמנים יחד עם הצעת המחיר.' },
+  { id: '2', order_index: 1, question: 'איזה עץ מתאים לחוץ?', answer: 'לפרגולות משתמשים בדרך כלל באורן מחוטא או בדוגלס. לדקים יש איפאה, במבוק ודק סינטטי, וכל אחד מהם מתנהג אחרת בשמש, בגשם וליד בריכה. בשיחה הראשונה נמליץ על החומר שמתאים למקום שלכם.' },
+  { id: '3', order_index: 2, question: 'אפשר לראות עבודות קודמות?', answer: 'כן. בגלריה ובסרטונים באתר יש פרויקטים שבנינו, ובפגישה אפשר לראות גם דוגמאות של חומרים.' },
+  { id: '4', order_index: 3, question: 'איך עובד התשלום?', answer: 'תנאי התשלום נקבעים לפי גודל הפרויקט ומופיעים בהצעת המחיר, לפני שמתחילים לעבוד.' },
+  { id: '5', order_index: 4, question: 'מה קורה אם משהו לא מתאים בדיוק?', answer: 'כל פרויקט נמדד בשטח לפני שמתחילים לבנות. אם בכל זאת יש אי-התאמה קטנה, מתקנים אותה בלי עלות נוספת.' },
+  { id: '6', order_index: 5, question: 'אתם מגיעים לשטח?', answer: 'כן. אנחנו מגיעים למדוד ולייעץ במקום, בלי תשלום, ובסוף חוזרים להתקין.' },
+  { id: '7', order_index: 6, question: 'באילו אזורים אתם עובדים?', answer: 'במרכז הארץ.' },
 ]
 
 export default function FAQ({ faqs }: { faqs?: FAQ[] }) {
@@ -47,7 +49,7 @@ export default function FAQ({ faqs }: { faqs?: FAQ[] }) {
                 className="w-full flex items-center justify-between gap-4 px-6 py-5 text-right"
               >
                 <span className="font-semibold text-charcoal text-[0.95rem] leading-snug">{faq.question}</span>
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${open === faq.id ? 'bg-gold text-cream' : 'bg-cream text-charcoal/40'}`}>
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${open === faq.id ? 'bg-gold text-charcoal' : 'bg-cream text-charcoal/40'}`}>
                   {open === faq.id ? <Minus size={14} /> : <Plus size={14} />}
                 </div>
               </button>
@@ -78,10 +80,10 @@ export default function FAQ({ faqs }: { faqs?: FAQ[] }) {
         >
           <p className="text-charcoal/45 text-sm mb-4">לא מצאתם תשובה? דברו איתנו ישירות</p>
           <a
-            href="https://wa.me/972532213939"
+            href={waLink()}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-cream font-semibold px-7 py-3 rounded-xl transition-all hover:shadow-lg hover:shadow-gold/25"
+            className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-charcoal font-semibold px-7 py-3 rounded-xl hover:shadow-lg hover:shadow-gold/25 press active:scale-[0.97]"
           >
             שאלו אותנו בוואטסאפ
           </a>

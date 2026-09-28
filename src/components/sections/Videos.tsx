@@ -32,7 +32,7 @@ export default function Videos({ videos }: { videos: VideoItem[] }) {
             תהליך היצירה
           </h2>
           <p className="text-cream/50 text-lg max-w-xl mx-auto">
-            צפו בעבודה מקרוב – מהחומר הגולמי ועד המוצר המוגמר
+            סרטונים קצרים מהשטח, שלב אחרי שלב.
           </p>
         </motion.div>
 

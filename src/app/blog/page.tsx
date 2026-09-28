@@ -7,7 +7,7 @@ const SITE_URL = 'https://reefwoodwork.com'
 
 export const metadata: Metadata = {
   title: 'מאמרים ומדריכים | ריף וודוורקס',
-  description: 'מדריכים מקצועיים על פרגולות, דקים וגדרות עץ — מחירים, בחירת חומרים, תחזוקה ועוד. ריף וודוורקס.',
+  description: 'מדריכים מקצועיים על פרגולות, דקים וגדרות עץ: מחירים, בחירת חומרים, תחזוקה ועוד. ריף וודוורקס.',
   alternates: { canonical: `${SITE_URL}/blog` },
 }
 
@@ -18,7 +18,7 @@ export default function BlogPage() {
         <div className="mb-12 text-center">
           <span className="text-gold text-xs tracking-[0.3em] uppercase font-body">ידע מקצועי</span>
           <h1 className="font-heading text-4xl md:text-5xl text-charcoal mt-3 mb-4">מאמרים ומדריכים</h1>
-          <p className="text-charcoal/50 text-base max-w-md mx-auto">כל מה שרצית לדעת על עץ חוץ — בלי שקר שיווקי</p>
+          <p className="text-charcoal/50 text-base max-w-md mx-auto">כל מה שרצית לדעת על עץ חוץ, בלי שקר שיווקי</p>
         </div>
 
         <div className="space-y-4">

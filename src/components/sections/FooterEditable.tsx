@@ -3,18 +3,19 @@
 import { Phone, Mail, MapPin, MessageCircle, Instagram, Facebook } from 'lucide-react'
 import { useEditContext } from '@/contexts/EditContext'
 import { EditField } from '@/components/EditField'
+import { normalizeWaNumber } from '@/lib/contact'
 
 export default function FooterEditable() {
   const { editing, draft } = useEditContext()
 
   const businessName = draft.business_name || 'Reef Woodworks'
   const phone = draft.phone || '053-221-3939'
-  const whatsapp = (draft.whatsapp || '972532213939').replace(/\D/g, '')
+  const whatsapp = normalizeWaNumber(draft.whatsapp)
   const email = draft.email || 'reefww3939@gmail.com'
   const address = draft.address || 'מרכז הארץ'
   const instagram = draft.instagram || '#'
   const facebook = draft.facebook || '#'
-  const footerDesc = draft.footer_desc || 'עבודות עץ בהתאמה אישית – רהיטים, שולחנות ופתרונות עץ בעבודת יד מקצועית.'
+  const footerDesc = draft.footer_desc || 'פרגולות, דקים, גדרות וריהוט גן מעץ, בהתאמה אישית. מרכז הארץ.'
   const year = new Date().getFullYear()
   const [first, ...rest] = businessName.split(' ')
 
@@ -153,7 +154,7 @@ export default function FooterEditable() {
             <a href="/accessibility" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">הצהרת נגישות</a>
             <a href="/privacy" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">מדיניות פרטיות</a>
             <a href="/terms" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">תנאי שימוש</a>
-            <a href="https://wa.me/9720556752495" target="_blank" rel="noopener noreferrer" className="text-cream/20 hover:text-cream/45 text-xs transition-colors">
+            <a href="https://wa.me/972556752495" target="_blank" rel="noopener noreferrer" className="text-cream/20 hover:text-cream/45 text-xs transition-colors">
               Built by Shalom
             </a>
             <a href="/admin/login" className="text-cream/15 hover:text-cream/35 text-xs transition-colors">כניסה לניהול</a>

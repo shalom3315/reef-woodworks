@@ -10,8 +10,8 @@ export default function Benefits() {
   const { draft } = useEditContext()
 
   const label   = draft.benefits_label   || 'למה לבחור בנו'
-  const heading = draft.benefits_heading || 'הבדל שמרגישים'
-  const desc    = draft.benefits_desc    || 'כל פרויקט הוא מחויבות. לאיכות, לדיוק, ולתוצאה שתשמח אתכם שנים קדימה.'
+  const heading = draft.benefits_heading || 'מה מקבלים כשעובדים איתנו'
+  const desc    = draft.benefits_desc    || 'כל פרויקט נמדד ונבנה לפי המידות והסגנון של הבית שלכם.'
 
   const cards = [0, 1, 2, 3].map((i) => ({
     icon: ICONS[i],
@@ -34,7 +34,7 @@ export default function Benefits() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="inline-block text-gold font-medium text-sm tracking-[0.2em] uppercase mb-4">{label}</span>
+          <span className="inline-block text-gold-deep font-medium text-sm tracking-[0.2em] uppercase mb-4">{label}</span>
           <h2 className="font-heading text-4xl md:text-5xl text-charcoal">{heading}</h2>
           <p className="text-charcoal/55 mt-4 max-w-md mx-auto leading-relaxed">{desc}</p>
         </motion.div>
@@ -55,7 +55,7 @@ export default function Benefits() {
                 <div className="w-14 h-14 bg-gold/10 group-hover:bg-gold/20 rounded-xl flex items-center justify-center mb-6 transition-colors duration-300">
                   <Icon className="text-gold" size={26} strokeWidth={1.5} />
                 </div>
-                <span className="text-gold/70 text-xs font-medium tracking-wide uppercase mb-2 block">{b.accent}</span>
+                <span className="text-gold-deep text-xs font-medium tracking-wide uppercase mb-2 block">{b.accent}</span>
                 <h3 className="font-heading text-xl text-charcoal mb-3">{b.title}</h3>
                 <p className="text-charcoal/58 leading-relaxed text-sm">{b.desc}</p>
               </motion.div>

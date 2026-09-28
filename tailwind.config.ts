@@ -15,6 +15,8 @@ const config: Config = {
         charcoal: '#2A2A2A',
         gold: '#C58B45',
         'gold-light': '#D4A05A',
+        // gold for small text on cream/white: plain gold is only 2.7:1 there
+        'gold-deep': '#96672C',
       },
       fontFamily: {
         heading: ['var(--font-frank)', 'serif'],

@@ -35,21 +35,12 @@ function FormattedText({ text }: { text: string }) {
 export default function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: 'שלום! אני מומחה הנגרות של ריף וודוורקס 🪵\nאשמח לעזור לך לבחור סוג עץ, גימור, או לענות על כל שאלה. במה אפשר לעזור?' }
+    { role: 'assistant', content: 'היי, אני הבוט של ריף וודוורקס.\nאפשר לשאול אותי על סוגי עץ, גימורים או כל דבר אחר על העבודה. מה תרצו לבנות?' }
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (sessionStorage.getItem('chat_opened')) return
-    if (window.innerWidth < 768) return
-    const t = setTimeout(() => {
-      setOpen(true)
-      sessionStorage.setItem('chat_opened', '1')
-    }, 5000)
-    return () => clearTimeout(t)
-  }, [])
 
   useEffect(() => {
     if (open) bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -93,7 +84,7 @@ export default function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 float-lift">
       {open && (
         <div className="w-64 md:w-80 bg-white rounded-2xl shadow-2xl border border-charcoal/10 flex flex-col overflow-hidden max-h-[55vh] md:max-h-[70vh]">
           {/* Header */}
@@ -107,7 +98,7 @@ export default function ChatWidget() {
                 <p className="text-cream/40 text-xs">AI · עונה מיד</p>
               </div>
             </div>
-            <button onClick={() => setOpen(false)} className="text-cream/40 hover:text-cream transition-colors">
+            <button onClick={() => setOpen(false)} aria-label="סגירת הצ׳אט" className="text-cream/40 hover:text-cream transition-colors">
               <X size={18} />
             </button>
           </div>
@@ -118,7 +109,7 @@ export default function ChatWidget() {
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-start' : 'justify-end'}`}>
                 <div className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
                   m.role === 'user'
-                    ? 'bg-gold text-cream rounded-tr-sm'
+                    ? 'bg-gold text-charcoal rounded-tr-sm'
                     : 'bg-cream text-charcoal rounded-tl-sm border border-charcoal/8'
                 }`}>
                   {m.role === 'assistant'
@@ -151,7 +142,8 @@ export default function ChatWidget() {
             <button
               onClick={send}
               disabled={!input.trim() || loading}
-              className="w-9 h-9 bg-gold hover:bg-gold-light disabled:opacity-40 rounded-xl flex items-center justify-center transition-colors flex-shrink-0"
+              aria-label="שליחת הודעה"
+              className="w-9 h-9 bg-gold hover:bg-gold-light disabled:opacity-40 rounded-xl flex items-center justify-center flex-shrink-0 press active:scale-[0.97]"
             >
               <Send size={15} className="text-cream -scale-x-100" />
             </button>
@@ -168,7 +160,9 @@ export default function ChatWidget() {
         )}
         <button
           onClick={() => setOpen(!open)}
-          className="w-14 h-14 bg-charcoal hover:bg-charcoal/80 text-cream rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl"
+          aria-label={open ? "סגירת הצ׳אט" : "פתיחת צ׳אט עם ReefBot"}
+          aria-expanded={open}
+          className="w-14 h-14 bg-charcoal hover:bg-charcoal/80 text-cream rounded-full shadow-xl flex items-center justify-center hover:-translate-y-0.5 hover:shadow-2xl press active:scale-[0.97]"
         >
           {open ? <X size={22} /> : <MessageCircle size={22} />}
         </button>
