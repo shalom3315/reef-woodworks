@@ -16,14 +16,18 @@ const nextConfig = {
     ],
   },
   async redirects() {
-    return [
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'woodworking-landing-three.vercel.app' }],
-        destination: 'https://reefwoodwork.com/:path*',
-        permanent: true,
-      },
+    const oldHosts = [
+      'reef-woodworks.vercel.app',
+      'woodworking-landing-three.vercel.app',
+      'woodworking-landing-reef-woodworks.vercel.app',
+      'woodworking-landing-git-main-reef-woodworks.vercel.app',
     ]
+    return oldHosts.map((host) => ({
+      source: '/:path*',
+      has: [{ type: 'host', value: host }],
+      destination: 'https://reefwoodwork.com/:path*',
+      permanent: true,
+    }))
   },
   async headers() {
     return [
