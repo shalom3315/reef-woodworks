@@ -46,15 +46,29 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     headline: article.title,
     description: article.metaDescription,
     datePublished: article.publishedAt,
+    dateModified: article.updatedAt ?? article.publishedAt,
     author: { '@type': 'Person', name: 'אלי מרקוס' },
     publisher: { '@type': 'Organization', name: 'ריף וודוורקס', url: SITE_URL },
     url: `${SITE_URL}/blog/${article.slug}`,
     inLanguage: 'he',
   }
 
+  const faqSchema = article.faqs?.length ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: article.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  } : null
+
+  const related = ARTICLES.filter((a) => a.slug !== article.slug).slice(0, 3)
+
   return (
     <main className="min-h-screen bg-cream" dir="rtl">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(articleSchema) }} />
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqSchema) }} />}
 
       {/* Top nav */}
       <div className="bg-white border-b border-charcoal/8">
@@ -94,6 +108,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           ))}
         </div>
 
+        {article.faqs && article.faqs.length > 0 && (
+          <section className="mt-14">
+            <h2 className="font-heading text-xl md:text-2xl text-charcoal mb-5">שאלות נפוצות</h2>
+            <div className="space-y-4">
+              {article.faqs.map((f) => (
+                <div key={f.question} className="bg-white rounded-xl border border-charcoal/8 p-5">
+                  <h3 className="font-medium text-charcoal mb-1.5">{f.question}</h3>
+                  <p className="text-charcoal/70 leading-relaxed text-sm">{f.answer}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* CTA */}
         <div className="mt-16 bg-charcoal rounded-2xl p-8 text-center">
           <p className="text-cream/80 text-base leading-relaxed mb-6">{article.ctaText}</p>
@@ -108,6 +136,17 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           </a>
           <p className="text-cream/40 text-xs mt-4">053-221-3939 · ריף וודוורקס</p>
         </div>
+
+        {/* Related: keeps readers moving toward a service page instead of leaving */}
+        <nav className="mt-12" aria-label="קריאה נוספת">
+          <h2 className="font-heading text-lg text-charcoal mb-4">עוד באתר</h2>
+          <div className="flex flex-wrap gap-2.5">
+            <Link href="/services" className="bg-white border border-gold/40 text-charcoal hover:text-gold text-sm px-4 py-2 rounded-full transition-colors">כל השירותים והמחירים</Link>
+            {related.map((a) => (
+              <Link key={a.slug} href={`/blog/${a.slug}`} className="bg-white border border-charcoal/10 hover:border-gold/40 text-charcoal/70 hover:text-gold text-sm px-4 py-2 rounded-full transition-colors">{a.title}</Link>
+            ))}
+          </div>
+        </nav>
 
         {/* Back link */}
         <div className="mt-10 text-center">

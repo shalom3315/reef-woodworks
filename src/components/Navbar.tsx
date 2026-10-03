@@ -13,6 +13,7 @@ const navLinks = [
   { href: '#process', label: 'תהליך' },
   { href: '#about', label: 'אודות' },
   { href: '#testimonials', label: 'המלצות' },
+  { href: '#guides', label: 'מחירים' },
   { href: '#contact', label: 'צור קשר' },
 ]
 

@@ -160,7 +160,7 @@ export default function FooterEditable() {
             <a href="/accessibility" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">הצהרת נגישות</a>
             <a href="/privacy" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">מדיניות פרטיות</a>
             <a href="/terms" className="text-cream/25 hover:text-cream/50 text-xs transition-colors">תנאי שימוש</a>
-            <a href="https://wa.me/972556752495" target="_blank" rel="noopener noreferrer" className="text-cream/20 hover:text-cream/45 text-xs transition-colors">
+            <a href="https://wa.me/972556752495" data-no-lead target="_blank" rel="noopener noreferrer" className="text-cream/20 hover:text-cream/45 text-xs transition-colors">
               Built by Shalom
             </a>
             <a href="/admin/login" className="text-cream/15 hover:text-cream/35 text-xs transition-colors">כניסה לניהול</a>

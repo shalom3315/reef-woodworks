@@ -14,6 +14,7 @@ import CTA from '@/components/sections/CTA'
 import FooterEditable from '@/components/sections/FooterEditable'
 import Videos from '@/components/sections/Videos'
 import FAQ from '@/components/sections/FAQ'
+import Guides from '@/components/sections/Guides'
 import ColorSwatches from '@/components/sections/ColorSwatches'
 import type { Project, Testimonial, SiteSettings, FAQ as FAQType } from '@/types'
 
@@ -120,6 +121,7 @@ export default async function Home() {
         <About />
         <Testimonials testimonials={testimonials} />
         <FAQ faqs={faqs} />
+        <Guides />
         <CTA />
         <FooterEditable />
       </EditProvider>

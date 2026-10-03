@@ -19,6 +19,27 @@ export default function Analytics() {
     return () => window.removeEventListener(CONSENT_EVENT, onConsent)
   }, [])
 
+  // Every WhatsApp or phone tap is a lead. One delegated listener covers all
+  // contact links on every page, including ones added later
+  useEffect(() => {
+    if (!consented) return
+    const onClick = (e: MouseEvent) => {
+      const link = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null
+      if (!link || link.hasAttribute('data-no-lead')) return
+      const href = link.getAttribute('href') || ''
+      const method = href.includes('wa.me') ? 'whatsapp' : href.startsWith('tel:') ? 'phone' : null
+      if (!method) return
+      const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag
+      gtag?.('event', 'generate_lead', {
+        method,
+        page_path: window.location.pathname,
+        link_text: (link.textContent || link.getAttribute('aria-label') || '').trim().slice(0, 60),
+      })
+    }
+    document.addEventListener('click', onClick, { capture: true })
+    return () => document.removeEventListener('click', onClick, { capture: true })
+  }, [consented])
+
   if (!consented) return null
 
   return (

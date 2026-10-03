@@ -17,6 +17,7 @@ export default function SiteWidgets() {
       <AccessibilityWidget />
       <a
         href="https://wa.me/972556752495"
+        data-no-lead
         target="_blank"
         rel="noopener noreferrer"
         className="fixed left-0 top-1/2 -translate-y-1/2 z-40 -rotate-90 origin-left translate-x-[calc(1.5rem)] text-[10px] tracking-widest text-charcoal/50 hover:text-gold transition-colors duration-300 font-body uppercase select-none"
