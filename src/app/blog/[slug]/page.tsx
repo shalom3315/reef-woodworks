@@ -5,6 +5,7 @@ import { ChevronRight, MessageCircle, Calendar } from 'lucide-react'
 import { ARTICLES, getArticle } from '@/data/articles'
 import { safeJsonLd } from '@/lib/safeJsonLd'
 import { waLink } from '@/lib/contact'
+import RichBody from '@/components/RichBody'
 
 const SITE_URL = 'https://reefwoodwork.com'
 
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const article = getArticle(slug)
   if (!article) return { title: 'מאמר לא נמצא' }
   return {
-    title: article.metaTitle,
+    title: { absolute: article.metaTitle },
     description: article.metaDescription,
     alternates: { canonical: `${SITE_URL}/blog/${article.slug}` },
     openGraph: {
@@ -88,34 +89,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           {article.sections.map((section, i) => (
             <section key={i}>
               <h2 className="font-heading text-xl md:text-2xl text-charcoal mb-3">{section.heading}</h2>
-              <div className="text-charcoal/75 leading-relaxed whitespace-pre-line prose-like">
-                {section.body.split('\n').map((line, j) => {
-                  if (line.startsWith('|')) {
-                    return null
-                  }
-                  const bold = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                  return (
-                    <p key={j} className="mb-2" dangerouslySetInnerHTML={{ __html: bold }} />
-                  )
-                })}
-                {section.body.includes('|') && (
-                  <div className="overflow-x-auto mt-3">
-                    <table className="w-full text-sm border border-charcoal/10 rounded-xl overflow-hidden">
-                      {section.body.split('\n').filter(l => l.startsWith('|')).map((row, ri) => {
-                        const cells = row.split('|').filter(Boolean).map(c => c.trim())
-                        if (cells.every(c => c.match(/^-+$/))) return null
-                        return (
-                          <tr key={ri} className={ri === 0 ? 'bg-gold/10 font-medium' : 'border-t border-charcoal/8'}>
-                            {cells.map((cell, ci) => (
-                              <td key={ci} className="px-4 py-2.5">{cell}</td>
-                            ))}
-                          </tr>
-                        )
-                      })}
-                    </table>
-                  </div>
-                )}
-              </div>
+              <RichBody body={section.body} />
             </section>
           ))}
         </div>

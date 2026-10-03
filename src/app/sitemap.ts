@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { createClient } from '@/lib/supabase'
 import { ARTICLES } from '@/data/articles'
+import { SERVICES } from '@/data/services'
 
 const SITE_URL = 'https://reefwoodwork.com'
 
@@ -26,8 +27,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }))
 
+  const serviceUrls: MetadataRoute.Sitemap = SERVICES.map(s => ({
+    url: `${SITE_URL}/services/${s.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.9,
+  }))
+
   return [
     { url: SITE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
+    { url: `${SITE_URL}/services`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    ...serviceUrls,
     { url: `${SITE_URL}/blog`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/accessibility`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
     { url: `${SITE_URL}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },

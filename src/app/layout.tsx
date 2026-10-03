@@ -5,6 +5,8 @@ import SiteWidgets from '@/components/SiteWidgets'
 import Analytics from '@/components/Analytics'
 import MotionProvider from '@/components/MotionProvider'
 import { safeJsonLd } from '@/lib/safeJsonLd'
+import { SERVICES } from '@/data/services'
+import { SERVICE_CITIES } from '@/data/areas'
 
 const frank = Rubik({
   subsets: ['hebrew', 'latin'],
@@ -87,34 +89,17 @@ const localBusinessSchema = {
     addressLocality: 'גוש דן',
   },
   areaServed: [
-    { '@type': 'City', name: 'תל אביב' },
-    { '@type': 'City', name: 'רמת גן' },
-    { '@type': 'City', name: 'פתח תקווה' },
-    { '@type': 'City', name: 'ראשון לציון' },
-    { '@type': 'City', name: 'חולון' },
-    { '@type': 'City', name: 'בת ים' },
-    { '@type': 'City', name: 'הרצליה' },
-    { '@type': 'City', name: 'גבעתיים' },
-    { '@type': 'City', name: 'בני ברק' },
-    { '@type': 'City', name: 'רמלה' },
-    { '@type': 'City', name: 'לוד' },
-    { '@type': 'City', name: 'נס ציונה' },
-    { '@type': 'City', name: 'יהוד' },
-    { '@type': 'City', name: 'אור יהודה' },
-    { '@type': 'City', name: 'גדרה' },
+    ...SERVICE_CITIES.map(name => ({ '@type': 'City', name })),
     { '@type': 'AdministrativeArea', name: 'מרכז הארץ' },
     { '@type': 'AdministrativeArea', name: 'גוש דן' },
   ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'שירותי נגרות חוץ',
-    itemListElement: [
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'פרגולות עץ בהתאמה אישית' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'דקים מעץ' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'גדרות עץ' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'ריהוט גן מעץ' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'הצללה וסוכות עץ' } },
-    ],
+    itemListElement: SERVICES.map(service => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: service.title, url: `${SITE_URL}/services/${service.slug}` },
+    })),
   },
   sameAs: [
     'https://www.tiktok.com/@reef.woodworks',
