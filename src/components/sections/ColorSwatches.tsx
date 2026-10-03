@@ -177,7 +177,7 @@ export default function ColorSwatches() {
             הגוונים מוצגים לצורך התרשמות בלבד, והצבעים האמיתיים עשויים להיות שונים מהמסך. ניתן לצפות בדוגמיות פיזיות בפגישת ייעוץ.
           </p>
           <p className="text-charcoal/30 text-xs font-body">
-            גוונים באדיבות{' '}
+            שמות וקודי הגוונים לפי קטלוג AquaTECH של{' '}
             <a href="https://gvanim.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-gold transition-colors">
               חברת גוונים
             </a>
