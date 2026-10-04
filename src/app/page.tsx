@@ -15,7 +15,7 @@ import FooterEditable from '@/components/sections/FooterEditable'
 import Videos from '@/components/sections/Videos'
 import FAQ from '@/components/sections/FAQ'
 import Guides from '@/components/sections/Guides'
-// ColorSwatches (קטלוג AquaTECH של גוונים) מוסתר זמנית — להחזיר: import + <ColorSwatches /> אחרי <Process />
+import ColorSwatches from '@/components/sections/ColorSwatches'
 import type { Project, Testimonial, SiteSettings, FAQ as FAQType } from '@/types'
 
 const DEFAULT_SETTINGS: SiteSettings = {
@@ -117,6 +117,7 @@ export default async function Home() {
         <Gallery projects={projects} />
         <Videos videos={videos} />
         <Process />
+        <ColorSwatches />
         <About />
         <Testimonials testimonials={testimonials} />
         <FAQ faqs={faqs} />

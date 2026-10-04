@@ -74,7 +74,6 @@ function Modal({ color, onClose }: { color: ColorSwatch; onClose: () => void }) 
             <div className="flex items-start justify-between mb-3">
               <div>
                 <h3 className="font-heading text-xl font-bold text-charcoal">{color.name}</h3>
-                <span className="text-xs text-charcoal/40 font-mono">{color.code}</span>
               </div>
               <div className="w-10 h-10 rounded-xl border border-charcoal/10 shadow-sm flex-shrink-0 overflow-hidden">
                 <WoodPlank hex={color.hex} seed={3} />
@@ -117,10 +116,10 @@ export default function ColorSwatches() {
             <div className="h-px w-12 bg-gold/40" />
           </div>
           <h2 className="font-heading text-3xl md:text-4xl text-charcoal mb-3">
-            AquaTECH לזור: גוונים לעץ חיצוני
+            גוונים לעץ חיצוני
           </h2>
           <p className="text-charcoal/50 text-base max-w-xl mx-auto font-body">
-            ציפוי לעץ חיצוני על בסיס מים עם הגנת UV, מחברת <strong className="text-charcoal/70">גוונים</strong>.
+            ציפוי לעץ חיצוני על בסיס מים עם הגנת UV.
             לחצו על גוון לפרטים והמלצת שימוש.
           </p>
         </div>
@@ -129,7 +128,7 @@ export default function ColorSwatches() {
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 mb-10">
           {colored.map((color, i) => (
             <button
-              key={color.code}
+              key={color.name}
               onClick={() => setSelected(color)}
               className="group flex flex-col items-center gap-2 cursor-pointer"
             >
@@ -138,7 +137,6 @@ export default function ColorSwatches() {
               </div>
               <div className="text-center">
                 <p className="text-xs font-medium text-charcoal group-hover:text-gold transition-colors leading-tight">{color.name}</p>
-                <p className="text-[10px] text-charcoal/35 font-mono">{color.code}</p>
               </div>
             </button>
           ))}
@@ -155,7 +153,7 @@ export default function ColorSwatches() {
             <div className="grid grid-cols-3 gap-4">
               {transparent.map((color, i) => (
                 <button
-                  key={color.code}
+                  key={color.name}
                   onClick={() => setSelected(color)}
                   className="group flex flex-col items-center gap-2 cursor-pointer"
                 >
@@ -164,8 +162,7 @@ export default function ColorSwatches() {
                   </div>
                   <div className="text-center">
                     <p className="text-xs font-medium text-charcoal group-hover:text-gold transition-colors leading-tight">{color.name}</p>
-                    <p className="text-[10px] text-charcoal/35 font-mono">{color.code}</p>
-                  </div>
+                      </div>
                 </button>
               ))}
             </div>
@@ -175,12 +172,6 @@ export default function ColorSwatches() {
         <div className="text-center mt-10 space-y-1">
           <p className="text-charcoal/30 text-xs font-body">
             הגוונים מוצגים לצורך התרשמות בלבד, והצבעים האמיתיים עשויים להיות שונים מהמסך. ניתן לצפות בדוגמיות פיזיות בפגישת ייעוץ.
-          </p>
-          <p className="text-charcoal/30 text-xs font-body">
-            שמות וקודי הגוונים לפי קטלוג AquaTECH של{' '}
-            <a href="https://gvanim.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-gold transition-colors">
-              חברת גוונים
-            </a>
           </p>
         </div>
       </div>
