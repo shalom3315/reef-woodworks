@@ -150,7 +150,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
         {/* Back link */}
         <div className="mt-10 text-center">
-          <Link href="/#colors" className="text-sm text-charcoal/40 hover:text-gold transition-colors">
+          <Link href="/" className="text-sm text-charcoal/40 hover:text-gold transition-colors">
             ← חזרה לאתר הראשי
           </Link>
         </div>
