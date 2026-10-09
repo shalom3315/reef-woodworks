@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useEditContext } from '@/contexts/EditContext'
 import { EditField } from '@/components/EditField'
 import { waLink, QUOTE_MESSAGE } from '@/lib/contact'
+import { mediaUrl } from '@/lib/media'
 
 const navLinks = [
   { href: '#gallery', label: 'עבודות' },
@@ -47,7 +48,7 @@ export default function Navbar({ businessName = 'Reef Woodworks', logoUrl }: { b
             {editing ? (
               <EditField fieldKey="business_name" className="font-heading text-2xl font-bold text-cream tracking-wide" placeholder="שם העסק" />
             ) : logoUrl ? (
-              <img src={logoUrl} alt={displayName} className="h-20 w-auto object-contain" />
+              <img src={mediaUrl(logoUrl)} alt={displayName} className="h-20 w-auto object-contain" />
             ) : (
               <span className="font-heading text-2xl font-bold text-cream tracking-wide">
                 <span className="text-gold">{first}</span>{rest.length ? ' ' + rest.join(' ') : ''}

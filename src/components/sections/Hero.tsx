@@ -6,6 +6,7 @@ import { ChevronDown } from 'lucide-react'
 import { useEditContext } from '@/contexts/EditContext'
 import { EditField } from '@/components/EditField'
 import { waLink, QUOTE_MESSAGE } from '@/lib/contact'
+import { mediaUrl } from '@/lib/media'
 
 // Strong ease-out: movement starts immediately, so the hero reads as responsive
 const EASE_OUT = [0.23, 1, 0.32, 1] as const
@@ -29,7 +30,7 @@ export default function Hero() {
     <section className="relative h-screen min-h-[720px] flex items-center overflow-hidden">
       {heroVideo ? (
         <video
-          src={heroVideo}
+          src={mediaUrl(heroVideo)}
           autoPlay
           muted
           loop

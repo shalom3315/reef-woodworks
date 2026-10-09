@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Play } from 'lucide-react'
+import { mediaUrl } from '@/lib/media'
 
 interface VideoItem {
   id: string
@@ -82,7 +83,7 @@ function VideoCard({ video, index }: { video: VideoItem; index: number }) {
       <div className="relative w-full bg-black" style={{ aspectRatio: '16/10' }}>
         <video
           ref={ref}
-          src={`${video.video_url}#t=1`}
+          src={`${mediaUrl(video.video_url)}#t=1`}
           className="w-full h-full object-contain bg-black"
           preload="metadata"
           playsInline

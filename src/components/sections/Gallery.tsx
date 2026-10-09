@@ -169,7 +169,6 @@ export default function Gallery({ projects }: { projects?: Project[] }) {
                 className="object-contain"
                 sizes="100vw"
                 priority
-                unoptimized
               />
 
               {/* Prev arrow — right side (RTL) */}

@@ -5,6 +5,8 @@ const nextConfig = {
     return config
   },
   images: {
+    // Supabase sends no-cache; without this Vercel re-fetches originals every minute.
+    minimumCacheTTL: 2678400,
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: '*.supabase.co' },
