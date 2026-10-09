@@ -72,24 +72,20 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
 
   const projectWaLink = waLink(`שלום אלי, ראיתי את הפרויקט "${project.title}" באתר ואשמח לקבל הצעת מחיר`)
 
-  const productSchema = {
+  // A finished custom job, not a product for sale. Marking it as Product with an
+  // Offer and no price made Google flag every project page as a rich-result error.
+  const projectSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Product',
+    '@type': 'CreativeWork',
     name: project.title,
     description: project.description || `${project.title}: נגרות חוץ בהתאמה אישית`,
     image: safeImage,
-    category: project.category,
-    brand: { '@type': 'Brand', name: 'ריף וודוורקס' },
-    offers: {
-      '@type': 'Offer',
-      availability: 'https://schema.org/InStock',
-      priceCurrency: 'ILS',
-      seller: {
-        '@type': 'LocalBusiness',
-        name: 'ריף וודוורקס',
-        telephone: '+972532213939',
-        url: SITE_URL,
-      },
+    genre: project.category,
+    creator: {
+      '@type': 'LocalBusiness',
+      name: 'ריף וודוורקס',
+      telephone: '+972532213939',
+      url: SITE_URL,
     },
     ...(project.material && { material: project.material }),
   }
@@ -98,7 +94,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: safeJsonLd(productSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(projectSchema) }}
       />
 
       <header className="fixed top-0 left-0 right-0 z-50 bg-charcoal/95 backdrop-blur-md shadow-xl">
