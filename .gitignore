@@ -35,3 +35,6 @@ screenshot_*.png
 CLAUDE.md
 
 .vercel
+
+# Mirrored Supabase media served statically by Vercel (scripts/mirror-media.mjs)
+!public/media/**
