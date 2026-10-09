@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest } from 'next/server'
 import { createAuthClient } from '@/lib/supabase'
+import { isAdminEmail } from '@/lib/admin'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
@@ -11,7 +12,7 @@ export async function POST(req: NextRequest) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
   const { data: { user } } = await createAuthClient(adminToken).auth.getUser()
-  if (!user) {
+  if (!user || !isAdminEmail(user.email)) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAuthClient } from '@/lib/supabase'
+import { isAdminEmail } from '@/lib/admin'
 
 const COOKIE = 'admin_token'
 const COOKIE_OPTS = {
@@ -19,6 +20,7 @@ export async function POST(req: NextRequest) {
   const supabase = createAuthClient(token)
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
+  if (!isAdminEmail(user.email)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   const res = NextResponse.json({ ok: true })
   res.cookies.set(COOKIE, token, COOKIE_OPTS)

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { isAdminEmail } from '@/lib/admin'
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'
@@ -25,7 +26,9 @@ export async function middleware(req: NextRequest) {
       headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
       cache: 'no-store',
     })
-    if (!res.ok) {
+    // A valid session alone is not enough: the account must be on the admin list.
+    const user = res.ok ? await res.json() : null
+    if (!isAdminEmail(user?.email)) {
       const redirect = NextResponse.redirect(new URL('/admin/login', req.url))
       redirect.cookies.set('admin_token', '', { path: '/', maxAge: 0 })
       return redirect

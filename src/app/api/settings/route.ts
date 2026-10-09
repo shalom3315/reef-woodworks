@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAuthClient } from '@/lib/supabase'
+import { isAdminEmail } from '@/lib/admin'
 
 // Only snake_case identifiers — no SQL injection or arbitrary key names
 const VALID_KEY = /^[a-z][a-z0-9_]{0,63}$/
@@ -13,6 +14,7 @@ export async function POST(req: NextRequest) {
     const supabase = createAuthClient(token)
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!isAdminEmail(user.email)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
     const body = await req.json()
     const updates: Record<string, string> = body
