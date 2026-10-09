@@ -86,6 +86,12 @@ export default function FooterEditable() {
                 </a>
               </li>
               <li>
+                <a href="/blog/mechiron" className="text-cream/40 hover:text-gold transition-colors text-sm flex items-center gap-2 group">
+                  <span className="w-0 group-hover:w-3 h-px bg-gold transition-all duration-300 flex-shrink-0" />
+                  מחירון
+                </a>
+              </li>
+              <li>
                 <a href="/blog" className="text-cream/40 hover:text-gold transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-3 h-px bg-gold transition-all duration-300 flex-shrink-0" />
                   מאמרים ומדריכים
