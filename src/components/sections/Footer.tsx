@@ -22,7 +22,7 @@ export default function Footer({ settings }: { settings?: SiteSettings }) {
               <span className="text-gold">{first}</span>{rest.length ? ' ' + rest.join(' ') : ''}
             </h3>
             <p className="text-cream/40 text-sm leading-relaxed mb-6">
-              {s.footer_desc || 'עבודות עץ בהתאמה אישית – רהיטים, שולחנות ופתרונות עץ בעבודת יד מקצועית, עם תשומת לב לכל פרט.'}
+              {s.footer_desc || 'פרגולות ודקים בהתאמה אישית. גם גדרות וריהוט גן מעץ. מרכז הארץ.'}
             </p>
             <div className="flex gap-3">
               <a href={instagram} className="w-10 h-10 bg-cream/8 hover:bg-gold/20 rounded-full flex items-center justify-center transition-all group" aria-label="Instagram">

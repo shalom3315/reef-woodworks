@@ -6,8 +6,8 @@ import { SERVICES } from '@/data/services'
 const SITE_URL = 'https://reefwoodwork.com'
 
 export const metadata: Metadata = {
-  title: 'שירותי נגרות חוץ: פרגולות, דקים, גדרות וריהוט גן',
-  description: 'כל שירותי הנגרות של ריף וודוורקס: פרגולות עץ, דקים, גדרות, ריהוט גן, גזיבו וסוכות, וחידוש עץ קיים. בהתאמה אישית במרכז הארץ.',
+  title: 'פרגולות ודקים בהתאמה אישית, גדרות וריהוט גן',
+  description: 'פרגולות עץ ודקים בהתאמה אישית של ריף וודוורקס. גם גדרות, ריהוט גן, גזיבו וסוכות, וחידוש עץ קיים. בהתאמה אישית במרכז הארץ.',
   alternates: { canonical: `${SITE_URL}/services` },
 }
 

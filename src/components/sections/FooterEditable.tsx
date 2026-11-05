@@ -15,7 +15,7 @@ export default function FooterEditable() {
   const address = draft.address || 'מרכז הארץ'
   const instagram = draft.instagram || '#'
   const facebook = draft.facebook || '#'
-  const footerDesc = draft.footer_desc || 'פרגולות, דקים, גדרות וריהוט גן מעץ, בהתאמה אישית. מרכז הארץ.'
+  const footerDesc = draft.footer_desc || 'פרגולות ודקים בהתאמה אישית. גם גדרות וריהוט גן מעץ. מרכז הארץ.'
   const year = new Date().getFullYear()
   const [first, ...rest] = businessName.split(' ')
 

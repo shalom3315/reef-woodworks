@@ -18,11 +18,17 @@ import Guides from '@/components/sections/Guides'
 import ColorSwatches from '@/components/sections/ColorSwatches'
 import type { Project, Testimonial, SiteSettings, FAQ as FAQType } from '@/types'
 
+// The business leads with pergolas and decks, so those reviews come first.
+function pergolasAndDecksFirst(list: Testimonial[]) {
+  const core = (t: Testimonial) => /פרגול|דק/.test(t.project ?? '')
+  return [...list.filter(core), ...list.filter((t) => !core(t))]
+}
+
 const DEFAULT_SETTINGS: SiteSettings = {
   business_name: 'Reef Woodworks',
   logo_url: '/logo.png',
-  hero_title: 'עבודות עץ בהתאמה אישית',
-  hero_subtitle: 'פרגולות, דקים, גדרות וריהוט גן, מהמדידה הראשונה ועד ההתקנה.',
+  hero_title: 'פרגולות ודקים בהתאמה אישית',
+  hero_subtitle: 'תכנון, בנייה והתקנה של פרגולות ודקים. גם גדרות, ריהוט גן ועבודות עץ מיוחדות.',
   hero_badge: 'נגרות חוץ · מרכז הארץ',
   stat_years: '7',
   stat_projects: '150+',
@@ -40,13 +46,13 @@ const DEFAULT_SETTINGS: SiteSettings = {
   address: 'מרכז הארץ',
   instagram: '#',
   facebook: '#',
-  footer_desc: 'פרגולות, דקים, גדרות וריהוט גן מעץ, בהתאמה אישית. מרכז הארץ.',
+  footer_desc: 'פרגולות ודקים בהתאמה אישית. גם גדרות וריהוט גן מעץ. מרכז הארץ.',
   benefits_label: 'למה לבחור בנו',
   benefits_heading: 'מה מקבלים כשעובדים איתנו',
   benefits_desc: 'כל פרויקט נמדד ונבנה לפי המידות והסגנון של הבית שלכם.',
   benefits_0_accent: 'בנוי ביד',
   benefits_0_title: 'עבודת יד מקצועית',
-  benefits_0_desc: 'כל פריט נבנה ביד ולפי מידה, בלי פס ייצור.',
+  benefits_0_desc: 'כל פרגולה וכל דק נבנים ביד ולפי מידה, בלי פס ייצור.',
   benefits_1_accent: 'העץ הנכון לחוץ',
   benefits_1_title: 'חומרים איכותיים',
   benefits_1_desc: 'אורן, אלון, דוגלס, איפאה, במבוק ועוד. העץ עובר ייבוש מבוקר ועיבוד לפני הבנייה, כדי שיחזיק שנים בחוץ.',
@@ -80,7 +86,7 @@ async function getData() {
     return {
       settings,
       projects: (projectsRes.data as Project[]) || [],
-      testimonials: (testimonialsRes.data as Testimonial[]) || [],
+      testimonials: pergolasAndDecksFirst((testimonialsRes.data as Testimonial[]) || []),
       videos: (videosRes.data as { id: string; title: string; description: string; video_url: string; order_index: number }[]) || [],
       faqs: (faqsRes.data as FAQType[]) || [],
     }

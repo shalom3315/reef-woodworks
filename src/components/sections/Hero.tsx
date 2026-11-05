@@ -18,8 +18,8 @@ export default function Hero() {
   const reduceMotion = useReducedMotionConfig()
 
   const badge = draft.hero_badge || 'נגרות חוץ · מרכז הארץ'
-  const title = draft.hero_title || 'עבודות עץ בהתאמה אישית'
-  const subtitle = draft.hero_subtitle || 'פרגולות, דקים, גדרות וריהוט גן, מהמדידה הראשונה ועד ההתקנה.'
+  const title = draft.hero_title || 'פרגולות ודקים בהתאמה אישית'
+  const subtitle = draft.hero_subtitle || 'תכנון, בנייה והתקנה של פרגולות ודקים. גם גדרות, ריהוט גן ועבודות עץ מיוחדות.'
   const statYears = draft.stat_years || '7'
   const statProjects = draft.stat_projects || '150+'
   const statHandmade = draft.stat_handmade || '100%'
