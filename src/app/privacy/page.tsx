@@ -54,6 +54,10 @@ export default function PrivacyPage() {
               <li>ניתוח תנועה — Google Analytics (ניתן לביטול בהגדרות הדפדפן)</li>
               <li>זיכרון הסכמה להצגת הודעת העוגיות</li>
             </ul>
+            <p className="text-sm text-charcoal/50 mt-2">
+              עוגיות הניתוח נשמרות רק אחרי שאישרתם את הודעת העוגיות. לפני האישור Google Analytics פועל במצב מוגבל
+              (Consent Mode): לא נשמרות עוגיות במכשיר, ונשלחים רק אותות אנונימיים על צפייה בעמוד ועל לחיצה על כפתורי יצירת הקשר.
+            </p>
           </section>
 
           <section>

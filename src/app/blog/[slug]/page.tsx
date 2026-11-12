@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ChevronRight, MessageCircle, Calendar } from 'lucide-react'
 import { ARTICLES, getArticle } from '@/data/articles'
+import { SERVICES } from '@/data/services'
 import { safeJsonLd } from '@/lib/safeJsonLd'
 import { waLink } from '@/lib/contact'
 import RichBody from '@/components/RichBody'
@@ -27,6 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       url: `${SITE_URL}/blog/${article.slug}`,
       type: 'article',
       publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt ?? article.publishedAt,
       locale: 'he_IL',
       siteName: 'ריף וודוורקס',
     },
@@ -64,6 +66,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   } : null
 
   const related = ARTICLES.filter((a) => a.slug !== article.slug).slice(0, 3)
+  // The service page this article supports, so readers (and Google) can move
+  // from the price guide to the page that sells the job
+  const services = SERVICES.filter((s) => s.relatedArticles.includes(article.slug))
+  const shownDate = article.updatedAt ?? article.publishedAt
 
   return (
     <main className="min-h-screen bg-cream" dir="rtl">
@@ -86,7 +92,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <header className="mb-12">
           <div className="flex items-center gap-2 text-xs text-charcoal/40 mb-4">
             <Calendar size={13} />
-            <span>{new Date(article.publishedAt).toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <span>
+              {article.updatedAt ? 'עודכן ' : ''}
+              <time dateTime={shownDate}>{new Date(shownDate).toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+            </span>
             <span>·</span>
             <span>ריף וודוורקס</span>
           </div>
@@ -141,6 +150,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <nav className="mt-12" aria-label="קריאה נוספת">
           <h2 className="font-heading text-lg text-charcoal mb-4">עוד באתר</h2>
           <div className="flex flex-wrap gap-2.5">
+            {services.map((s) => (
+              <Link key={s.slug} href={`/services/${s.slug}`} className="bg-white border border-gold/40 text-charcoal hover:text-gold text-sm px-4 py-2 rounded-full transition-colors">{s.name}: הצעת מחיר ודוגמאות</Link>
+            ))}
             <Link href="/services" className="bg-white border border-gold/40 text-charcoal hover:text-gold text-sm px-4 py-2 rounded-full transition-colors">כל השירותים והמחירים</Link>
             {related.map((a) => (
               <Link key={a.slug} href={`/blog/${a.slug}`} className="bg-white border border-charcoal/10 hover:border-gold/40 text-charcoal/70 hover:text-gold text-sm px-4 py-2 rounded-full transition-colors">{a.title}</Link>
